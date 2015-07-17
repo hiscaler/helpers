@@ -226,41 +226,6 @@ class StringHelper {
         return str_replace(' ', '', $string);
     }
 
-    // 获取汉语拼音的第一个首字母，默认返回大写
-    public static function getFirstWordPinYin($string, $to_upper = true) {
-        if (empty($string))
-            return '';
-        Yii::import('ext.HanZi.HanZiTools');
-        $hz = new HanZiTools();
-        $pinyin = '';
-        $stringArray = explode(' ', $hz->pzhanzi_hanzi_to_pinyin($string));
-        if (is_array($stringArray)) {
-            foreach ($stringArray as $value) {
-                $pinyin .= substr($value, 0, 1);
-            }
-        }
-        $pinyin = substr($pinyin, 0, 1);
-
-        return ($to_upper) ? strtoupper($pinyin) : strtolower($pinyin);
-    }
-
-    /**
-     * 获取汉字拼音
-     * @param string $string
-     * @param boolean $ucFirst
-     * @param boolean $polyphony
-     * @param string $separator
-     * @return string
-     */
-    public static function getPinYin($string, $ucFirst = true, $polyphony = true, $separator = '-') {
-        if (empty($string)) {
-            return '';
-        }
-        Yii::import('ext.pinYin.PinYin');
-        $py = new PinYin();
-        return $py->encode(trim(self::makeSemiangle($string)), $ucFirst, $polyphony, $separator);
-    }
-
     public static function truncateText($text, $length = 30, $truncate_string = '...', $truncate_lastspace = false) {
         if ($text == '') {
             return '';
@@ -287,20 +252,6 @@ class StringHelper {
 //        }
 
         return $text;
-    }
-
-    public static function format($content, $formatType = 'markdown') {
-        if (empty($content)) {
-            return $content;
-        }
-        switch (strtolower($formatType)) {
-            case 'markdown':
-                $parser = new CMarkdownParser();
-                return $parser->safeTransform($content);
-                break;
-            default:
-                return $content;
-        }
     }
 
     /**
