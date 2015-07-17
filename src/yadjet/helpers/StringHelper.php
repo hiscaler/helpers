@@ -97,27 +97,30 @@ class StringHelper {
         for ($i = 0; $i < $len; $i++) {
             $c = ord($str[$i]);
             if ($c > 128) {
-                if (($c >= 254))
+                if (($c >= 254)) {
                     return false;
-                elseif ($c >= 252)
+                } elseif ($c >= 252) {
                     $bits = 6;
-                elseif ($c >= 248)
+                } elseif ($c >= 248) {
                     $bits = 5;
-                elseif ($c >= 240)
+                } elseif ($c >= 240) {
                     $bits = 4;
-                elseif ($c >= 224)
+                } elseif ($c >= 224) {
                     $bits = 3;
-                elseif ($c >= 192)
+                } elseif ($c >= 192) {
                     $bits = 2;
-                else
+                } else {
                     return false;
-                if (($i + $bits) > $len)
+                }
+                if (($i + $bits) > $len) {
                     return false;
+                }
                 while ($bits > 1) {
                     $i++;
                     $b = ord($str[$i]);
-                    if ($b < 128 || $b > 191)
+                    if ($b < 128 || $b > 191) {
                         return false;
+                    }
                     $bits--;
                 }
             }
@@ -247,9 +250,9 @@ class StringHelper {
             $text = $truncate_text . $truncate_string;
         }
 
-//        if ($mbstring) {
-//            @mb_internal_encoding($old_encoding);
-//        }
+        //        if ($mbstring) {
+        //            @mb_internal_encoding($old_encoding);
+        //        }
 
         return $text;
     }
