@@ -26,10 +26,10 @@ class TreeFormatHelper {
      * └- 2
      */
     public static function dumpArrayTree($tree, $level = 0, $T = '┣', $L = '┗', $I = '┃', $S = '...') {
-        return self::_makeLevelstr(self::_dumpArrayTree($tree, [], $level, $T, $L, $I, $S), $T, $L, $I, $S);
+        return self::_makeLevelstr(self::_dumpArrayTree($tree, array(), $level, $T, $L, $I, $S), $T, $L, $I, $S);
     }
 
-    public static function _dumpArrayTree($tree, $arr = [], $level = 0, $T = '├', $L = '└', $I = '│', $S = '　') {
+    public static function _dumpArrayTree($tree, $arr = array(), $level = 0, $T = '├', $L = '└', $I = '│', $S = '　') {
         foreach ($tree as $node) {
             $arr[] = $node;
             $arr[count($arr) - 1]['level'] = $level;
@@ -82,7 +82,7 @@ class TreeFormatHelper {
 
 
             // $spaceHere 用来记录连接线的形态，表示当前行第几级是空白
-            $spaceHere = [];
+            $spaceHere = array();
 
             // 逐级向上循环
             for ($k = $key - 1; $k >= 0; $k = $k - 1) {

@@ -169,7 +169,7 @@ class DatetimeHelper {
      * @param array $options Default format if timestamp is used in $dateString
      * @return string Relative time string.
      */
-    function timeAgoInWords($dateTime, $options = []) {
+    function timeAgoInWords($dateTime, $options = array()) {
         $now = time();
 
         $inSeconds = strtotime($dateTime);
@@ -202,8 +202,8 @@ class DatetimeHelper {
 
         // If more than a week, then take into account the length of months
         if ($diff >= 604800) {
-            $current = [];
-            $date = [];
+            $current = array();
+            $date = array();
 
             list($future['H'], $future['i'], $future['s'], $future['d'], $future['m'], $future['Y']) = explode('/', date('H/i/s/d/m/Y', $futureTime));
 
@@ -559,7 +559,7 @@ class DatetimeHelper {
         if ($beginDate == $endDate) {
             $data = [$beginDate];
         } else {
-            $data = [];
+            $data = array();
             $diff = self::diffMonths($beginDate, $endDate);
             for ($i = 0; $i < $diff; $i++) {
                 $data[] = self::increaseMonths($beginDate, $i);
