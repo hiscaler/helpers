@@ -10,7 +10,7 @@
             "email": "hiscaler@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
             "yadjet\\helpers\\": "src/yadjet/helpers"
