@@ -2,7 +2,12 @@
 
 namespace yadjet\helpers;
 
-class ArrayHelper {
+/**
+ * Array Helper
+ * @author hiscaler <hiscaler@gmail.com>
+ */
+class ArrayHelper
+{
 
     /**
      * 从数组中删除空白的元素（包括只有空白字符的元素）
@@ -19,7 +24,8 @@ class ArrayHelper {
      * @param array $arr 要处理的数组
      * @param boolean $trim 是否对数组元素调用 trim 函数
      */
-    public static function removeEmpty(& $arr, $trim = true) {
+    public static function removeEmpty(& $arr, $trim = true)
+    {
         foreach ($arr as $key => $value) {
             if (is_array($value)) {
                 self::removeEmpty($arr[$key]);
@@ -58,13 +64,15 @@ class ArrayHelper {
      *
      * @return array 包含指定键所有值的数组
      */
-    public static function getCols($arr, $col) {
+    public static function getCols($arr, $col)
+    {
         $ret = array();
         foreach ($arr as $row) {
             if (isset($row[$col])) {
                 $ret[] = $row[$col];
             }
         }
+
         return $ret;
     }
 
@@ -111,7 +119,8 @@ class ArrayHelper {
      *
      * @return array 转换后的 HashMap 样式数组
      */
-    public static function toHashmap($arr, $key_field, $value_field = null) {
+    public static function toHashmap($arr, $key_field, $value_field = null)
+    {
         $ret = array();
         if ($value_field) {
             foreach ($arr as $row) {
@@ -122,6 +131,7 @@ class ArrayHelper {
                 $ret[$row[$key_field]] = $row;
             }
         }
+
         return $ret;
     }
 
@@ -163,12 +173,14 @@ class ArrayHelper {
      *
      * @return array 分组后的结果
      */
-    public static function groupBy($arr, $key_field) {
+    public static function groupBy($arr, $key_field)
+    {
         $ret = array();
         foreach ($arr as $row) {
             $key = $row[$key_field];
             $ret[$key][] = $row;
         }
+
         return $ret;
     }
 
@@ -224,7 +236,8 @@ class ArrayHelper {
      *
      * return array 树形结构的数组
      */
-    public static function toTree($arr, $key_node_id, $key_parent_id = 'parent_id', $key_children = 'children', & $refs = null) {
+    public static function toTree($arr, $key_node_id, $key_parent_id = 'parent_id', $key_children = 'children', & $refs = null)
+    {
         $refs = array();
         foreach ($arr as $offset => $row) {
             $arr[$offset][$key_children] = array();
@@ -259,7 +272,8 @@ class ArrayHelper {
      *
      * @return array 展开后的数组
      */
-    public static function treeToArray($tree, $key_children = 'children') {
+    public static function treeToArray($tree, $key_children = 'children')
+    {
         $ret = array();
         if (isset($tree[$key_children]) && is_array($tree[$key_children])) {
             $children = $tree[$key_children];
@@ -272,6 +286,7 @@ class ArrayHelper {
             unset($tree[$key_children]);
             $ret[] = $tree;
         }
+
         return $ret;
     }
 
@@ -308,7 +323,8 @@ class ArrayHelper {
      *
      * @return array 排序后的数组
      */
-    public static function sortByCol($array, $keyname, $dir = SORT_ASC) {
+    public static function sortByCol($array, $keyname, $dir = SORT_ASC)
+    {
         return self::sortByMultiCols($array, [$keyname => $dir]);
     }
 
@@ -328,7 +344,8 @@ class ArrayHelper {
      *
      * @return array 排序后的数组
      */
-    public static function sortByMultiCols($rowset, $args) {
+    public static function sortByMultiCols($rowset, $args)
+    {
         $sortArray = array();
         $sortRule = '';
         foreach ($args as $sortField => $sortDir) {
@@ -341,6 +358,7 @@ class ArrayHelper {
             return $rowset;
         }
         eval('array_multisort(' . $sortRule . '$rowset);');
+
         return $rowset;
     }
 

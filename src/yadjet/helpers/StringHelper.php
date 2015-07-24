@@ -2,10 +2,16 @@
 
 namespace yadjet\helpers;
 
-class StringHelper {
+/**
+ * String Helper 
+ * @author hiscaler <hiscaler@gmail.com>
+ */
+class StringHelper
+{
 
     // 全角转半角
-    public static function makeSemiangle($str) {
+    public static function makeSemiangle($str)
+    {
         $arr = ['０' => '0', '１' => '1', '２' => '2', '３' => '3', '４' => '4',
             '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9',
             'Ａ' => 'A', 'Ｂ' => 'B', 'Ｃ' => 'C', 'Ｄ' => 'D', 'Ｅ' => 'E',
@@ -34,7 +40,8 @@ class StringHelper {
     }
 
     // 计算字符串长度（汉字按两字符算）
-    public static function strLen($str) {
+    public static function strLen($str)
+    {
         $length = strlen(preg_replace('/[\x00-\x7F]/', '', $str));
         if ($length) {
             return strlen($str) - $length + intval($length / 3);
@@ -44,7 +51,8 @@ class StringHelper {
     }
 
     // 正则高亮关键字
-    function highlightWords($str, $words, $color = '#FFFF00') {
+    function highlightWords($str, $words, $color = '#FFFF00')
+    {
         if (is_array($words)) {
             foreach ($words as $k => $word) {
                 $pattern[$k] = "/\b($word)\b/is";
@@ -58,11 +66,13 @@ class StringHelper {
         return preg_replace($pattern, $replace, $str);
     }
 
-    public static function html2Text($str, $r = false) {
+    public static function html2Text($str, $r = false)
+    {
         return $r ? addslashes(self::_html2Text(stripslashes($str))) : self::_html2Text($str);
     }
 
-    private static function _html2Text($str) {
+    private static function _html2Text($str)
+    {
         $str = preg_replace("/<sty(.*)\\/style>|<scr(.*)\\/script>|<!--(.*)-->/isU", "", $str);
         $alltext = "";
         $start = 1;
@@ -81,6 +91,7 @@ class StringHelper {
         $alltext = str_replace("　", " ", $alltext);
         $alltext = preg_replace("/&([^;&]*)(;|&)/", "", $alltext);
         $alltext = preg_replace("/[ ]+/s", "", $alltext);
+
         return $alltext;
     }
 
@@ -89,7 +100,8 @@ class StringHelper {
      * @param string $str
      * @return boolean
      */
-    public static function isUtf8($str) {
+    public static function isUtf8($str)
+    {
         $c = 0;
         $b = 0;
         $bits = 0;
@@ -125,11 +137,13 @@ class StringHelper {
                 }
             }
         }
+
         return true;
     }
 
     //裁剪字符串，加“...”
-    public static function subStr($str, $length, $endfix = '...') {
+    public static function subStr($str, $length, $endfix = '...')
+    {
         mb_internal_encoding("UTF-8");
         $str_length = mb_strwidth($str);
         if ($str_length > $length * 2) {
@@ -140,7 +154,8 @@ class StringHelper {
     }
 
     //裁剪字符串，不加“...”
-    public static function cutStr($str, $startstr, $endstr) {
+    public static function cutStr($str, $startstr, $endstr)
+    {
         $length = strlen($str);
         $start = mb_strpos($str, $startstr);
         $str = substr($str, $start, $length - $start);
@@ -151,7 +166,8 @@ class StringHelper {
 
     //自动探测字符编码，并转换到指定编码
 
-    public static function convertEncoding($data, $to) {
+    public static function convertEncoding($data, $to)
+    {
         $encode_arr = ['UTF-8', 'GBK', 'GB2312', 'BIG5', 'CP936'];
         if (get_extension_funcs('mbstring')) {
             $encoded = mb_detect_encoding($data, $encode_arr);
@@ -176,7 +192,8 @@ class StringHelper {
      * @return string
       +----------------------------------------------------------
      */
-    public static function msubStr($str, $start, $length, $charset = "utf-8", $suffix = '') {
+    public static function msubStr($str, $start, $length, $charset = "utf-8", $suffix = '')
+    {
         if (function_exists("mb_substr"))
             return mb_substr($str, $start, $length, $charset);
         elseif (function_exists('iconv_substr')) {
@@ -192,7 +209,8 @@ class StringHelper {
         return (empty($suffix)) ? $slice : $slice . $suffix;
     }
 
-    public static function generateRandomKey($length = 32) {
+    public static function generateRandomKey($length = 32)
+    {
         if (!extension_loaded('mcrypt')) {
             throw new InvalidConfigException('The mcrypt PHP extension is not installed.');
         }
@@ -200,6 +218,7 @@ class StringHelper {
         if ($bytes === false) {
             throw new Exception('Unable to generate random bytes.');
         }
+
         return $bytes;
     }
 
@@ -211,10 +230,12 @@ class StringHelper {
      * @throws Exception Exception on failure.
      * @return string the generated random key
      */
-    public static function generateRandomString($length = 32) {
+    public static function generateRandomString($length = 32)
+    {
         $bytes = self::generateRandomKey($length);
         // '=' character(s) returned by base64_encode() are always discarded because
         // they are guaranteed to be after position $length in the base64_encode() output.
+
         return strtr(substr(base64_encode($bytes), 0, $length), '+/', '_-');
     }
 
@@ -223,13 +244,16 @@ class StringHelper {
      * @param string $string
      * @return string
      */
-    public static function removeSpace($string) {
+    public static function removeSpace($string)
+    {
         $string = preg_replace("/[\s]{2,}/", "", $string);
         $string = str_replace('　', '', $string);
+
         return str_replace(' ', '', $string);
     }
 
-    public static function truncateText($text, $length = 30, $truncate_string = '...', $truncate_lastspace = false) {
+    public static function truncateText($text, $length = 30, $truncate_string = '...', $truncate_lastspace = false)
+    {
         if ($text == '') {
             return '';
         }
@@ -261,18 +285,20 @@ class StringHelper {
      * 生成 UUID
      * @return string
      */
-    public static function uuid() {
+    public static function uuid()
+    {
         if (function_exists('com_create_guid')) {
             return com_create_guid();
         } else {
             mt_srand((double) microtime() * 10000); //optional for php 4.2.0 and up.
             $charid = strtoupper(md5(uniqid(rand(), true)));
             $hyphen = chr(45); // "-"
+
             return substr($charid, 0, 8) . $hyphen
-                    . substr($charid, 8, 4) . $hyphen
-                    . substr($charid, 12, 4) . $hyphen
-                    . substr($charid, 16, 4) . $hyphen
-                    . substr($charid, 20, 12);
+                . substr($charid, 8, 4) . $hyphen
+                . substr($charid, 12, 4) . $hyphen
+                . substr($charid, 16, 4) . $hyphen
+                . substr($charid, 20, 12);
         }
     }
 

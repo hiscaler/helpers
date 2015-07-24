@@ -5,5 +5,5 @@ PHP Helpers Class
 Use composer, you only use follow command in you CLI.
 
 ```php
-composer require "yadjet/helpers:*" 
+composer require "yadjet/helpers:~1.0.0" 
 ```

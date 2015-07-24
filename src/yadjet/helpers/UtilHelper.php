@@ -2,7 +2,12 @@
 
 namespace yadjet\helpers;
 
-class UtilHelper {
+/**
+ * Common Helper
+ * @author hiscaler <hiscaler@gmail.com>
+ */
+class UtilHelper
+{
 
     /**
      * 字符串转数组
@@ -10,7 +15,8 @@ class UtilHelper {
      * @param string $delimiter
      * @return array
      */
-    public static function string2array($string, $delimiter = ',') {
+    public static function string2array($string, $delimiter = ',')
+    {
         return preg_split("/\s*{$delimiter}\s*/", trim($string), -1, PREG_SPLIT_NO_EMPTY);
     }
 
@@ -20,7 +26,8 @@ class UtilHelper {
      * @param string $delimiter
      * @return string
      */
-    public static function array2string($array, $delimiter = ',') {
+    public static function array2string($array, $delimiter = ',')
+    {
         return implode($delimiter, $array);
     }
 
@@ -28,7 +35,8 @@ class UtilHelper {
      * 获取浏览器名称
      * @return string
      */
-    public static function getBrowserName() {
+    public static function getBrowserName()
+    {
         $httpUserAgent = $_SERVER["HTTP_USER_AGENT"];
         if (strpos($httpUserAgent, "MSIE 9.0")) {
             return "Internet Explorer 9.0";

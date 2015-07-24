@@ -5,10 +5,12 @@ namespace yadjet\helpers;
 /**
  * 时间处理助手
  */
-class DatetimeHelper {
+class DatetimeHelper
+{
 
     //将任意时间字符串转化成时间戳
-    public static function mktime($dtime) {
+    public static function mktime($dtime)
+    {
         if (!preg_match("/[^0-9]/", $dtime)) {
             return $dtime;
         }
@@ -55,6 +57,7 @@ class DatetimeHelper {
             }
         }
         $mt = @mktime($dt[3], $dt[4], $dt[5], $dt[1], $dt[2], $dt[0]);
+
         return ($mt > 0) ? $mt : time();
     }
 
@@ -65,8 +68,10 @@ class DatetimeHelper {
      * @param int $format Format of returned date
      * @return string Formatted date string
      */
-    public static function nice($dateString = null, $format = 'D, M jS Y, H:i') {
+    public static function nice($dateString = null, $format = 'D, M jS Y, H:i')
+    {
         $date = ($dateString == null) ? time() : strtotime($dateString);
+
         return date($format, $date);
     }
 
@@ -81,7 +86,8 @@ class DatetimeHelper {
      * @param string $dateString Datetime string or Unix timestamp
      * @return string Described, relative date string
      */
-    public static function niceShort($dateString = null) {
+    public static function niceShort($dateString = null)
+    {
         $date = ($dateString == null) ? time() : strtotime($dateString);
 
         $y = (self::isThisYear($date)) ? '' : ' Y';
@@ -103,7 +109,8 @@ class DatetimeHelper {
      * @param string $date Unix timestamp
      * @return boolean True if date is today
      */
-    public static function isToday($date) {
+    public static function isToday($date)
+    {
         return date('Y-m-d', $date) == date('Y-m-d', time());
     }
 
@@ -113,7 +120,8 @@ class DatetimeHelper {
      * @param string $date Unix timestamp
      * @return boolean True if date was yesterday
      */
-    public static function wasYesterday($date) {
+    public static function wasYesterday($date)
+    {
         return date('Y-m-d', $date) == date('Y-m-d', strtotime('yesterday'));
     }
 
@@ -123,7 +131,8 @@ class DatetimeHelper {
      * @param string $date Unix timestamp
      * @return boolean True if date is in this year
      */
-    public static function isThisYear($date) {
+    public static function isThisYear($date)
+    {
         return date('Y', $date) == date('Y', time());
     }
 
@@ -133,7 +142,8 @@ class DatetimeHelper {
      * @param string $date Unix timestamp
      * @return boolean True if date is in this week
      */
-    public static function isThisWeek($date) {
+    public static function isThisWeek($date)
+    {
         return date('W Y', $date) == date('W Y', time());
     }
 
@@ -143,7 +153,8 @@ class DatetimeHelper {
      * @param string $date Unix timestamp
      * @return boolean True if date is in this month
      */
-    public static function isThisMonth($date) {
+    public static function isThisMonth($date)
+    {
         return date('m Y', $date) == date('m Y', time());
     }
 
@@ -169,7 +180,8 @@ class DatetimeHelper {
      * @param array $options Default format if timestamp is used in $dateString
      * @return string Relative time string.
      */
-    function timeAgoInWords($dateTime, $options = array()) {
+    function timeAgoInWords($dateTime, $options = array())
+    {
         $now = time();
 
         $inSeconds = strtotime($dateTime);
@@ -324,7 +336,8 @@ class DatetimeHelper {
      * @param <datetime> $date
      * @return <string>
      */
-    public static function getWeekDay($date) {
+    public static function getWeekDay($date)
+    {
         $dateArr = explode("-", $date);
         return date("w", mktime(0, 0, 0, $dateArr[1], $dateArr[2], $dateArr[0]));
     }
@@ -335,7 +348,8 @@ class DatetimeHelper {
      * @param <integer> $end // Datae
      * @return <integer>
      */
-    public static function getDifferentDays($begin, $end) {
+    public static function getDifferentDays($begin, $end)
+    {
         return (mktime(0, 0, 0, substr($end, 5, 2), substr($end, 8, 2), substr($end, 0, 4)) - mktime(0, 0, 0, substr($begin, 5, 2), substr($begin, 8, 2), substr($begin, 0, 4))) / (3600 * 24);
     }
 
@@ -346,7 +360,8 @@ class DatetimeHelper {
      * @param <datetime> $date
      * @return <integer>
      */
-    public static function dateAdd($interval, $number, $date) {
+    public static function dateAdd($interval, $number, $date)
+    {
         $date_time_array = getdate($date);
         $hours = $date_time_array["hours"];
         $minutes = $date_time_array["minutes"];
@@ -384,7 +399,8 @@ class DatetimeHelper {
      * @param integer $since
      * @return string
      */
-    public static function ago($time, $since = null) {
+    public static function ago($time, $since = null)
+    {
         $patterns = [
             'seconds' => Yii::t('dateTimeHelper', 'less than a minute'),
             'minute' => Yii::t('dateTimeHelper', 'about a minute'),
@@ -445,12 +461,14 @@ class DatetimeHelper {
      * 返回今天的日期范围时间戳
      * @return array
      */
-    public static function getTodayRange($date = null) {
+    public static function getTodayRange($date = null)
+    {
         if ($date === null) {
             $date = time();
         }
         $begin = mktime(0, 0, 0, date("m", $date), date("d", $date), date("Y", $date));
         $end = mktime(23, 59, 59, date("m", $date), date("d", $date), date("Y", $date));
+
         return [$begin, $end];
     }
 
@@ -458,12 +476,14 @@ class DatetimeHelper {
      * 返回本周日期范围时间戳
      * @return array
      */
-    public static function getThisWeekRange($date = null) {
+    public static function getThisWeekRange($date = null)
+    {
         if ($date === null) {
             $date = time();
         }
         $begin = mktime(0, 0, 0, date("m", $date), date("d", $date) - date("w", $date) + 1, date("Y", $date));
         $end = mktime(23, 59, 59, date("m", $date), date("d", $date) - date("w", $date) + 7, date("Y", $date));
+
         return [$begin, $end];
     }
 
@@ -471,12 +491,14 @@ class DatetimeHelper {
      * 返回本月日期范围时间戳
      * @return array
      */
-    public static function getThisMonthRange($date = null) {
+    public static function getThisMonthRange($date = null)
+    {
         if ($date === null) {
             $date = time();
         }
         $begin = mktime(0, 0, 0, date("m", $date), 1, date("Y", $date));
         $end = mktime(23, 59, 59, date("m", $date), date("t", $date), date("Y", $date));
+
         return [$begin, $end];
     }
 
@@ -484,13 +506,15 @@ class DatetimeHelper {
      * 返回本季度日期范围时间戳
      * @return array
      */
-    public static function getThisQuarterRange($date = null) {
+    public static function getThisQuarterRange($date = null)
+    {
         if ($date === null) {
             $date = time();
         }
         $getMonthDays = date("t", mktime(0, 0, 0, date('n', $date) + (date('n', $date) - 1) % 3, 1, date("Y", $date)));
         $begin = mktime(0, 0, 0, date('n', $date) - (date('n', $date) - 1) % 3, 1, date('Y', $date));
         $end = mktime(23, 59, 59, date('n', $date) + (date('n', $date) - 1) % 3, $getMonthDays, date('Y', $date));
+
         return [$begin, $end];
     }
 
@@ -498,11 +522,13 @@ class DatetimeHelper {
      * 返回本年度日期范围时间戳
      * @return array
      */
-    public static function getThisYearRange($date = null) {
+    public static function getThisYearRange($date = null)
+    {
         if ($date === null) {
             $date = time();
         }
         $year = date('Y', $date);
+
         return [
             mktime(0, 0, 0, 1, 1, $year),
             mktime(0, 0, 0, 12, 31, $year)
@@ -510,7 +536,8 @@ class DatetimeHelper {
     }
 
     // 减少月份处理，返回正确的年月值
-    public static function decreaseMonths($yearMonth, $months = 1) {
+    public static function decreaseMonths($yearMonth, $months = 1)
+    {
         $year = (int) substr($yearMonth, 0, 4);
         $month = (int) substr($yearMonth, 4, 2);
         $y = floor($months / 12);
@@ -524,12 +551,14 @@ class DatetimeHelper {
         } else {
             --$year;
             $month = (12 + $tmp);
+
             return $year . sprintf("%02d", abs($month));
         }
     }
 
     // 增加月份处理，返回正确的年月值
-    public static function increaseMonths($yearMonth, $months) {
+    public static function increaseMonths($yearMonth, $months)
+    {
         $y = substr($yearMonth, 0, 4);
         $m = substr($yearMonth, 4, 2);
         $tmp = intval($m) + intval($months);
@@ -540,6 +569,7 @@ class DatetimeHelper {
             $y--;
             $m = 12;
         }
+
         return $y . sprintf("%02d", $m);
     }
 
@@ -549,13 +579,16 @@ class DatetimeHelper {
      * @param <integer> $beginYearMonth
      * @param <integer> $endYearMonth
      */
-    public static function diffMonths($beginYearMonth, $endYearMonth) {
+    public static function diffMonths($beginYearMonth, $endYearMonth)
+    {
         $years = substr($endYearMonth, 0, 4) - substr($beginYearMonth, 0, 4);
         $months = substr($endYearMonth, 4, 2) - substr($beginYearMonth, 4, 2) + 1;
+
         return ($years) ? ($years * 12) + $months : $months;
     }
 
-    public static function toArray($beginDate, $endDate) {
+    public static function toArray($beginDate, $endDate)
+    {
         if ($beginDate == $endDate) {
             $data = [$beginDate];
         } else {

@@ -6,7 +6,8 @@ namespace yadjet\helpers;
  * Tree data to single array
  * @author hiscalar <hiscaler@gmail.com>
  */
-class TreeFormatHelper {
+class TreeFormatHelper
+{
 
     /**
      * 把一个Tree形数组转换成一个一维数组，用于方便地显示
@@ -25,11 +26,13 @@ class TreeFormatHelper {
      * │  └- 1.2
      * └- 2
      */
-    public static function dumpArrayTree($tree, $level = 0, $T = '┣', $L = '┗', $I = '┃', $S = '...') {
+    public static function dumpArrayTree($tree, $level = 0, $T = '┣', $L = '┗', $I = '┃', $S = '...')
+    {
         return self::_makeLevelstr(self::_dumpArrayTree($tree, array(), $level, $T, $L, $I, $S), $T, $L, $I, $S);
     }
 
-    public static function _dumpArrayTree($tree, $arr = array(), $level = 0, $T = '├', $L = '└', $I = '│', $S = '　') {
+    public static function _dumpArrayTree($tree, $arr = array(), $level = 0, $T = '├', $L = '└', $I = '│', $S = '　')
+    {
         foreach ($tree as $node) {
             $arr[] = $node;
             $arr[count($arr) - 1]['level'] = $level;
@@ -50,7 +53,8 @@ class TreeFormatHelper {
         return $arr;
     }
 
-    public static function _makeLevelstr($arr, $t, $l, $i, $s) {
+    public static function _makeLevelstr($arr, $t, $l, $i, $s)
+    {
 
         foreach ($arr as $key => $value) {
             $arr[$key]['levelstr'] = '';
