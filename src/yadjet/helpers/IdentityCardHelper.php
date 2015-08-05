@@ -44,7 +44,7 @@ class IdentityCardHelper
         if ($len != 17) {
             return false;
         }
-        //加权因子
+        // 加权因子
         $factor = array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);
         // 校验码对应值
         $verifyNumberList = array('1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2');
