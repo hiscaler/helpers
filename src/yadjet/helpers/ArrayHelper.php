@@ -240,12 +240,12 @@ class ArrayHelper
      *
      * return array 树形结构的数组
      */
-    public static function toTree($arr, $key_node_id, $key_parent_id = 'parent_id', $key_children = 'children', & $refs = null)
+    public static function toTree($arr, $key_node_id, $key_parent_id = 'parent_id', $key_children = 'children', &$refs = null)
     {
         $refs = array();
         foreach ($arr as $offset => $row) {
             $arr[$offset][$key_children] = array();
-            $refs[$row[$key_node_id]] = & $arr[$offset];
+            $refs[$row[$key_node_id]] = &$arr[$offset];
         }
 
         $tree = array();
@@ -253,13 +253,13 @@ class ArrayHelper
             $parent_id = $row[$key_parent_id];
             if ($parent_id) {
                 if (!isset($refs[$parent_id])) {
-                    $tree[] = & $arr[$offset];
+                    $tree[] = &$arr[$offset];
                     continue;
                 }
-                $parent = & $refs[$parent_id];
-                $parent[$key_children][] = & $arr[$offset];
+                $parent = &$refs[$parent_id];
+                $parent[$key_children][] = &$arr[$offset];
             } else {
-                $tree[] = & $arr[$offset];
+                $tree[] = &$arr[$offset];
             }
         }
 
