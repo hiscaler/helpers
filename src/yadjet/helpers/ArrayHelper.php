@@ -4,6 +4,7 @@ namespace yadjet\helpers;
 
 /**
  * Array Helper
+ * 
  * @author hiscaler <hiscaler@gmail.com>
  */
 class ArrayHelper
@@ -23,17 +24,20 @@ class ArrayHelper
      *
      * @param array $arr 要处理的数组
      * @param boolean $trim 是否对数组元素调用 trim 函数
+     * @param array $trimCharlist 希望过滤的字符
      */
-    public static function removeEmpty(& $arr, $trim = true)
+    public static function removeEmpty(&$arr, $trim = true, $trimCharlist = null)
     {
         foreach ($arr as $key => $value) {
             if (is_array($value)) {
                 self::removeEmpty($arr[$key]);
             } else {
-                $value = trim($value);
+                if ($trim) {
+                    $value = trim($value, " \t\n\r\0\x0B{$trimCharlist}");
+                }
                 if ($value == '') {
                     unset($arr[$key]);
-                } elseif ($trim) {
+                } else {
                     $arr[$key] = $value;
                 }
             }
