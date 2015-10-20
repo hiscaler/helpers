@@ -366,4 +366,59 @@ class ArrayHelper
         return $rowset;
     }
 
+    /**
+     * 计算多维数组差集
+     * @link http://codereview.stackexchange.com/questions/28098/pure-php-array-diff-assoc-recursive-function From stackexchange.com
+     * @param array $a
+     * @param array $b
+     * @return array
+     */
+    public static function arrayDiffAssocRecursive($a, $b)
+    {
+        // Get all of the "compare against" arrays
+        $b = array_slice(func_get_args(), 1);
+        // Initial return value
+        $ret = array();
+
+        // Loop over the "to" array and compare with the others
+        foreach ($a as $key => $val) {
+            // We should compare type first
+            $aType = gettype($val);
+            // If it's an array, we recurse, otherwise we just compare with "==="
+            $args = $aType === 'array' ? array($val) : true;
+
+            // Let's see what we have to compare to
+            foreach ($b as $x) {
+                // If the key doesn't exist or the type is different,
+                // then it's different, and our work here is done
+                if (!array_key_exists($key, $x) || $aType !== gettype($x[$key])) {
+                    $ret[$key] = $val;
+                    continue 2;
+                }
+
+                // If we are working with arrays, then we recurse
+                if ($aType === 'array') {
+                    $args[] = $x[$key];
+                } else {
+                    // Otherwise we just compare
+                    $args = $args && $val === $x[$key];
+                }
+            }
+
+            // This is where we call ourselves with all of the arrays we got passed
+            if ($aType === 'array') {
+                $comp = call_user_func_array(array(get_called_class(), 'array_diff_assoc_recursive'), $args);
+                // An empty array means we are equal :-)
+                if (count($comp) > 0) {
+                    $ret[$key] = $comp;
+                }
+            } elseif (!$args) {
+                // If the values don't match, then we found a difference
+                $ret[$key] = $val;
+            }
+        }
+
+        return $ret;
+    }
+
 }
