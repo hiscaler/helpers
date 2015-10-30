@@ -407,7 +407,7 @@ class ArrayHelper
 
             // This is where we call ourselves with all of the arrays we got passed
             if ($aType === 'array') {
-                $comp = call_user_func_array(array(get_called_class(), 'array_diff_assoc_recursive'), $args);
+                $comp = call_user_func_array(array(get_called_class(), 'arrayDiffAssocRecursive'), $args);
                 // An empty array means we are equal :-)
                 if (count($comp) > 0) {
                     $ret[$key] = $comp;
