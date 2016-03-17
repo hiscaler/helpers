@@ -1,6 +1,7 @@
 {
     "name": "yadjet/helpers",
     "description": "PHP Helper Class",
+    "license": "BSD-3-Clause",
     "require": {
         "php": ">=5.2"
     },
