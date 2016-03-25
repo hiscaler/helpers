@@ -344,8 +344,8 @@ class DatetimeHelper
 
     /**
      * 计算两个日期之间的相差天数
-     * @param <integer> $begin // Date
-     * @param <integer> $end // Datae
+     * @param <integer> $begin 开始日期
+     * @param <integer> $end 结束日期
      * @return <integer>
      */
     public static function getDifferentDays($begin, $end)
