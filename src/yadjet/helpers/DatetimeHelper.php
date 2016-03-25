@@ -478,10 +478,10 @@ class DatetimeHelper
     }
 
     /**
-     * 返回本周日期范围时间戳
+     * 返回周日期范围时间戳
      * @return array
      */
-    public static function getThisWeekRange($date = null)
+    public static function weekRange($date = null)
     {
         if ($date === null) {
             $date = time();
@@ -493,10 +493,10 @@ class DatetimeHelper
     }
 
     /**
-     * 返回本月日期范围时间戳
+     * 返回月日期范围时间戳
      * @return array
      */
-    public static function getThisMonthRange($date = null)
+    public static function monthRange($date = null)
     {
         if ($date === null) {
             $date = time();
@@ -508,10 +508,10 @@ class DatetimeHelper
     }
 
     /**
-     * 返回本季度日期范围时间戳
+     * 返回季度日期范围时间戳
      * @return array
      */
-    public static function getThisQuarterRange($date = null)
+    public static function quarterRange($date = null)
     {
         if ($date === null) {
             $date = time();
@@ -524,10 +524,10 @@ class DatetimeHelper
     }
 
     /**
-     * 返回本年度日期范围时间戳
+     * 返回年度日期范围时间戳
      * @return array
      */
-    public static function getThisYearRange($date = null)
+    public static function yearRange($date = null)
     {
         if ($date === null) {
             $date = time();
