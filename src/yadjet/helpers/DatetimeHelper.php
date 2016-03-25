@@ -613,4 +613,47 @@ class DatetimeHelper
         return $data;
     }
 
+    /**
+     * 将数字转换为有效的日期格式文本
+     * 
+     * @param integer $number
+     * @return string|mixed
+     */
+    public static function number2Date($number)
+    {
+        $date = null;
+        if (is_numeric($number)) {
+            $l = strlen($number);
+            switch ($l) {
+                case 4: // 2016 => 2016-01-01
+                    $date = "$number-01-01";
+                    break;
+
+                case 6: // 201601 => 2016-01-01
+                case 8:// 20160101 => 2016-01-01
+                    $month = (int) substr($number, 4, 2);
+                    if ($month >= 1 && $month <= 12) {
+                        $date = substr($number, 0, 4) . '-' . sprintf('%02d', $month);
+                        if ($l == 6) {
+                            $date .= '-01';
+                        } else {
+                            $day = (int) substr($number, 6, 2);
+                            if ($day == 0 || $day > 31) {
+                                $date = null;
+                            } else {
+                                $date .= '-' . sprintf('%02d', $day);
+                                $date = date('Y-m-d', self::mktime($date)) == $date ? $date : null;
+                            }
+                        }
+                    }
+                    break;
+
+                default:
+                    $date = null;
+            }
+        }
+
+        return $date;
+    }
+
 }
