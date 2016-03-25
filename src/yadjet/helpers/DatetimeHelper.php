@@ -52,13 +52,12 @@ class DatetimeHelper
         }
         foreach ($dt as $k => $v) {
             $v = preg_replace("/^0{1,}/", "", trim($v));
-            if ($v == "") {
-                $dt[$k] = 0;
-            }
+            $dt[$k] = (int) $v;
         }
-        $mt = @mktime($dt[3], $dt[4], $dt[5], $dt[1], $dt[2], $dt[0]);
 
-        return ($mt > 0) ? $mt : time();
+        $mt = mktime($dt[3], $dt[4], $dt[5], $dt[1], $dt[2], $dt[0]);
+
+        return ($mt > 0) ? $mt : $mt + (3600 * 8);
     }
 
     /**
