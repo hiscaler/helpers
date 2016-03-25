@@ -592,6 +592,12 @@ class DatetimeHelper
         return ($years) ? ($years * 12) + $months : $months;
     }
 
+    /**
+     * 获取起始日期范围
+     * @param integer $beginDate 开始日期
+     * @param integer $endDate 结束日期
+     * @return array
+     */
     public static function toArray($beginDate, $endDate)
     {
         if ($beginDate == $endDate) {
