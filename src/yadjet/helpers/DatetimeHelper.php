@@ -15,7 +15,7 @@ class DatetimeHelper
             return $dtime;
         }
 
-        $dt = [1970, 1, 1, 0, 0, 0];
+        $dt = array(1970, 1, 1, 0, 0, 0);
         $dtime = preg_replace("/[\r\n\t]|日|秒/", " ", $dtime);
         $dtime = str_replace(".", "-", $dtime);
         $dtime = str_replace("/", "-", $dtime);
@@ -401,7 +401,7 @@ class DatetimeHelper
      */
     public static function ago($time, $since = null)
     {
-        $patterns = [
+        $patterns = array(
             'seconds' => 'less than a minute',
             'minute' => 'about a minute',
             'minutes' => 'dateTimeHelper', '%d minutes',
@@ -413,7 +413,7 @@ class DatetimeHelper
             'months' => 'dateTimeHelper', '%d months',
             'year' => 'dateTimeHelper', 'about a year',
             'years' => 'dateTimeHelper', '%d years',
-        ];
+        );
         if ($since === null) {
             $since = time();
         }
@@ -601,7 +601,7 @@ class DatetimeHelper
     public static function toArray($beginDate, $endDate)
     {
         if ($beginDate == $endDate) {
-            $data = [$beginDate];
+            $data = array($beginDate);
         } else {
             $data = array();
             $diff = self::diffMonths($beginDate, $endDate);
