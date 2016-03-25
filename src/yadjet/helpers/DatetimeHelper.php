@@ -622,18 +622,22 @@ class DatetimeHelper
     public static function number2Date($number)
     {
         $date = null;
+        $number = trim($number);
         if (is_numeric($number)) {
             $l = strlen($number);
             switch ($l) {
                 case 4: // 2016 => 2016-01-01
-                    $date = "$number-01-01";
+                    if ((int) $number >= 1970) {
+                        $date = "$number-01-01";
+                    }
                     break;
 
                 case 6: // 201601 => 2016-01-01
                 case 8:// 20160101 => 2016-01-01
+                    $year = (int) substr($number, 0, 4);
                     $month = (int) substr($number, 4, 2);
-                    if ($month >= 1 && $month <= 12) {
-                        $date = substr($number, 0, 4) . '-' . sprintf('%02d', $month);
+                    if ($year >= 1970 && $month >= 1 && $month <= 12) {
+                        $date = $year . '-' . sprintf('%02d', $month);
                         if ($l == 6) {
                             $date .= '-01';
                         } else {
