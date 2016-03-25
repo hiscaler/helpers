@@ -402,24 +402,27 @@ class DatetimeHelper
     public static function ago($time, $since = null)
     {
         $patterns = [
-            'seconds' => Yii::t('dateTimeHelper', 'less than a minute'),
-            'minute' => Yii::t('dateTimeHelper', 'about a minute'),
-            'minutes' => Yii::t('dateTimeHelper', '%d minutes'),
-            'hour' => Yii::t('dateTimeHelper', 'about an hour'),
-            'hours' => Yii::t('dateTimeHelper', 'about %d hours'),
-            'day' => Yii::t('dateTimeHelper', 'a day'),
-            'days' => Yii::t('dateTimeHelper', '%d days'),
-            'month' => Yii::t('dateTimeHelper', 'about a month'),
-            'months' => Yii::t('dateTimeHelper', '%d months'),
-            'year' => Yii::t('dateTimeHelper', 'about a year'),
-            'years' => Yii::t('dateTimeHelper', '%d years'),
+            'seconds' => 'less than a minute',
+            'minute' => 'about a minute',
+            'minutes' => 'dateTimeHelper', '%d minutes',
+            'hour' => 'dateTimeHelper', 'about an hour',
+            'hours' => 'dateTimeHelper', 'about %d hours',
+            'day' => 'dateTimeHelper', 'a day',
+            'days' => 'dateTimeHelper', '%d days',
+            'month' => 'dateTimeHelper', 'about a month',
+            'months' => 'dateTimeHelper', '%d months',
+            'year' => 'dateTimeHelper', 'about a year',
+            'years' => 'dateTimeHelper', '%d years',
         ];
-        if ($since === null)
+        if ($since === null) {
             $since = time();
-        if (!is_int($since) && !ctype_digit($time))
+        }
+        if (!is_int($since) && !ctype_digit($time)) {
             $since = strtotime($since);
-        if (!is_int($time) && !ctype_digit($time))
+        }
+        if (!is_int($time) && !ctype_digit($time)) {
             $time = strtotime($time);
+        }
         $seconds = abs($since - $time);
         $minutes = $seconds / 60;
         $hours = $minutes / 60;
@@ -428,33 +431,35 @@ class DatetimeHelper
         $months = $days / 30;
         $years = $days / 365;
 
-        if ($seconds < 45)
+        if ($seconds < 45) {
             $words = $patterns['seconds'];
-        else if ($seconds < 90)
+        } elseif ($seconds < 90) {
             $words = $patterns['minute'];
-        else if ($minutes < 45)
+        } else if ($minutes < 45) {
             $words = sprintf($patterns['minutes'], $minutes);
-        else if ($minutes < 90)
+        } else if ($minutes < 90) {
             $words = $patterns['hour'];
-        else if ($hours < 24)
+        } else if ($hours < 24) {
             $words = sprintf($patterns['hours'], $hours);
-        else if ($hours < 48)
+        } else if ($hours < 48) {
             $words = $patterns['day'];
-        else if ($days < 30)
+        } else if ($days < 30) {
             $words = sprintf($patterns['days'], $days);
-        else if ($days < 60)
+        } else if ($days < 60) {
             $words = $patterns['month'];
-        else if ($days < 365)
+        } else if ($days < 365) {
             $words = sprintf($patterns['months'], $months);
-        else if ($years < 2)
+        } else if ($years < 2) {
             $words = $patterns['year'];
-        else
+        } else {
             $words = sprintf($patterns['years'], $years);
+        }
         $suffix = $since - $time > 0 ? 'ago' : '';
-        if ($since - $time > 0)
-            return $words . Yii::t('dateTimeHelper', 'ago');
-        else
+        if ($since - $time > 0) {
+            return $words . 'ago';
+        } else {
             return $words;
+        }
     }
 
     /**
