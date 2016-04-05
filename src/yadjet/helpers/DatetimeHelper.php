@@ -332,8 +332,8 @@ class DatetimeHelper
 
     /**
      * 计算出给出的日期是星期几
-     * @param <datetime> $date
-     * @return <string>
+     * @param datetime $date
+     * @return string
      */
     public static function getWeekDay($date)
     {
@@ -343,9 +343,9 @@ class DatetimeHelper
 
     /**
      * 计算两个日期之间的相差天数
-     * @param <integer> $begin 开始日期
-     * @param <integer> $end 结束日期
-     * @return <integer>
+     * @param integer $begin 开始日期
+     * @param integer $end 结束日期
+     * @return integer
      */
     public static function getDifferentDays($begin, $end)
     {
@@ -354,10 +354,10 @@ class DatetimeHelper
 
     /**
      * 增加指定的时间
-     * @param <string> $interval
-     * @param <integer> $number
-     * @param <datetime> $date
-     * @return <integer>
+     * @param string $interval
+     * @param integer $number
+     * @param datetime $date
+     * @return integer
      */
     public static function dateAdd($interval, $number, $date)
     {
@@ -580,8 +580,8 @@ class DatetimeHelper
     /**
      * 两个年月之间的差额
      * 比如：201001 - 200909 之间相差 4 个月
-     * @param <integer> $beginYearMonth
-     * @param <integer> $endYearMonth
+     * @param integer $beginYearMonth
+     * @param integer $endYearMonth
      */
     public static function diffMonths($beginYearMonth, $endYearMonth)
     {
