@@ -473,7 +473,7 @@ class DatetimeHelper
         $begin = mktime(0, 0, 0, date("m", $date), date("d", $date), date("Y", $date));
         $end = mktime(23, 59, 59, date("m", $date), date("d", $date), date("Y", $date));
 
-        return [$begin, $end];
+        return array($begin, $end);
     }
 
     /**
@@ -488,7 +488,7 @@ class DatetimeHelper
         $begin = mktime(0, 0, 0, date("m", $date), date("d", $date) - date("w", $date) + 1, date("Y", $date));
         $end = mktime(23, 59, 59, date("m", $date), date("d", $date) - date("w", $date) + 7, date("Y", $date));
 
-        return [$begin, $end];
+        return array($begin, $end);
     }
 
     /**
@@ -503,7 +503,7 @@ class DatetimeHelper
         $begin = mktime(0, 0, 0, date("m", $date), 1, date("Y", $date));
         $end = mktime(23, 59, 59, date("m", $date), date("t", $date), date("Y", $date));
 
-        return [$begin, $end];
+        return array($begin, $end);
     }
 
     /**
@@ -519,7 +519,7 @@ class DatetimeHelper
         $begin = mktime(0, 0, 0, date('n', $date) - (date('n', $date) - 1) % 3, 1, date('Y', $date));
         $end = mktime(23, 59, 59, date('n', $date) + (date('n', $date) - 1) % 3, $getMonthDays, date('Y', $date));
 
-        return [$begin, $end];
+        return array($begin, $end);
     }
 
     /**
@@ -533,10 +533,7 @@ class DatetimeHelper
         }
         $year = date('Y', $date);
 
-        return [
-            mktime(0, 0, 0, 1, 1, $year),
-            mktime(0, 0, 0, 12, 31, $year)
-        ];
+        return array(mktime(0, 0, 0, 1, 1, $year), mktime(0, 0, 0, 12, 31, $year));
     }
 
     // 减少月份处理，返回正确的年月值
