@@ -114,12 +114,12 @@ class DatetimeHelper
     }
 
     /**
-     * Returns true if given date was yesterday
+     * Returns true if given date is yesterday
      *
      * @param string $date Unix timestamp
      * @return boolean True if date was yesterday
      */
-    public static function wasYesterday($date)
+    public static function isYesterday($date)
     {
         return date('Y-m-d', $date) == date('Y-m-d', strtotime('yesterday'));
     }
@@ -462,10 +462,10 @@ class DatetimeHelper
     }
 
     /**
-     * 返回今天的日期范围时间戳
+     * 返回指定日期范围时间戳，未指定返回今天
      * @return array
      */
-    public static function getTodayRange($date = null)
+    public static function todayRange($date = null)
     {
         if ($date === null) {
             $date = time();
@@ -611,7 +611,7 @@ class DatetimeHelper
 
     /**
      * 将数字转换为有效的日期格式文本
-     * 
+     *
      * @param integer $number
      * @return string|mixed
      */
