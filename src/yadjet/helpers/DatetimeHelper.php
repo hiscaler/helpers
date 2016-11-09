@@ -656,4 +656,18 @@ class DatetimeHelper
         return $date;
     }
 
+    /**
+     * 是否为闰年
+     * @param mixed|integer $date
+     * @return boolean
+     */
+    public static function isLeapYear($date = null)
+    {
+        if ($date === null) {
+            $date = time();
+        }
+
+        return date("L", $date) == 1;
+    }
+
 }
