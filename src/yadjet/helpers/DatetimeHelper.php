@@ -478,15 +478,17 @@ class DatetimeHelper
 
     /**
      * 返回周日期范围时间戳
+     * @param int $date
+     * @param int $firstWeekDay
      * @return array
      */
-    public static function weekRange($date = null)
+    public static function weekRange($date = null, $firstWeekDay = 7)
     {
         if ($date === null) {
             $date = time();
         }
-        $begin = mktime(0, 0, 0, date("m", $date), date("d", $date) - date("w", $date) + 1, date("Y", $date));
-        $end = mktime(23, 59, 59, date("m", $date), date("d", $date) - date("w", $date) + 7, date("Y", $date));
+        $begin = mktime(0, 0, 0, date("m", $date), date("d", $date) - date($firstWeekDay == 7 ? 'w' : 'N', $date) + ($firstWeekDay == 7 ? 0 : 1), date("Y", $date));
+        $end = mktime(23, 59, 59, date("m", $date), date("d", $date) - date($firstWeekDay == 7 ? 'w' : 'N', $date) + ($firstWeekDay == 7 ? 6 : 7), date("Y", $date));
 
         return array($begin, $end);
     }
