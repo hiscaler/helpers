@@ -55,9 +55,7 @@ class DatetimeHelper
             $dt[$k] = (int) $v;
         }
 
-        $mt = mktime($dt[3], $dt[4], $dt[5], $dt[1], $dt[2], $dt[0]);
-
-        return ($mt > 0) ? $mt : $mt + (3600 * 8);
+        return mktime($dt[3], $dt[4], $dt[5], $dt[1], $dt[2], $dt[0]);
     }
 
     /**
