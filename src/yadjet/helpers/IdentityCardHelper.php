@@ -4,7 +4,7 @@ namespace yadjet\helpers;
 
 /**
  * 身份证辅助函数
- * 
+ *
  * @author hiscaler <hiscaler@gmail.com>
  */
 class IdentityCardHelper
@@ -12,7 +12,7 @@ class IdentityCardHelper
 
     /**
      * 身份证号码是否有效
-     * 
+     *
      * @param string $identityCardNumber
      * @return boolean
      */
@@ -20,11 +20,13 @@ class IdentityCardHelper
     {
         switch (strlen($identityCardNumber)) {
             case 15:
-                $valid = self::checksum18($identityCardNumber);
-                break;
-            case 18:
                 $valid = self::checksum18(self::change15to18($identityCardNumber));
                 break;
+
+            case 18:
+                $valid = self::checksum18($identityCardNumber);
+                break;
+
             default:
                 $valid = false;
         }
@@ -34,7 +36,7 @@ class IdentityCardHelper
 
     /**
      * 计算身份证校验码，根据国家标准GB 11643-1999
-     * 
+     *
      * @param string $identityCardBase
      * @return string|boolean
      */
@@ -60,7 +62,7 @@ class IdentityCardHelper
 
     /**
      * 将15位身份证升级到18位
-     * 
+     *
      * @param string $idCardNumber
      * @return string|boolean
      */
@@ -83,7 +85,7 @@ class IdentityCardHelper
 
     /**
      * 18位身份证校验码有效性检查
-     * 
+     *
      * @param string $identityCardNumber
      * @return boolean
      */
