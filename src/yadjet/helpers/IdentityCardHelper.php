@@ -102,4 +102,40 @@ class IdentityCardHelper
         }
     }
 
+    /**
+     * 根据身份证号码获取出生年月
+     *
+     * @param $identityCardNumber
+     * @param bool $toTimestamp
+     * @return bool|string
+     */
+    public static function getBirthday($identityCardNumber, $toTimestamp = true)
+    {
+        $birthday = false;
+        if (self::isValid($identityCardNumber)) {
+            $birthday = strlen($identityCardNumber) == 15 ? ('19' . substr($identityCardNumber, 6, 6)) : substr($identityCardNumber, 6, 8);
+            if ($toTimestamp) {
+                $birthday = (new DateTime(substr($birthday, 0, 4) . '-' . substr($birthday, 4, 2) . '-' . substr($birthday, 6, 2)))->getTimestamp();
+            }
+        }
+
+        return $birthday;
+    }
+
+    /**
+     * 根据身份证获取性别（0 女, 1 男）
+     *
+     * @param $identityCardNumber
+     * @return bool|int
+     */
+    public static function getSex($identityCardNumber)
+    {
+        $sex = false;
+        if (self::isValid($identityCardNumber)) {
+            $sex = substr($identityCardNumber, (strlen($identityCardNumber) == 15 ? -1 : -2), 1) % 2 ? 1 : 0;
+        }
+
+        return $sex;
+    }
+
 }
