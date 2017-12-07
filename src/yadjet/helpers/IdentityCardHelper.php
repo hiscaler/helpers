@@ -107,11 +107,11 @@ class IdentityCardHelper
      *
      * @param $identityCardNumber
      * @param bool $toTimestamp
-     * @return bool|string
+     * @return null|string
      */
     public static function getBirthday($identityCardNumber, $toTimestamp = true)
     {
-        $birthday = false;
+        $birthday = null;
         if (self::isValid($identityCardNumber)) {
             $birthday = strlen($identityCardNumber) == 15 ? ('19' . substr($identityCardNumber, 6, 6)) : substr($identityCardNumber, 6, 8);
             if ($toTimestamp) {
@@ -123,14 +123,14 @@ class IdentityCardHelper
     }
 
     /**
-     * 根据身份证获取性别（0 女, 1 男）
+     * 根据身份证获取性别（0 女, 1 男, null 未知）
      *
      * @param $identityCardNumber
-     * @return bool|int
+     * @return int|null
      */
     public static function getSex($identityCardNumber)
     {
-        $sex = false;
+        $sex = null;
         if (self::isValid($identityCardNumber)) {
             $sex = substr($identityCardNumber, (strlen($identityCardNumber) == 15 ? -1 : -2), 1) % 2 ? 1 : 0;
         }
