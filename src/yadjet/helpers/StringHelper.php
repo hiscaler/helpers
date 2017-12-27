@@ -242,7 +242,7 @@ class StringHelper
      * @throws InvalidParamException if wrong length is specified
      * @throws Exception on failure.
      */
-    public function generateRandomKey($length = 32, $useLibreSSL = null, $randomFile = null)
+    public static function generateRandomKey($length = 32, $useLibreSSL = null, $randomFile = null)
     {
         if (!is_int($length)) {
             throw new Exception('First parameter ($length) must be an integer');
@@ -353,7 +353,7 @@ class StringHelper
      * @return string the generated random key
      * @throws Exception on failure.
      */
-    public function generateRandomString($length = 32)
+    public static function generateRandomString($length = 32)
     {
         if (!is_int($length)) {
             throw new Exception('First parameter ($length) must be an integer');
