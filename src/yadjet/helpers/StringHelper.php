@@ -197,7 +197,7 @@ class StringHelper
      * @param string $suffix 截断显示字符
      * +----------------------------------------------------------
      * @return string
-    +----------------------------------------------------------
+     * +----------------------------------------------------------
      */
     public static function msubStr($str, $start, $length, $charset = "utf-8", $suffix = '')
     {

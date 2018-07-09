@@ -4,6 +4,7 @@ namespace yadjet\helpers;
 
 /**
  * Tree data to single array
+ *
  * @author hiscalar <hiscaler@gmail.com>
  */
 class TreeFormatHelper
@@ -12,8 +13,8 @@ class TreeFormatHelper
     /**
      * 把一个Tree形数组转换成一个一维数组，用于方便地显示
      *
-     * @param array  $tree 原始Tree形数组
-     * @param array  $arr 二维数组
+     * @param array $tree 原始Tree形数组
+     * @param array $arr 二维数组
      * @param string $level 目录深度
      * @param string $T 上下均有项目的符号，可以是图片路径
      * @param string $L 这一级别中最末尾项目的符号，可以是图片路径
@@ -25,6 +26,7 @@ class TreeFormatHelper
      * │  ├- 1.1
      * │  └- 1.2
      * └- 2
+     * @return mixed
      */
     public static function dumpArrayTree($tree, $level = 0, $T = '┣', $L = '┗', $I = '┃', $S = '...')
     {
@@ -55,7 +57,6 @@ class TreeFormatHelper
 
     public static function _makeLevelstr($arr, $t, $l, $i, $s)
     {
-
         foreach ($arr as $key => $value) {
             $arr[$key]['levelstr'] = '';
 
@@ -83,7 +84,6 @@ class TreeFormatHelper
                 // isend 为 true 意味着这个节点是本级最后一个节点
                 $arr[$key]['isend'] = true;
             }
-
 
             // $spaceHere 用来记录连接线的形态，表示当前行第几级是空白
             $spaceHere = array();

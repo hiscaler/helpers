@@ -4,11 +4,18 @@ namespace yadjet\helpers;
 
 /**
  * 时间处理助手
+ *
+ * @author hiscaler <hiscaler@gmail.com>
  */
 class DatetimeHelper
 {
 
-    //将任意时间字符串转化成时间戳
+    /**
+     * 将任意时间字符串转化成时间戳
+     *
+     * @param $dtime
+     * @return false|int|mixed|null|string|string[]
+     */
     public static function mktime($dtime)
     {
         if (!preg_match("/[^0-9]/", $dtime)) {
@@ -62,7 +69,7 @@ class DatetimeHelper
      * Returns a nicely formatted date string for given Datetime string.
      *
      * @param string $dateString Datetime string
-     * @param int $format Format of returned date
+     * @param string $format Format of returned date
      * @return string Formatted date string
      */
     public static function nice($dateString = null, $format = 'D, M jS Y, H:i')
@@ -165,10 +172,10 @@ class DatetimeHelper
      *  'end' =>  The end of relative time telling
      *
      * Relative dates look something like this:
-     * 	3 weeks, 4 days ago
-     * 	15 seconds ago
+     *    3 weeks, 4 days ago
+     *    15 seconds ago
      * Formatted dates look like this:
-     * 	on 02/18/2004
+     *    on 02/18/2004
      *
      * The returned string includes 'ago' or 'on' and assumes you'll properly add a word
      * like 'Posted ' before the function output.
@@ -292,55 +299,59 @@ class DatetimeHelper
         } else {
             if ($years > 0) {
                 // years and months and days
-                $relativeDate .= ( $relativeDate ? ', ' : '') . $years . ' ' . ($years == 1 ? 'year' : 'years');
+                $relativeDate .= ($relativeDate ? ', ' : '') . $years . ' ' . ($years == 1 ? 'year' : 'years');
                 $relativeDate .= $months > 0 ? ($relativeDate ? ', ' : '') . $months . ' ' . ($months == 1 ? 'month' : 'months') : '';
                 $relativeDate .= $weeks > 0 ? ($relativeDate ? ', ' : '') . $weeks . ' ' . ($weeks == 1 ? 'week' : 'weeks') : '';
                 $relativeDate .= $days > 0 ? ($relativeDate ? ', ' : '') . $days . ' ' . ($days == 1 ? 'day' : 'days') : '';
             } elseif (abs($months) > 0) {
                 // months, weeks and days
-                $relativeDate .= ( $relativeDate ? ', ' : '') . $months . ' ' . ($months == 1 ? 'month' : 'months');
+                $relativeDate .= ($relativeDate ? ', ' : '') . $months . ' ' . ($months == 1 ? 'month' : 'months');
                 $relativeDate .= $weeks > 0 ? ($relativeDate ? ', ' : '') . $weeks . ' ' . ($weeks == 1 ? 'week' : 'weeks') : '';
                 $relativeDate .= $days > 0 ? ($relativeDate ? ', ' : '') . $days . ' ' . ($days == 1 ? 'day' : 'days') : '';
             } elseif (abs($weeks) > 0) {
                 // weeks and days
-                $relativeDate .= ( $relativeDate ? ', ' : '') . $weeks . ' ' . ($weeks == 1 ? 'week' : 'weeks');
+                $relativeDate .= ($relativeDate ? ', ' : '') . $weeks . ' ' . ($weeks == 1 ? 'week' : 'weeks');
                 $relativeDate .= $days > 0 ? ($relativeDate ? ', ' : '') . $days . ' ' . ($days == 1 ? 'day' : 'days') : '';
             } elseif (abs($days) > 0) {
                 // days and hours
-                $relativeDate .= ( $relativeDate ? ', ' : '') . $days . ' ' . ($days == 1 ? 'day' : 'days');
+                $relativeDate .= ($relativeDate ? ', ' : '') . $days . ' ' . ($days == 1 ? 'day' : 'days');
                 $relativeDate .= $hours > 0 ? ($relativeDate ? ', ' : '') . $hours . ' ' . ($hours == 1 ? 'hour' : 'hours') : '';
             } elseif (abs($hours) > 0) {
                 // hours and minutes
-                $relativeDate .= ( $relativeDate ? ', ' : '') . $hours . ' ' . ($hours == 1 ? 'hour' : 'hours');
+                $relativeDate .= ($relativeDate ? ', ' : '') . $hours . ' ' . ($hours == 1 ? 'hour' : 'hours');
                 $relativeDate .= $minutes > 0 ? ($relativeDate ? ', ' : '') . $minutes . ' ' . ($minutes == 1 ? 'minute' : 'minutes') : '';
             } elseif (abs($minutes) > 0) {
                 // minutes only
-                $relativeDate .= ( $relativeDate ? ', ' : '') . $minutes . ' ' . ($minutes == 1 ? 'minute' : 'minutes');
+                $relativeDate .= ($relativeDate ? ', ' : '') . $minutes . ' ' . ($minutes == 1 ? 'minute' : 'minutes');
             } else {
                 // seconds only
-                $relativeDate .= ( $relativeDate ? ', ' : '') . $seconds . ' ' . ($seconds == 1 ? 'second' : 'seconds');
+                $relativeDate .= ($relativeDate ? ', ' : '') . $seconds . ' ' . ($seconds == 1 ? 'second' : 'seconds');
             }
 
             if (!$backwards) {
                 $relativeDate = sprintf('%s ago', $relativeDate);
             }
         }
+
         return $relativeDate;
     }
 
     /**
      * 计算出给出的日期是星期几
+     *
      * @param datetime $date
      * @return string
      */
     public static function getWeekDay($date)
     {
         $dateArr = explode("-", $date);
+
         return date("w", mktime(0, 0, 0, $dateArr[1], $dateArr[2], $dateArr[0]));
     }
 
     /**
      * 计算两个日期之间的相差天数
+     *
      * @param integer $begin 开始日期
      * @param integer $end 结束日期
      * @return integer
@@ -352,6 +363,7 @@ class DatetimeHelper
 
     /**
      * 增加指定的时间
+     *
      * @param string $interval
      * @param integer $number
      * @param datetime $date
@@ -367,31 +379,48 @@ class DatetimeHelper
         $day = $date_time_array["mday"];
         $year = $date_time_array["year"];
         switch ($interval) {
-            case "yyyy": $year += $number;
+            case "yyyy":
+                $year += $number;
                 break;
-            case "q": $month += ( $number * 3);
+
+            case "q":
+                $month += ($number * 3);
                 break;
-            case "m": $month += $number;
+
+            case "m":
+                $month += $number;
                 break;
+
             case "y":
             case "d":
-            case "w": $day += $number;
+            case "w":
+                $day += $number;
                 break;
-            case "ww": $day += ( $number * 7);
+
+            case "ww":
+                $day += ($number * 7);
                 break;
-            case "h": $hours += $number;
+
+            case "h":
+                $hours += $number;
                 break;
-            case "n": $minutes += $number;
+
+            case "n":
+                $minutes += $number;
                 break;
-            case "s": $seconds += $number;
+
+            case "s":
+                $seconds += $number;
                 break;
         }
         $timestamp = mktime($hours, $minutes, $seconds, $month, $day, $year);
+
         return $timestamp;
     }
 
     /**
      * 时间显示美化函数
+     *
      * @param integer $time
      * @param integer $since
      * @return string
@@ -461,6 +490,7 @@ class DatetimeHelper
 
     /**
      * 返回指定日期范围时间戳，未指定返回今天
+     *
      * @return array
      */
     public static function todayRange($date = null)
@@ -476,6 +506,7 @@ class DatetimeHelper
 
     /**
      * 返回周日期范围时间戳
+     *
      * @param int $date
      * @param int $firstWeekDay
      * @return array
@@ -493,6 +524,8 @@ class DatetimeHelper
 
     /**
      * 返回月日期范围时间戳
+     *
+     * @param null $date
      * @return array
      */
     public static function monthRange($date = null)
@@ -508,6 +541,8 @@ class DatetimeHelper
 
     /**
      * 返回季度日期范围时间戳
+     *
+     * @param null $date
      * @return array
      */
     public static function quarterRange($date = null)
@@ -524,6 +559,8 @@ class DatetimeHelper
 
     /**
      * 返回年度日期范围时间戳
+     *
+     * @param null $date
      * @return array
      */
     public static function yearRange($date = null)
@@ -577,8 +614,10 @@ class DatetimeHelper
     /**
      * 两个年月之间的差额
      * 比如：201001 - 200909 之间相差 4 个月
+     *
      * @param integer $beginYearMonth
      * @param integer $endYearMonth
+     * @return bool|float|int|string
      */
     public static function diffMonths($beginYearMonth, $endYearMonth)
     {
@@ -590,6 +629,7 @@ class DatetimeHelper
 
     /**
      * 获取起始日期范围
+     *
      * @param integer $beginDate 开始日期
      * @param integer $endDate 结束日期
      * @return array
@@ -658,6 +698,7 @@ class DatetimeHelper
 
     /**
      * 是否为闰年
+     *
      * @param mixed|integer $date
      * @return boolean
      */

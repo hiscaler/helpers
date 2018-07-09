@@ -3,7 +3,8 @@
 namespace yadjet\helpers;
 
 /**
- * Common Helper
+ * Util Helper
+ *
  * @author hiscaler <hiscaler@gmail.com>
  */
 class UtilHelper
@@ -11,6 +12,7 @@ class UtilHelper
 
     /**
      * 字符串转数组
+     *
      * @param string $string
      * @param string $delimiter
      * @return array
@@ -22,6 +24,7 @@ class UtilHelper
 
     /**
      * 数组转字符串
+     *
      * @param array $array
      * @param string $delimiter
      * @return string
@@ -33,6 +36,7 @@ class UtilHelper
 
     /**
      * 获取浏览器名称
+     *
      * @return string
      */
     public static function getBrowserName()
@@ -62,16 +66,16 @@ class UtilHelper
     }
 
     /**
-     * Check value to find if it was serialized.   
+     * Check value to find if it was serialized.
      *
      * If $data is not an string, then returned value will always be false.
      * Serialized data is always a string.
      *
      * @since 2.0.5
      * @link https://core.trac.wordpress.org/browser/tags/4.3.1/src/wp-includes/functions.php WordPress
-     * 
-     * @param string $data   Value to check to see if was serialized.
-     * @param bool   $strict Optional. Whether to be strict about the end of the string. Default true.
+     *
+     * @param string $data Value to check to see if was serialized.
+     * @param bool $strict Optional. Whether to be strict about the end of the string. Default true.
      * @return bool False if not serialized and true if it was.
      */
     public static function isSerialized($data, $strict = true)
@@ -128,6 +132,7 @@ class UtilHelper
             case 'i' :
             case 'd' :
                 $end = $strict ? '$' : '';
+
                 return (bool) preg_match("/^{$token}:[0-9.E-]+;$end/", $data);
         }
 

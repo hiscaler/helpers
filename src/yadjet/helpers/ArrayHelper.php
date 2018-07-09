@@ -4,7 +4,7 @@ namespace yadjet\helpers;
 
 /**
  * Array Helper
- * 
+ *
  * @author hiscaler <hiscaler@gmail.com>
  */
 class ArrayHelper
@@ -14,6 +14,7 @@ class ArrayHelper
      * 从数组中删除空白的元素（包括只有空白字符的元素）
      *
      * 用法：
+     *
      * @code php
      * $arr = array('', 'test', '   ');
      * Helper_Array::removeEmpty($arr);
@@ -48,6 +49,7 @@ class ArrayHelper
      * 从一个二维数组中返回指定键的所有值
      *
      * 用法：
+     *
      * @code php
      * $rows = array(
      *     array('id' => 1, 'value' => '1-1'),
@@ -84,6 +86,7 @@ class ArrayHelper
      * 将一个二维数组转换为 HashMap，并返回结果
      *
      * 用法1：
+     *
      * @code php
      * $rows = array(
      *     array('id' => 1, 'value' => '1-1'),
@@ -143,6 +146,7 @@ class ArrayHelper
      * 将一个二维数组按照指定字段的值分组
      *
      * 用法：
+     *
      * @code php
      * $rows = array(
      *     array('id' => 1, 'value' => '1-1', 'parent' => 1),
@@ -192,6 +196,7 @@ class ArrayHelper
      * 将一个平面的二维数组按照指定的字段转换为树状结构
      *
      * 用法：
+     *
      * @code php
      * $rows = array(
      *     array('id' => 1, 'value' => '1-1', 'parent' => 0),
@@ -298,6 +303,7 @@ class ArrayHelper
      * 根据指定的键对数组排序
      *
      * 用法：
+     *
      * @code php
      * $rows = array(
      *     array('id' => 1, 'value' => '1-1', 'parent' => 1),
@@ -336,6 +342,7 @@ class ArrayHelper
      * 将一个二维数组按照多个列进行排序，类似 SQL 语句中的 ORDER BY
      *
      * 用法：
+     *
      * @code php
      * $rows = Helper_Array::sortByMultiCols($rows, array(
      *     'parent' => SORT_ASC,
@@ -368,6 +375,7 @@ class ArrayHelper
 
     /**
      * 计算多维数组差集
+     *
      * @link http://codereview.stackexchange.com/questions/28098/pure-php-array-diff-assoc-recursive-function From stackexchange.com
      * @param array $a
      * @param array $b
