@@ -2,6 +2,8 @@
 
 namespace yadjet\helpers;
 
+use DateTime;
+
 /**
  * 身份证辅助函数
  *
@@ -29,6 +31,7 @@ class IdentityCardHelper
 
             default:
                 $valid = false;
+                break;
         }
 
         return $valid;
