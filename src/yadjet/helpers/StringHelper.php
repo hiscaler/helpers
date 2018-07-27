@@ -462,4 +462,15 @@ class StringHelper
         }
     }
 
+    /**
+     * 判断字符串是否为空
+     *
+     * @param $string
+     * @return bool
+     */
+    public static function isEmpty($string)
+    {
+        return ($string === '' || $string === null || (is_string($string) && trim($string) === '')) ? true : false;
+    }
+
 }
