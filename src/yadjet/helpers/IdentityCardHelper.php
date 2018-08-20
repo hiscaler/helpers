@@ -126,16 +126,16 @@ class IdentityCardHelper
     }
 
     /**
-     * 根据身份证获取性别（0 女, 1 男, null 未知）
+     * 根据身份证获取性别（0 未知, 1 男, 2 女）
      *
      * @param $identityCardNumber
      * @return int|null
      */
     public static function getSex($identityCardNumber)
     {
-        $sex = null;
+        $sex = 0;
         if (self::isValid($identityCardNumber)) {
-            $sex = substr($identityCardNumber, (strlen($identityCardNumber) == 15 ? -1 : -2), 1) % 2 ? 1 : 0;
+            $sex = substr($identityCardNumber, (strlen($identityCardNumber) == 15 ? -1 : -2), 1) % 2 ? 1 : 2;
         }
 
         return $sex;
