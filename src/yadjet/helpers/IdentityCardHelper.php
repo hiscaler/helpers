@@ -126,6 +126,22 @@ class IdentityCardHelper
     }
 
     /**
+     * 根据身份证号码获取年龄
+     *
+     * @param $identityCardNumber
+     * @return int|null
+     */
+    public static function getAge($identityCardNumber)
+    {
+        $age = null;
+        if (self::isValid($identityCardNumber)) {
+            $age = (new DateTime(self::getBirthday($identityCardNumber, false)))->diff(new DateTime())->y;
+        }
+
+        return $age;
+    }
+
+    /**
      * 根据身份证获取性别（0 未知, 1 男, 2 女）
      *
      * @param $identityCardNumber
