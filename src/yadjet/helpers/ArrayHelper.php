@@ -17,7 +17,7 @@ class ArrayHelper
      *
      * @code php
      * $arr = array('', 'test', '   ');
-     * Helper_Array::removeEmpty($arr);
+     * ArrayHelper::removeEmpty($arr);
      *
      * dump($arr);
      *   // 输出结果中将只有 'test'
@@ -55,7 +55,7 @@ class ArrayHelper
      *     array('id' => 1, 'value' => '1-1'),
      *     array('id' => 2, 'value' => '2-1'),
      * );
-     * $values = Helper_Array::cols($rows, 'value');
+     * $values = ArrayHelper::cols($rows, 'value');
      *
      * dump($values);
      *   // 输出结果为
@@ -92,7 +92,7 @@ class ArrayHelper
      *     array('id' => 1, 'value' => '1-1'),
      *     array('id' => 2, 'value' => '2-1'),
      * );
-     * $hashmap = Helper_Array::hashMap($rows, 'id', 'value');
+     * $hashmap = ArrayHelper::hashMap($rows, 'id', 'value');
      *
      * dump($hashmap);
      *   // 输出结果为
@@ -102,7 +102,7 @@ class ArrayHelper
      *   // )
      * @endcode
      *
-     * 如果省略 $value_field 参数，则转换结果每一项为包含该项所有数据的数组。
+     * 如果省略 $valueField 参数，则转换结果每一项为包含该项所有数据的数组。
      *
      * 用法2：
      * @code php
@@ -110,7 +110,7 @@ class ArrayHelper
      *     array('id' => 1, 'value' => '1-1'),
      *     array('id' => 2, 'value' => '2-1'),
      * );
-     * $hashmap = Helper_Array::hashMap($rows, 'id');
+     * $hashmap = ArrayHelper::hashMap($rows, 'id');
      *
      * dump($hashmap);
      *   // 输出结果为
@@ -121,21 +121,21 @@ class ArrayHelper
      * @endcode
      *
      * @param array $arr 数据源
-     * @param string $key_field 按照什么键的值进行转换
-     * @param string $value_field 对应的键值
+     * @param string $keyField 按照什么键的值进行转换
+     * @param string $valueField 对应的键值
      *
      * @return array 转换后的 HashMap 样式数组
      */
-    public static function toHashmap($arr, $key_field, $value_field = null)
+    public static function toHashmap($arr, $keyField, $valueField = null)
     {
         $ret = array();
-        if ($value_field) {
+        if ($valueField) {
             foreach ($arr as $row) {
-                $ret[$row[$key_field]] = $row[$value_field];
+                $ret[$row[$keyField]] = $row[$valueField];
             }
         } else {
             foreach ($arr as $row) {
-                $ret[$row[$key_field]] = $row;
+                $ret[$row[$keyField]] = $row;
             }
         }
 
@@ -156,7 +156,7 @@ class ArrayHelper
      *     array('id' => 5, 'value' => '5-1', 'parent' => 2),
      *     array('id' => 6, 'value' => '6-1', 'parent' => 3),
      * );
-     * $values = Helper_Array::groupBy($rows, 'parent');
+     * $values = ArrayHelper::groupBy($rows, 'parent');
      *
      * dump($values);
      *   // 按照 parent 分组的输出结果为
@@ -177,16 +177,15 @@ class ArrayHelper
      * @endcode
      *
      * @param array $arr 数据源
-     * @param string $key_field 作为分组依据的键名
+     * @param string $key 作为分组依据的键名
      *
      * @return array 分组后的结果
      */
-    public static function groupBy($arr, $key_field)
+    public static function groupBy($arr, $key)
     {
         $ret = array();
         foreach ($arr as $row) {
-            $key = $row[$key_field];
-            $ret[$key][] = $row;
+            $ret[$row[$key]][] = $row;
         }
 
         return $ret;
@@ -209,7 +208,7 @@ class ArrayHelper
      *     array('id' => 10, 'value' => '3-1-1-1', 'parent' => 9),
      * );
      *
-     * $tree = Helper_Array::tree($rows, 'id', 'parent', 'nodes');
+     * $tree = ArrayHelper::toTree($rows, 'id', 'parent', 'nodes');
      *
      * dump($tree);
      *   // 输出结果为：
@@ -230,7 +229,7 @@ class ArrayHelper
      * 如果要获得任意节点为根的子树，可以使用 $refs 参数：
      * @code php
      * $refs = null;
-     * $tree = Helper_Array::tree($rows, 'id', 'parent', 'nodes', $refs);
+     * $tree = ArrayHelper::toTree($rows, 'id', 'parent', 'nodes', $refs);
      *
      * // 输出 id 为 3 的节点及其所有子节点
      * $id = 3;
@@ -238,31 +237,31 @@ class ArrayHelper
      * @endcode
      *
      * @param array $arr 数据源
-     * @param string $key_node_id 节点ID字段名
-     * @param string $key_parent_id 节点父ID字段名
-     * @param string $key_children 保存子节点的字段名
+     * @param string $key 节点ID字段名
+     * @param string $parentKey 节点父ID字段名
+     * @param string $childrenKey 保存子节点的字段名
      * @param boolean $refs 是否在返回结果中包含节点引用
      *
      * return array 树形结构的数组
      */
-    public static function toTree($arr, $key_node_id, $key_parent_id = 'parent_id', $key_children = 'children', &$refs = null)
+    public static function toTree($arr, $key, $parentKey = 'parent_id', $childrenKey = 'children', &$refs = null)
     {
         $refs = array();
         foreach ($arr as $offset => $row) {
-            $arr[$offset][$key_children] = array();
-            $refs[$row[$key_node_id]] = &$arr[$offset];
+            $arr[$offset][$childrenKey] = array();
+            $refs[$row[$key]] = &$arr[$offset];
         }
 
         $tree = array();
         foreach ($arr as $offset => $row) {
-            $parent_id = $row[$key_parent_id];
-            if ($parent_id) {
-                if (!isset($refs[$parent_id])) {
+            $parentId = $row[$parentKey];
+            if ($parentId) {
+                if (!isset($refs[$parentId])) {
                     $tree[] = &$arr[$offset];
                     continue;
                 }
-                $parent = &$refs[$parent_id];
-                $parent[$key_children][] = &$arr[$offset];
+                $parent = &$refs[$parentId];
+                $parent[$childrenKey][] = &$arr[$offset];
             } else {
                 $tree[] = &$arr[$offset];
             }
@@ -277,23 +276,23 @@ class ArrayHelper
      * 这个方法是 tree() 方法的逆向操作。
      *
      * @param array $tree 树形数组
-     * @param string $key_children 包含子节点的键名
+     * @param string $childrenKey 包含子节点的键名
      *
      * @return array 展开后的数组
      */
-    public static function treeToArray($tree, $key_children = 'children')
+    public static function treeToArray($tree, $childrenKey = 'children')
     {
         $ret = array();
-        if (isset($tree[$key_children]) && is_array($tree[$key_children])) {
-            $children = $tree[$key_children];
-            unset($tree[$key_children]);
-            $ret[] = $tree;
-            foreach ($children as $node) {
-                $ret = array_merge($ret, self::treeToArray($node, $key_children));
+        foreach ($tree as $item) {
+            if (isset($item[$childrenKey]) && is_array($item[$childrenKey])) {
+                $children = $item[$childrenKey];
+                unset($item[$childrenKey]);
+                $ret[] = $item;
+                $children && $ret = array_merge($ret, self::treeToArray($children, $childrenKey));
+            } else {
+                unset($item[$childrenKey]);
+                $ret[] = $item;
             }
-        } else {
-            unset($tree[$key_children]);
-            $ret[] = $tree;
         }
 
         return $ret;
@@ -314,7 +313,7 @@ class ArrayHelper
      *     array('id' => 6, 'value' => '6-1', 'parent' => 3),
      * );
      *
-     * $rows = Helper_Array::sortByCol($rows, 'id', SORT_DESC);
+     * $rows = ArrayHelper::sortByCol($rows, 'id', SORT_DESC);
      * dump($rows);
      * // 输出结果为：
      * // array(
@@ -344,7 +343,7 @@ class ArrayHelper
      * 用法：
      *
      * @code php
-     * $rows = Helper_Array::sortByMultiCols($rows, array(
+     * $rows = ArrayHelper::sortByMultiCols($rows, array(
      *     'parent' => SORT_ASC,
      *     'name' => SORT_DESC,
      * ));
