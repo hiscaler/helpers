@@ -1,7 +1,7 @@
 # About
 PHP Helpers Class
 
-# Install
+## Install
 Use composer, you only use follow command in you CLI.
 
 ```php
