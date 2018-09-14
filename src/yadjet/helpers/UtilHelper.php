@@ -124,6 +124,8 @@ class UtilHelper
                 } elseif (false === strpos($data, '"')) {
                     return false;
                 }
+                break;
+
             // or else fall through
             case 'a' :
             case 'O' :
@@ -134,6 +136,7 @@ class UtilHelper
                 $end = $strict ? '$' : '';
 
                 return (bool) preg_match("/^{$token}:[0-9.E-]+;$end/", $data);
+                break;
         }
 
         return false;

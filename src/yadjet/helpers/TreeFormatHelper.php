@@ -14,8 +14,7 @@ class TreeFormatHelper
      * 把一个Tree形数组转换成一个一维数组，用于方便地显示
      *
      * @param array $tree 原始Tree形数组
-     * @param array $arr 二维数组
-     * @param string $level 目录深度
+     * @param int $level 目录深度
      * @param string $T 上下均有项目的符号，可以是图片路径
      * @param string $L 这一级别中最末尾项目的符号，可以是图片路径
      * @param string $I 上级连接符，可以是图片路径

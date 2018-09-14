@@ -243,6 +243,7 @@ class ArrayHelper
      * @param boolean $refs 是否在返回结果中包含节点引用
      *
      * return array 树形结构的数组
+     * @return array
      */
     public static function toTree($arr, $key, $parentKey = 'parent_id', $childrenKey = 'children', &$refs = null)
     {
