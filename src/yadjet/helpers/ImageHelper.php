@@ -24,14 +24,14 @@ class ImageHelper
         $images = null;
         if (!empty($str)) {
             $pattern = "/<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>/";
-            preg_match_all($pattern, $str, $match);
-            if (isset($match[1]) && !empty($match[1])) {
+            preg_match_all($pattern, $str, $matches);
+            if (isset($matches[1]) && !empty($matches[1])) {
                 if ($index > 0) {
-                    if (is_numeric($index) && isset($match[1][$index - 1])) {
-                        $images = $match[1][$index - 1];
+                    if (is_numeric($index) && isset($matches[1][$index - 1])) {
+                        $images = $matches[1][$index - 1];
                     }
                 } else {
-                    $images = $match[1];
+                    $images = $matches[1];
                 }
             }
         }
