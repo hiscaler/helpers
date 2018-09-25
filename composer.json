@@ -3,7 +3,8 @@
     "description": "PHP Helper Class",
     "license": "BSD-3-Clause",
     "require": {
-        "php": ">=5.2"
+        "php": ">=5.2",
+        "phpunit/phpunit": "~4.5|~5"
     },
     "authors": [
         {
