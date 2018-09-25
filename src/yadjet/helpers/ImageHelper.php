@@ -13,7 +13,7 @@ class ImageHelper
 {
 
     /**
-     * 解析文本内容中的图片地址s
+     * 解析文本内容中的图片地址
      *
      * @param $str
      * @param int $index
