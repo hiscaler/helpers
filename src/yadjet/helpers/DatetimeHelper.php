@@ -98,7 +98,7 @@ class DatetimeHelper
 
         if (self::isToday($date)) {
             $ret = sprintf('Today, %s', date("g:i a", $date));
-        } elseif (self::wasYesterday($date)) {
+        } elseif (self::isYesterday($date)) {
             $ret = sprintf('Yesterday, %s', date("g:i a", $date));
         } else {
             $ret = date("M jS{$y}, H:i", $date);
@@ -180,7 +180,7 @@ class DatetimeHelper
      * The returned string includes 'ago' or 'on' and assumes you'll properly add a word
      * like 'Posted ' before the function output.
      *
-     * @param string $dateString Datetime string
+     * @param $dateTime
      * @param array $options Default format if timestamp is used in $dateString
      * @return string Relative time string.
      */
@@ -218,9 +218,6 @@ class DatetimeHelper
 
         // If more than a week, then take into account the length of months
         if ($diff >= 604800) {
-            $current = array();
-            $date = array();
-
             list($future['H'], $future['i'], $future['s'], $future['d'], $future['m'], $future['Y']) = explode('/', date('H/i/s/d/m/Y', $futureTime));
 
             list($past['H'], $past['i'], $past['s'], $past['d'], $past['m'], $past['Y']) = explode('/', date('H/i/s/d/m/Y', $pastTime));
@@ -339,7 +336,7 @@ class DatetimeHelper
     /**
      * 计算出给出的日期是星期几
      *
-     * @param datetime $date
+     * @param string $date
      * @return string
      */
     public static function getWeekDay($date)
@@ -366,7 +363,7 @@ class DatetimeHelper
      *
      * @param string $interval
      * @param integer $number
-     * @param datetime $date
+     * @param string $date
      * @return integer
      */
     public static function dateAdd($interval, $number, $date)
@@ -482,7 +479,7 @@ class DatetimeHelper
         }
         $suffix = $since - $time > 0 ? 'ago' : '';
         if ($since - $time > 0) {
-            return $words . 'ago';
+            return $words . $suffix;
         } else {
             return $words;
         }
@@ -491,6 +488,7 @@ class DatetimeHelper
     /**
      * 返回指定日期范围时间戳，未指定返回今天
      *
+     * @param null $date
      * @return array
      */
     public static function todayRange($date = null)
