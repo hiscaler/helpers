@@ -239,7 +239,6 @@ class StringHelper
      *
      * @param int $length the number of bytes to generate
      * @return string the generated random bytes
-     * @throws InvalidParamException if wrong length is specified
      * @throws Exception on failure.
      */
     public static function generateRandomKey($length = 32, $useLibreSSL = null, $randomFile = null)
