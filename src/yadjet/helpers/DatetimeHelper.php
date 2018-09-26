@@ -709,4 +709,15 @@ class DatetimeHelper
         return date("L", $date) == 1;
     }
 
+    /**
+     * 验证是否为有效的 Unix 时间戳
+     *
+     * @param $timestamp
+     * @return bool
+     */
+    public static function isTimestamp($timestamp)
+    {
+        return (ctype_digit($timestamp) && strlen($timestamp) == 10 && strtotime(date('Y-m-d H:i:s', $timestamp)) === (int) $timestamp);
+    }
+
 }
