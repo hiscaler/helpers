@@ -2,6 +2,10 @@
 
 namespace yadjet\helpers;
 
+use DateTime;
+use Exception;
+use InvalidArgumentException;
+
 /**
  * 时间处理助手
  *
@@ -571,42 +575,62 @@ class DatetimeHelper
         return array(mktime(0, 0, 0, 1, 1, $year), mktime(0, 0, 0, 12, 31, $year));
     }
 
-    // 减少月份处理，返回正确的年月值
-    public static function decreaseMonths($yearMonth, $months = 1)
+    /**
+     * 减少月份处理，返回正确的年月值
+     *
+     * @see DatetimeHelperTest::testDecreaseMonths()
+     * @param $date
+     * @param int $months
+     * @param string $format
+     * @return string
+     */
+    public static function decreaseMonths($date, $months = 1, $format = "Y-m-d")
     {
-        $year = (int) substr($yearMonth, 0, 4);
-        $month = (int) substr($yearMonth, 4, 2);
-        $y = floor($months / 12);
-        $year = $year - $y;
-        $months = $months % 12;
-        $tmp = intval($month) - intval($months);
-        if ($tmp == 0) {
-            return --$year . '12';
-        } elseif ($tmp > 0) {
-            return $year . sprintf("%02d", $tmp);
-        } else {
-            --$year;
-            $month = (12 + $tmp);
+        $n = strlen($date);
+        $isNumberDate = $n == 6 || $n == 8; // 201801、20180102
+        try {
+            if ($isNumberDate) {
+                $date = self::number2Date($date);
+                $format = $n == 6 ? 'Ym' : 'Ymd';
+            }
+            $datetime = new DateTime($date);
+            $datetime->modify("-$months months");
 
-            return $year . sprintf("%02d", abs($month));
+            return $datetime->format($format);
+        } catch (Exception $e) {
+            throw new InvalidArgumentException($e->getMessage());
         }
     }
 
-    // 增加月份处理，返回正确的年月值
-    public static function increaseMonths($yearMonth, $months)
+    /**
+     * 增加月份处理，返回正确的年月值
+     *
+     * increaseMonths(201801, 2) 返回 201803
+     * increaseMonths(20180101, 2) 返回 20180301
+     * increaseMonths(20180101, 2) 返回 20180301
+     *
+     * @see DatetimeHelperTest::testIncreaseMonths()
+     * @param $date
+     * @param int $months
+     * @param string $format
+     * @return string
+     */
+    public static function increaseMonths($date, $months = 1, $format = "Y-m-d")
     {
-        $y = substr($yearMonth, 0, 4);
-        $m = substr($yearMonth, 4, 2);
-        $tmp = intval($m) + intval($months);
-        $m = fmod($tmp, 12);
-        $y = $y + ($tmp / 12);
-        $y = intval($y);
-        if ($m == 0) {
-            $y--;
-            $m = 12;
-        }
+        $n = strlen($date);
+        $isNumberDate = $n == 6 || $n == 8; // 201801、20180102
+        try {
+            if ($isNumberDate) {
+                $date = self::number2Date($date);
+                $format = $n == 6 ? 'Ym' : 'Ymd';
+            }
+            $datetime = new DateTime($date);
+            $datetime->modify("$months months");
 
-        return $y . sprintf("%02d", $m);
+            return $datetime->format($format);
+        } catch (Exception $e) {
+            throw new InvalidArgumentException($e->getMessage());
+        }
     }
 
     /**
