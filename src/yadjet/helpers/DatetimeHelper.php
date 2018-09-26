@@ -2,9 +2,14 @@
 
 namespace yadjet\helpers;
 
+use DateTime;
+use Exception;
+use InvalidArgumentException;
+
 /**
  * 时间处理助手
  *
+ * @package yadjet\helpers
  * @author hiscaler <hiscaler@gmail.com>
  */
 class DatetimeHelper
@@ -13,7 +18,7 @@ class DatetimeHelper
     /**
      * 将任意时间字符串转化成时间戳
      *
-     * @param $dtime
+     * @param string $dtime
      * @return false|int|mixed|null|string|string[]
      */
     public static function mktime($dtime)
@@ -349,6 +354,7 @@ class DatetimeHelper
     /**
      * 计算两个日期之间的相差天数
      *
+     * @deprecated
      * @param integer $begin 开始日期
      * @param integer $end 结束日期
      * @return integer
@@ -571,58 +577,97 @@ class DatetimeHelper
         return array(mktime(0, 0, 0, 1, 1, $year), mktime(0, 0, 0, 12, 31, $year));
     }
 
-    // 减少月份处理，返回正确的年月值
-    public static function decreaseMonths($yearMonth, $months = 1)
+    /**
+     * 减少月份处理，返回正确的年月值
+     *
+     * @see DatetimeHelperTest::testDecreaseMonths()
+     * @param $date
+     * @param int $months
+     * @param string $format
+     * @return string
+     */
+    public static function decreaseMonths($date, $months = 1, $format = "Y-m-d")
     {
-        $year = (int) substr($yearMonth, 0, 4);
-        $month = (int) substr($yearMonth, 4, 2);
-        $y = floor($months / 12);
-        $year = $year - $y;
-        $months = $months % 12;
-        $tmp = intval($month) - intval($months);
-        if ($tmp == 0) {
-            return --$year . '12';
-        } elseif ($tmp > 0) {
-            return $year . sprintf("%02d", $tmp);
-        } else {
-            --$year;
-            $month = (12 + $tmp);
+        $n = strlen($date);
+        $isNumberDate = $n == 6 || $n == 8; // 201801、20180102
+        try {
+            if ($isNumberDate) {
+                $date = self::number2Date($date);
+                $format = $n == 6 ? 'Ym' : 'Ymd';
+            }
+            $datetime = new DateTime($date);
+            $datetime->modify("-$months months");
 
-            return $year . sprintf("%02d", abs($month));
+            return $datetime->format($format);
+        } catch (Exception $e) {
+            throw new InvalidArgumentException($e->getMessage());
         }
     }
 
-    // 增加月份处理，返回正确的年月值
-    public static function increaseMonths($yearMonth, $months)
+    /**
+     * 增加月份处理，返回正确的年月值
+     *
+     * increaseMonths(201801, 2) 返回 201803
+     * increaseMonths(20180101, 2) 返回 20180301
+     * increaseMonths(20180101, 2) 返回 20180301
+     *
+     * @see DatetimeHelperTest::testIncreaseMonths()
+     * @param $date
+     * @param int $months
+     * @param string $format
+     * @return string
+     */
+    public static function increaseMonths($date, $months = 1, $format = "Y-m-d")
     {
-        $y = substr($yearMonth, 0, 4);
-        $m = substr($yearMonth, 4, 2);
-        $tmp = intval($m) + intval($months);
-        $m = fmod($tmp, 12);
-        $y = $y + ($tmp / 12);
-        $y = intval($y);
-        if ($m == 0) {
-            $y--;
-            $m = 12;
-        }
+        $n = strlen($date);
+        $isNumberDate = $n == 6 || $n == 8; // 201801、20180102
+        try {
+            if ($isNumberDate) {
+                $date = self::number2Date($date);
+                $format = $n == 6 ? 'Ym' : 'Ymd';
+            }
+            $datetime = new DateTime($date);
+            $datetime->modify("$months months");
 
-        return $y . sprintf("%02d", $m);
+            return $datetime->format($format);
+        } catch (Exception $e) {
+            throw new InvalidArgumentException($e->getMessage());
+        }
     }
 
     /**
      * 两个年月之间的差额
      * 比如：201001 - 200909 之间相差 4 个月
      *
-     * @param integer $beginYearMonth
-     * @param integer $endYearMonth
-     * @return bool|float|int|string
+     * @param integer $beginDate
+     * @param integer $endDate
+     * @param string $returnFormat
+     * @return mixed
      */
-    public static function diffMonths($beginYearMonth, $endYearMonth)
+    public static function diff($beginDate, $endDate, $returnFormat = 'days')
     {
-        $years = substr($endYearMonth, 0, 4) - substr($beginYearMonth, 0, 4);
-        $months = substr($endYearMonth, 4, 2) - substr($beginYearMonth, 4, 2) + 1;
+        $returnFormat = strtolower($returnFormat);
+        if (!in_array($returnFormat, ['y', 'm', 'd', 'h', 'i', 's', 'f', 'days'])) {
+            throw new InvalidArgumentException("Invalid return format[y,m,d].");
+        }
+        $beginN = strlen($beginDate);
+        $isNumberDate = $beginN == 6 || $beginN == 8; // 201801、20180102
+        if ($isNumberDate) {
+            if ($beginN != strlen($endDate)) {
+                throw new InvalidArgumentException("Invalid date value.");
+            }
+            $beginDate = self::number2Date($beginDate);
+            $endDate = self::number2Date($endDate);
+        }
+        try {
+            $datetime1 = new DateTime($beginDate);
+            $datetime2 = new DateTime($endDate);
+            $interval = $datetime1->diff($datetime2);
 
-        return ($years) ? ($years * 12) + $months : $months;
+            return $interval->$returnFormat;
+        } catch (Exception $e) {
+            throw new InvalidArgumentException($e->getMessage());
+        }
     }
 
     /**
@@ -630,21 +675,65 @@ class DatetimeHelper
      *
      * @param integer $beginDate 开始日期
      * @param integer $endDate 结束日期
+     * @param string $format
      * @return array
      */
-    public static function toArray($beginDate, $endDate)
+    public static function range($beginDate, $endDate, $format = 'ym')
     {
+        $format = strtolower($format);
+        if (!in_array($format, ['y', 'ym', 'ymd'])) {
+            throw new InvalidArgumentException('Invalid format param value.');
+        }
         if ($beginDate == $endDate) {
-            $data = array($beginDate);
+            $range = array($beginDate);
         } else {
-            $data = array();
-            $diff = self::diffMonths($beginDate, $endDate);
-            for ($i = 0; $i < $diff; $i++) {
-                $data[] = self::increaseMonths($beginDate, $i);
+            $range = array();
+            $n = strlen($beginDate);
+            if ($n != strlen($endDate)) {
+                throw new InvalidArgumentException('Invalid date params.');
+            }
+            $isNumberDate = $n == 6 || $n == 8; // 201801、20180102
+            if ($isNumberDate) {
+                $beginDate = self::number2Date($beginDate);
+                $endDate = self::number2Date($endDate);
+            }
+            $datetime = new DateTime($beginDate);
+            if ($format == 'y') {
+                $datetime->modify("-1 year");
+            } elseif ($format == 'ym') {
+                $datetime->modify("-1 month");
+            } elseif ($format == 'ymd') {
+                $datetime->modify("-1 day");
+            }
+            $interval = $datetime->diff(new DateTime($endDate));
+            switch ($format) {
+                case 'y':
+                    $to = $interval->y;
+                    $diffName = 'years';
+                    break;
+
+                case 'ym':
+                    $to = $interval->y * 12 + $interval->m + 1;
+                    $diffName = 'months';
+                    break;
+
+                case 'ymd':
+                    $to = $interval->days;
+                    $diffName = 'days';
+                    break;
+
+                default:
+                    $to = 0;
+                    $diffName = null;
+                    break;
+            }
+
+            for ($i = 0; $i < $to; $i++) {
+                $range[] = (int) $datetime->modify("+1 $diffName")->format(ucfirst($format));
             }
         }
 
-        return $data;
+        return $range;
     }
 
     /**
@@ -688,6 +777,7 @@ class DatetimeHelper
 
                 default:
                     $date = null;
+                    break;
             }
         }
 
@@ -707,6 +797,17 @@ class DatetimeHelper
         }
 
         return date("L", $date) == 1;
+    }
+
+    /**
+     * 验证是否为有效的 Unix 时间戳
+     *
+     * @param $timestamp
+     * @return bool
+     */
+    public static function isTimestamp($timestamp)
+    {
+        return (ctype_digit($timestamp) && strlen($timestamp) == 10 && strtotime(date('Y-m-d H:i:s', $timestamp)) === (int) $timestamp);
     }
 
 }
