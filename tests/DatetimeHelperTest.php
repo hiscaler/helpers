@@ -36,6 +36,15 @@ class DatetimeHelperTest extends TestCase
         $this->assertEquals(DatetimeHelper::decreaseMonths("2018-01-04", 20, "Y-m-d"), "2016-05-04");
     }
 
+    public function testDiff()
+    {
+        $this->assertEquals(DatetimeHelper::diff(201801, 201802), 31);
+        $this->assertEquals(DatetimeHelper::diff(201801, 201802, 'y'), 0);
+        $this->assertEquals(DatetimeHelper::diff(201801, 201802, 'm'), 1);
+        $this->assertEquals(DatetimeHelper::diff(201801, 201912, 'm'), 10);
+        $this->assertEquals(DatetimeHelper::diff(201801, 201802, 'd'), 0);
+    }
+
     public function testIsTimestamp()
     {
         $this->assertEquals(DatetimeHelper::isTimestamp(111), false);

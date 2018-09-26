@@ -9,6 +9,7 @@ use InvalidArgumentException;
 /**
  * 时间处理助手
  *
+ * @package yadjet\helpers
  * @author hiscaler <hiscaler@gmail.com>
  */
 class DatetimeHelper
@@ -637,16 +638,35 @@ class DatetimeHelper
      * 两个年月之间的差额
      * 比如：201001 - 200909 之间相差 4 个月
      *
-     * @param integer $beginYearMonth
-     * @param integer $endYearMonth
-     * @return bool|float|int|string
+     * @param integer $beginDate
+     * @param integer $endDate
+     * @param string $returnFormat
+     * @return mixed
      */
-    public static function diffMonths($beginYearMonth, $endYearMonth)
+    public static function diff($beginDate, $endDate, $returnFormat = 'days')
     {
-        $years = substr($endYearMonth, 0, 4) - substr($beginYearMonth, 0, 4);
-        $months = substr($endYearMonth, 4, 2) - substr($beginYearMonth, 4, 2) + 1;
+        $returnFormat = strtolower($returnFormat);
+        if (!in_array($returnFormat, ['y', 'm', 'd', 'h', 'i', 's', 'f', 'days'])) {
+            throw new InvalidArgumentException("Invalid return format[y,m,d].");
+        }
+        $beginN = strlen($beginDate);
+        $isNumberDate = $beginN == 6 || $beginN == 8; // 201801、20180102
+        if ($isNumberDate) {
+            if ($beginN != strlen($endDate)) {
+                throw new InvalidArgumentException("Invalid date value.");
+            }
+            $beginDate = self::number2Date($beginDate);
+            $endDate = self::number2Date($endDate);
+        }
+        try {
+            $datetime1 = new DateTime($beginDate);
+            $datetime2 = new DateTime($endDate);
+            $interval = $datetime1->diff($datetime2);
 
-        return ($years) ? ($years * 12) + $months : $months;
+            return $interval->$returnFormat;
+        } catch (Exception $e) {
+            throw new InvalidArgumentException($e->getMessage());
+        }
     }
 
     /**
