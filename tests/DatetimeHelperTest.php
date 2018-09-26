@@ -45,6 +45,17 @@ class DatetimeHelperTest extends TestCase
         $this->assertEquals(DatetimeHelper::diff(201801, 201802, 'd'), 0);
     }
 
+    public function testRange()
+    {
+        $this->assertNotSame(DatetimeHelper::range(201801, 201812), [201801, 201802], 'Not Same Year month');
+        $this->assertSame(DatetimeHelper::range(201801, 201803), [201801, 201802, 201803], 'Same Year month');
+        $this->assertSame(DatetimeHelper::range(201801, 201903), [201801, 201802, 201803, 201804, 201805, 201806, 201807, 201808, 201809, 201810, 201811, 201812, 201901, 201902, 201903], 'Same Year month');
+        $this->assertSame(DatetimeHelper::range(201801, 201803, 'y'), [2018], 'Same Year');
+        $this->assertSame(DatetimeHelper::range(201801, 201902, 'y'), [2018, 2019], 'Same Year');
+        $this->assertSame(DatetimeHelper::range(20180102, 20180103, 'ymd'), [20180102, 20180103], 'Same Year Month Day');
+        $this->assertSame(DatetimeHelper::range(20180926, 20181001, 'ymd'), [20180926, 20180927, 20180928, 20180929, 20180930, 20181001], 'Same Year Month Day');
+    }
+
     public function testIsTimestamp()
     {
         $this->assertEquals(DatetimeHelper::isTimestamp(111), false);

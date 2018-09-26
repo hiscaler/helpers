@@ -18,7 +18,7 @@ class DatetimeHelper
     /**
      * 将任意时间字符串转化成时间戳
      *
-     * @param $dtime
+     * @param string $dtime
      * @return false|int|mixed|null|string|string[]
      */
     public static function mktime($dtime)
@@ -354,6 +354,7 @@ class DatetimeHelper
     /**
      * 计算两个日期之间的相差天数
      *
+     * @deprecated
      * @param integer $begin 开始日期
      * @param integer $end 结束日期
      * @return integer
@@ -674,21 +675,65 @@ class DatetimeHelper
      *
      * @param integer $beginDate 开始日期
      * @param integer $endDate 结束日期
+     * @param string $format
      * @return array
      */
-    public static function toArray($beginDate, $endDate)
+    public static function range($beginDate, $endDate, $format = 'ym')
     {
+        $format = strtolower($format);
+        if (!in_array($format, ['y', 'ym', 'ymd'])) {
+            throw new InvalidArgumentException('Invalid format param value.');
+        }
         if ($beginDate == $endDate) {
-            $data = array($beginDate);
+            $range = array($beginDate);
         } else {
-            $data = array();
-            $diff = self::diffMonths($beginDate, $endDate);
-            for ($i = 0; $i < $diff; $i++) {
-                $data[] = self::increaseMonths($beginDate, $i);
+            $range = array();
+            $n = strlen($beginDate);
+            if ($n != strlen($endDate)) {
+                throw new InvalidArgumentException('Invalid date params.');
+            }
+            $isNumberDate = $n == 6 || $n == 8; // 201801、20180102
+            if ($isNumberDate) {
+                $beginDate = self::number2Date($beginDate);
+                $endDate = self::number2Date($endDate);
+            }
+            $datetime = new DateTime($beginDate);
+            if ($format == 'y') {
+                $datetime->modify("-1 year");
+            } elseif ($format == 'ym') {
+                $datetime->modify("-1 month");
+            } elseif ($format == 'ymd') {
+                $datetime->modify("-1 day");
+            }
+            $interval = $datetime->diff(new DateTime($endDate));
+            switch ($format) {
+                case 'y':
+                    $to = $interval->y;
+                    $diffName = 'years';
+                    break;
+
+                case 'ym':
+                    $to = $interval->y * 12 + $interval->m + 1;
+                    $diffName = 'months';
+                    break;
+
+                case 'ymd':
+                    $to = $interval->days;
+                    $diffName = 'days';
+                    break;
+
+                default:
+                    $to = 0;
+                    $diffName = null;
+                    break;
+            }
+
+            for ($i = 0; $i < $to; $i++) {
+                $range[] = (int) $datetime->modify("+1 $diffName")->format(ucfirst($format));
             }
         }
 
-        return $data;
+        return $range;
     }
 
     /**
@@ -732,6 +777,7 @@ class DatetimeHelper
 
                 default:
                     $date = null;
+                    break;
             }
         }
 
