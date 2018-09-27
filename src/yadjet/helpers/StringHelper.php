@@ -465,11 +465,12 @@ class StringHelper
      * 判断字符串是否为空
      *
      * @param $string
+     * @param string $charList
      * @return bool
      */
-    public static function isEmpty($string)
+    public static function isEmpty($string, $charList = '　')
     {
-        return ($string === '' || $string === null || (is_string($string) && trim($string) === '')) ? true : false;
+        return ($string === '' || $string === null || (is_string($string) && trim($string, " \t\n\r\0\x0B{$charList}") === '')) ? true : false;
     }
 
 }
