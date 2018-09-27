@@ -46,7 +46,7 @@ class ImageHelper
      * @param string $url
      * @return string
      */
-    public function fullPath($image, $url = '')
+    public static function fullPath($image, $url = '')
     {
         if (strncasecmp($image, '//', 2) !== 0 && strncasecmp($image, 'http', 4) !== 0 && strncasecmp($image, 'https', 5) !== 0) {
             if ($url) {
@@ -79,13 +79,16 @@ class ImageHelper
      * @param string $defaultExtension
      * @return string
      */
-    public function getExtension($image, $defaultExtension = 'jpg')
+    public static function getExtension($image, $defaultExtension = 'jpg')
     {
         // http://www.example.com/images/image/124/12460449.jpg?t=1537200428#a 此类情况需要处理
         if (strpos($image, '?') !== false) {
-            $t = parse_url($image);
-            if (isset($t['query']) || isset($t['fragment'])) {
-                $image = "{$t['scheme']}://{$t['host']}{$t['path']}";
+            $url = parse_url($image);
+            if (isset($url['query']) || isset($url['fragment'])) {
+                $schema = isset($url['scheme']) ? $url['scheme'] . ':' : '';
+                $host = isset($url['host']) ? $url['host'] . '//' : '';
+
+                $image = "{$schema}{$host}{$url['path']}";
             }
         }
 
