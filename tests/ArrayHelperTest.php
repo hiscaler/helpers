@@ -3,7 +3,9 @@
 namespace yadjet\helpers;
 require '../vendor/autoload.php';
 
+use function array_values;
 use PHPUnit\Framework\TestCase;
+use function var_dump;
 
 /**
  * Class ArrayHelperTest
@@ -16,9 +18,21 @@ class ArrayHelperTest extends TestCase
 
     public function testRemoveEmpty()
     {
-        $a = ['', ' ', ' ', 'a', '1', 0, '0'];
-        ArrayHelper::removeEmpty($a);
-        $this->assertEquals(count($a), 4);
+        $a = ['', '　', ' ', 'a', '1', 0, '0'];
+        ArrayHelper::removeEmpty($a, true);
+        $this->assertEquals(count($a), 5);
+
+        $a = ['', '　', ' ', 'a', '1', 0, '0'];
+        ArrayHelper::removeEmpty($a, true, '\x30'); // \x30 is `0`
+        $this->assertEquals(count($a), 3);
+
+        $a = ['', '　', ' ', 'a', '1', 0, '0'];
+        ArrayHelper::removeEmpty($a, true, '\x30　'); // \x30 is `0`
+        $this->assertSame(array_values($a), ['a', '1']);
+
+        $a = ['', '　', ' ', 'a', '1', 0, '0'];
+        ArrayHelper::removeEmpty($a, false, '\x30　'); // \x30 is `0`
+        $this->assertEquals(count($a), 6);
     }
 
 }
