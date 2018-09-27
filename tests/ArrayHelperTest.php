@@ -3,9 +3,7 @@
 namespace yadjet\helpers;
 require '../vendor/autoload.php';
 
-use function array_values;
 use PHPUnit\Framework\TestCase;
-use function var_dump;
 
 /**
  * Class ArrayHelperTest
