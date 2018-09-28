@@ -10,7 +10,6 @@ class StringHelperTest extends TestCase
 
     public function testIsEmpty()
     {
-
         $this->assertEquals(StringHelper::isEmpty(' '), true);
         $this->assertEquals(StringHelper::isEmpty('　　　　　'), true);
         $this->assertEquals(StringHelper::isEmpty('　　　　　', ''), false);
