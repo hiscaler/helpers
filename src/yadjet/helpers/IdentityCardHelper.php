@@ -3,6 +3,7 @@
 namespace yadjet\helpers;
 
 use DateTime;
+use Exception;
 
 /**
  * 身份证辅助函数
@@ -109,16 +110,19 @@ class IdentityCardHelper
      * 根据身份证号码获取出生年月
      *
      * @param $identityCardNumber
-     * @param bool $toTimestamp
-     * @return null|string
+     * @param null $format 日期格式（Y-m-d, Ymd 之类）
+     * @return int|null|string
      */
-    public static function getBirthday($identityCardNumber, $toTimestamp = true)
+    public static function getBirthday($identityCardNumber, $format = null)
     {
         $birthday = null;
         if (self::isValid($identityCardNumber)) {
-            $birthday = strlen($identityCardNumber) == 15 ? ('19' . substr($identityCardNumber, 6, 6)) : substr($identityCardNumber, 6, 8);
-            if ($toTimestamp) {
-                $birthday = (new DateTime(substr($birthday, 0, 4) . '-' . substr($birthday, 4, 2) . '-' . substr($birthday, 6, 2)))->getTimestamp();
+            $yearMonthDay = strlen($identityCardNumber) == 15 ? ('19' . substr($identityCardNumber, 6, 6)) : substr($identityCardNumber, 6, 8);
+            $datetime = new DateTime();
+            $datetime->setDate(substr($yearMonthDay, 0, 4), substr($yearMonthDay, 4, 2), substr($yearMonthDay, 6, 2));
+            try {
+                $birthday = $format ? $datetime->format($format) : $datetime->getTimestamp();
+            } catch (Exception $e) {
             }
         }
 
@@ -135,7 +139,7 @@ class IdentityCardHelper
     {
         $age = null;
         if (self::isValid($identityCardNumber)) {
-            $age = (new DateTime(self::getBirthday($identityCardNumber, false)))->diff(new DateTime())->y;
+            $age = (new DateTime(self::getBirthday($identityCardNumber)))->diff(new DateTime())->y;
         }
 
         return $age;
