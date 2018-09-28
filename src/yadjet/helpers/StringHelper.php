@@ -53,10 +53,18 @@ class StringHelper
         }
     }
 
-    // 正则高亮关键字
+    /**
+     * 正则高亮关键字
+     *
+     * @param $str
+     * @param $words
+     * @param string $color
+     * @return null|string|string[]
+     */
     function highlightWords($str, $words, $color = '#FFFF00')
     {
         if (is_array($words)) {
+            $pattern = $replace = array();
             foreach ($words as $k => $word) {
                 $pattern[$k] = "/\b($word)\b/is";
                 $replace[$k] = '<font style="background-color:' . $color . ';">\\1</font>';
@@ -69,6 +77,13 @@ class StringHelper
         return preg_replace($pattern, $replace, $str);
     }
 
+    /**
+     * HTML to Text
+     *
+     * @param $str
+     * @param bool $r
+     * @return mixed|null|string|string[]
+     */
     public static function html2Text($str, $r = false)
     {
         return $r ? addslashes(self::_html2Text(stripslashes($str))) : self::_html2Text($str);
@@ -77,7 +92,7 @@ class StringHelper
     private static function _html2Text($str)
     {
         $str = preg_replace("/<sty(.*)\\/style>|<scr(.*)\\/script>|<!--(.*)-->/isU", "", $str);
-        $alltext = "";
+        $text = "";
         $start = 1;
         for ($i = 0; $i < strlen($str); $i++) {
             if ($start == 0 && $str[$i] == ">") {
@@ -85,17 +100,17 @@ class StringHelper
             } else if ($start == 1) {
                 if ($str[$i] == "<") {
                     $start = 0;
-                    $alltext .= " ";
+                    $text .= " ";
                 } else if (ord($str[$i]) > 31) {
-                    $alltext .= $str[$i];
+                    $text .= $str[$i];
                 }
             }
         }
-        $alltext = str_replace("　", " ", $alltext);
-        $alltext = preg_replace("/&([^;&]*)(;|&)/", "", $alltext);
-        $alltext = preg_replace("/[ ]+/s", "", $alltext);
+        $text = str_replace("　", " ", $text);
+        $text = preg_replace("/&([^;&]*)(;|&)/", "", $text);
+        $text = preg_replace("/[ ]+/s", "", $text);
 
-        return $alltext;
+        return $text;
     }
 
     /**
@@ -145,26 +160,40 @@ class StringHelper
         return true;
     }
 
-    //裁剪字符串，加“...”
-    public static function subStr($str, $length, $endfix = '...')
+    /**
+     * 裁剪字符串，加“...”
+     *
+     * @param $str
+     * @param $length
+     * @param string $suffix
+     * @return string
+     */
+    public static function subStr($str, $length, $suffix = '...')
     {
         mb_internal_encoding("UTF-8");
         $str_length = mb_strwidth($str);
         if ($str_length > $length * 2) {
-            return mb_substr($str, 0, $length) . $endfix;
+            return mb_substr($str, 0, $length) . $suffix;
         } else {
             return $str;
         }
     }
 
-    //裁剪字符串，不加“...”
-    public static function cutStr($str, $startstr, $endstr)
+    /**
+     * 裁剪字符串，不加“...”
+     *
+     * @param $str
+     * @param $startStr
+     * @param $endStr
+     * @return string
+     */
+    public static function cutStr($str, $startStr, $endStr)
     {
         $length = strlen($str);
-        $start = mb_strpos($str, $startstr);
+        $start = mb_strpos($str, $startStr);
         $str = substr($str, $start, $length - $start);
 
-        $end = mb_strpos($str, $endstr);
+        $end = mb_strpos($str, $endStr);
 
         return mb_substr($str, 0, $end);
     }
