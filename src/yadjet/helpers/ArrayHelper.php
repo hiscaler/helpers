@@ -49,37 +49,34 @@ class ArrayHelper
      * 从一个二维数组中返回指定键的所有值
      *
      * 用法：
-     *
-     * @code php
      * $rows = array(
      *     array('id' => 1, 'value' => '1-1'),
      *     array('id' => 2, 'value' => '2-1'),
      * );
-     * $values = ArrayHelper::cols($rows, 'value');
+     * $values = ArrayHelper::getColumn($rows, 'value');
      *
-     * dump($values);
-     *   // 输出结果为
-     *   // array(
-     *   //   '1-1',
-     *   //   '2-1',
-     *   // )
-     * @endcode
+     * var_dump($values);
+     *   输出结果为
+     *   array(
+     *       '1-1',
+     *       '2-1',
+     *   )
      *
-     * @param array $arr 数据源
-     * @param string $col 要查询的键
+     * @param array $array 数据源
+     * @param string $name 要查询的键
      *
      * @return array 包含指定键所有值的数组
      */
-    public static function getCols($arr, $col)
+    public static function getColumn($array, $name)
     {
-        $ret = array();
-        foreach ($arr as $row) {
-            if (isset($row[$col])) {
-                $ret[] = $row[$col];
+        $res = array();
+        foreach ($array as $row) {
+            if (isset($row[$name])) {
+                $res[] = $row[$name];
             }
         }
 
-        return $ret;
+        return $res;
     }
 
     /**
