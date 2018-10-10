@@ -101,12 +101,8 @@ class UrlHelper
         $query = self::query($url);
         if ($query) {
             foreach (explode('&', $query) as $item) {
-                if (stripos($item, '=') === false) {
-                    $res[$item] = '';
-                    continue;
-                }
-                list($k, $v) = explode('=', $item);
-                $res[$k] = $v;
+                $items = explode('=', $item);
+                $res[$items[0]] = isset($items[1]) ? $items[1] : '';
             }
         }
 
