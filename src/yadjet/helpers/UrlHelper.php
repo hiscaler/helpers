@@ -107,7 +107,11 @@ class UrlHelper
         }
 
         if ($default && is_array($default)) {
-            $res = array_merge($res, $default);
+            foreach ($default as $key => $value) {
+                if (!isset($res[$key]) || empty($res[$key])) {
+                    $res[$key] = $value;
+                }
+            }
         }
 
         return $res;
