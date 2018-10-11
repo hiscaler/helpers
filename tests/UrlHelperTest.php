@@ -41,12 +41,13 @@ class UrlHelperTest extends TestCase
         $this->assertEquals(UrlHelper::port('www.example.com:80'), 80);
     }
 
-    public function testFindQueryByKey()
+    public function testFindQueryValueByKey()
     {
-        $this->assertEquals(UrlHelper::findQueryByKey('http://www.example.com/a.html?a=1&b=2', 'a'), '1');
-        $this->assertEquals(UrlHelper::findQueryByKey('http://www.example.com/a.html?a=1&b=2&c', 'aa'), null);
-        $this->assertEquals(UrlHelper::findQueryByKey('http://www.example.com/a.html?a=1&b=2&c', 'aa', '1'), '1');
-        $this->assertEquals(UrlHelper::findQueryByKey('http://www.example.com/a.html?a=1&b=2&c', 'c'), '');
+        $this->assertEquals(UrlHelper::findQueryValueByKey('http://www.example.com/a.html?a=1&b=2', 'a'), '1');
+        $this->assertEquals(UrlHelper::findQueryValueByKey('http://www.example.com/a.html?a=1&b=2&c', 'aa'), null);
+        $this->assertEquals(UrlHelper::findQueryValueByKey('http://www.example.com/a.html?a=1&b=2&c', 'aa', '1'), '1');
+        $this->assertEquals(UrlHelper::findQueryValueByKey('http://www.example.com/a.html?a=1&b=2&c', 'c'), '');
+        $this->assertEquals(UrlHelper::findQueryValueByKey('http://www.example.com/a.html?a=1&b=2&c', 'c', 'cc'), 'cc');
     }
 
     public function testQueries()

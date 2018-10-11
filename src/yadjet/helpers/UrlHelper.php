@@ -125,7 +125,7 @@ class UrlHelper
      * @param null $default
      * @return null
      */
-    public static function findQueryByKey($url, $key, $default = null)
+    public static function findQueryValueByKey($url, $key, $default = null)
     {
         $res = null;
         $query = self::query($url);
