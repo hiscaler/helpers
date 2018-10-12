@@ -17,7 +17,8 @@ class IpHelperTest extends TestCase
 
     public function testRes()
     {
-        $ip = (new IpHelper(TaoBaoIpHelper::class, '85.159.145.165'))->detect();
+        $ipHelper = (new IpHelper(TaoBaoIpHelper::class, '85.159.145.165'));
+        $ip = $ipHelper->detect();
         $this->assertEquals($ip->getCountryId(), 'IT');
     }
 }

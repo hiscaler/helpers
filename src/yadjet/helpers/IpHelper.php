@@ -30,6 +30,9 @@ interface IIpHelper
 class IpHelper extends IpHelperAbstract
 {
 
+    /* @var $_ipObject IP */
+    private $_ipObject;
+
     public function __construct($class, $ip)
     {
         if (!is_string($class) || !class_exists($class)) {
@@ -45,11 +48,60 @@ class IpHelper extends IpHelperAbstract
     }
 
     /**
+     * @param $object
+     * @return array
+     * @throws \ReflectionException
+     */
+    private function _toArray($object)
+    {
+        $reflectionClass = new \ReflectionClass($object);
+        $array = array();
+        foreach ($reflectionClass->getProperties() as $property) {
+            $property->setAccessible(true);
+            $value = $property->getValue($object);
+            if (is_object($value)) {
+                $array[$property->getName()] = $this->_toArray($value);
+            } else {
+                $array[$property->getName()] = $value;
+            }
+        }
+
+        return $array;
+    }
+
+    /**
      * @return IP
      */
     public function detect()
     {
-        return (new $this->class)->detect($this->ip);
+        if (!$this->_ipObject) {
+            $this->_ipObject = (new $this->class)->detect($this->ip);
+        }
+
+        return $this->_ipObject;
+    }
+
+    /**
+     * 返回数组
+     *
+     * @return array
+     * @throws \ReflectionException
+     */
+    public function toArray()
+    {
+        return $this->_toArray($this->detect());
+    }
+
+    /**
+     * 返回 JSON 格式
+     *
+     * @param null $options
+     * @return false|string
+     * @throws \ReflectionException
+     */
+    public function toJson($options = null)
+    {
+        return json_encode($this->toArray(), $options);
     }
 
 }
@@ -253,7 +305,7 @@ class TaoBaoIpHelper implements IIpHelper
     public function detect($ipAddress)
     {
         $ip = new IP();
-        $ip->setIp($ip);
+        $ip->setIp($ipAddress);
         $response = file_get_contents("http://ip.taobao.com/service/getIpInfo.php?ip=$ipAddress");
         if ($response !== false) {
             $response = json_decode($response, true);
