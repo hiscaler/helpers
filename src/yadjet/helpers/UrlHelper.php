@@ -123,14 +123,17 @@ class UrlHelper
      * @param $url
      * @param $key
      * @param null $default
-     * @return null
+     * @return null|string
      */
     public static function findQueryValueByKey($url, $key, $default = null)
     {
         $res = null;
         $query = self::query($url);
-        if ($query) {
-            $key = strtolower($key);
+        if ($query &&
+            stripos($query, '&') !== false &&
+            ($key = strtolower(trim($key))) &&
+            stripos($query, $key) !== false
+        ) {
             foreach (explode('&', $query) as $item) {
                 $items = explode('=', $item);
                 if (strtolower($items[0]) == $key) {
