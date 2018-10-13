@@ -25,6 +25,7 @@ interface IIpHelper
 {
 
     public function detect($ip);
+
 }
 
 class IpHelper extends IpHelperAbstract
@@ -138,11 +139,12 @@ class IP
     }
 
     /**
+     * @param null $default
      * @return mixed
      */
-    public function getCountryId()
+    public function getCountryId($default = null)
     {
-        return $this->countryId;
+        return $this->countryId ?: $default;
     }
 
     /**
@@ -154,11 +156,12 @@ class IP
     }
 
     /**
+     * @param null $default
      * @return mixed
      */
-    public function getCountryName()
+    public function getCountryName($default = null)
     {
-        return $this->countryName;
+        return $this->countryName ?: $default;
     }
 
     /**
@@ -170,11 +173,12 @@ class IP
     }
 
     /**
+     * @param null $default
      * @return mixed
      */
-    public function getAreaId()
+    public function getAreaId($default = null)
     {
-        return $this->areaId;
+        return $this->areaId ?: $default;
     }
 
     /**
@@ -186,11 +190,12 @@ class IP
     }
 
     /**
+     * @param null $default
      * @return mixed
      */
-    public function getAreaName()
+    public function getAreaName($default = null)
     {
-        return $this->areaName;
+        return $this->areaName ?: $default;
     }
 
     /**
@@ -202,11 +207,12 @@ class IP
     }
 
     /**
+     * @param null $default
      * @return mixed
      */
-    public function getProvinceId()
+    public function getProvinceId($default = null)
     {
-        return $this->provinceId;
+        return $this->provinceId ?: $default;
     }
 
     /**
@@ -218,11 +224,12 @@ class IP
     }
 
     /**
+     * @param null $default
      * @return mixed
      */
-    public function getProvinceName()
+    public function getProvinceName($default = null)
     {
-        return $this->provinceName;
+        return $this->provinceName ?: $default;
     }
 
     /**
@@ -234,11 +241,12 @@ class IP
     }
 
     /**
+     * @param null $default
      * @return mixed
      */
-    public function getCityId()
+    public function getCityId($default = null)
     {
-        return $this->cityId;
+        return $this->cityId ?: $default;
     }
 
     /**
@@ -250,11 +258,12 @@ class IP
     }
 
     /**
+     * @param null $default
      * @return mixed
      */
-    public function getCityName()
+    public function getCityName($default = null)
     {
-        return $this->cityName;
+        return $this->cityName ?: $default;
     }
 
     /**
@@ -266,11 +275,12 @@ class IP
     }
 
     /**
+     * @param null $default
      * @return mixed
      */
-    public function getIspId()
+    public function getIspId($default = null)
     {
-        return $this->ispId;
+        return $this->ispId ?: $default;
     }
 
     /**
