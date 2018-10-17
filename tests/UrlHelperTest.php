@@ -30,7 +30,10 @@ class UrlHelperTest extends TestCase
         $this->assertEquals(UrlHelper::host('http://www.example.com'), 'www.example.com');
         $this->assertEquals(UrlHelper::host('https://www.example.com'), 'www.example.com');
         $this->assertEquals(UrlHelper::host('//www.example.com'), 'www.example.com');
-        $this->assertEquals(UrlHelper::host('www.example.com'), '');
+        $this->assertEquals(UrlHelper::host('www.example.com'), 'www.example.com');
+        $this->assertEquals(UrlHelper::host('example.com'), 'example.com');
+        $this->assertEquals(UrlHelper::host('example.com/a/b/index.html'), 'example.com');
+        $this->assertEquals(UrlHelper::host('example.com/index.html'), 'example.com');
     }
 
     public function testPort()

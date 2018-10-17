@@ -49,7 +49,21 @@ class UrlHelper
      */
     public static function host($url, $default = null)
     {
-        return self::_parse($url, PHP_URL_HOST, $default);
+        $items = parse_url(trim($url));
+        if (isset($items['host'])) {
+            $host = $items['host'];
+        } elseif (isset($items['path'])) {
+            if (stripos($items['path'], '/') !== false) {
+                $path = explode('/', $items['path'], 2);
+                $host = array_shift($path);
+            } else {
+                $host = $items['path'];
+            }
+        } else {
+            $host = null;
+        }
+
+        return $host ?: $default;
     }
 
     /**
