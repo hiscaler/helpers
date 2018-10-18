@@ -95,4 +95,30 @@ class ImageHelper
         return pathinfo($image, PATHINFO_EXTENSION) ?: $defaultExtension;
     }
 
+    /**
+     * 图片 Base64 编码
+     *
+     * @param $filename
+     * @param null $mimeType
+     * @return string
+     */
+    public static function base64Encode($filename, $mimeType = null)
+    {
+        $imgBinary = fread(fopen($filename, "r"), filesize($filename));
+        empty($mimeType) && $mimeType = mime_content_type($filename);
+
+        return 'data:' . $mimeType . ';base64,' . base64_encode($imgBinary);
+    }
+
+    /**
+     * 图片 Base64 解码
+     *
+     * @param $str
+     * @return bool|string
+     */
+    public static function base64Decode($str)
+    {
+        return base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $str));
+    }
+
 }
