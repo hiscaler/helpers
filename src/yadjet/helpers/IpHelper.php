@@ -338,3 +338,27 @@ class TaoBaoIpHelper implements IIpHelper
     }
 
 }
+
+class PcOnlineIpHelper implements IIpHelper
+{
+
+    public function detect($ipAddress)
+    {
+        $ip = new IP();
+        $ip->setIp($ipAddress);
+        $response = file_get_contents("http://whois.pconline.com.cn/ipJson.jsp?ip=$ipAddress");
+        if ($response !== false) {
+            $response = str_replace(['if(window.IPCallBack) {IPCallBack(', ');}'], '', $response);
+            $response = json_decode($response, true);
+            if ($response && empty($response['err'])) {
+                $ip->setProvinceId(isset($response['proCode']) ? $response['proCode'] : null);
+                $ip->setProvinceName(isset($response['pro']) ? $response['pro'] : null);
+                $ip->setCityId(isset($response['cityCode']) ? $response['cityCode'] : null);
+                $ip->setCityName(isset($response['city']) ? $response['city'] : null);
+            }
+        }
+
+        return $ip;
+    }
+
+}
