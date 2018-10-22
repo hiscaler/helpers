@@ -12,20 +12,25 @@ use PHPUnit\Framework\TestCase;
  * @package yadjet\helpers
  * @author hiscaler <hiscaler@gmail.com>
  */
-class IpHelperTest extends TestCase
+class IpLocationHelperTest extends TestCase
 {
 
     public function testTaoBaoIpHelper()
     {
-        $ipHelper = new IpHelper();
-        $ipHelper->setEndpoint(TaoBaoIpHelper::class)->setIp('85.159.145.165');
+        $ipHelper = new IpLocationHelper();
+        $ipHelper->setEndpoint(TaobaoIpLocationLocationHelper::class)->setIp('85.159.145.165');
         $ip = $ipHelper->detect();
-        $this->assertEquals($ip->getCountryId(), 'IT');
+        if ($ip->getSuccess()) {
+            $this->assertEquals($ip->getCountryId(), 'IT');
+        } else {
+            $ip = $ipHelper->setEndpoint(CZ88IpLocationLocationHelper::class)->detect();
+            $this->assertEquals($ip->getCountryId(), 'IT');
+        }
     }
 
     public function testCZ88IpHelper()
     {
-        $ipHelper = (new IpHelper())->setIp('140.205.172.5')->setEndpoint(CZ88IpHelper::class);
+        $ipHelper = (new IpLocationHelper())->setIp('140.205.172.5')->setEndpoint(CZ88IpLocationLocationHelper::class);
         $ip = $ipHelper->detect();
         $this->assertEquals($ip->getSuccess(), true);
         $this->assertEquals($ip->getCountryName(), '中国');
@@ -34,7 +39,7 @@ class IpHelperTest extends TestCase
 
     public function testFailed()
     {
-        $ipHelper = (new IpHelper())->setIp('1')->setEndpoint(CZ88IpHelper::class);
+        $ipHelper = (new IpLocationHelper())->setIp('1')->setEndpoint(CZ88IpLocationLocationHelper::class);
         $ip = $ipHelper->detect();
         $this->assertEquals($ip->getSuccess(), false);
     }

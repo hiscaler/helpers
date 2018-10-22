@@ -7,29 +7,29 @@ use itbdw\Ip\IpLocation;
 
 /**
  * IP 检测
- * Class IpHelperAbstract
+ * Class IpLocationHelperAbstract
  *
  * @package yadjet\helpers
  * @author hiscaler <hiscaler@gmail.com>
  */
-abstract class IpHelperAbstract
+abstract class IpLocationHelperAbstract
 {
 
-    /* @var $class IIpHelper */
+    /* @var $class IIpLocationHelper */
     public $class;
 
     public $ip;
 
 }
 
-interface IIpHelper
+interface IIpLocationHelper
 {
 
     public function detect($ip);
 
 }
 
-class IpHelper extends IpHelperAbstract
+class IpLocationHelper extends IpLocationHelperAbstract
 {
 
     /* @var $_ipObject IP */
@@ -340,14 +340,14 @@ class IP
 
 }
 
-class TaoBaoIpHelper implements IIpHelper
+class TaobaoIpLocationLocationHelper implements IIpLocationHelper
 {
 
     public function detect($ipAddress)
     {
         $ip = new IP();
         $ip->setIp($ipAddress);
-        $response = file_get_contents("http://ip.taobao.com/service/getIpInfo.php?ip=$ipAddress");
+        $response = @file_get_contents("http://ip.taobao.com/service/getIpInfo.php?ip=$ipAddress");
         if ($response !== false) {
             $response = json_decode($response, true);
             if ($response && isset($response['code']) && $response['code'] == 0) {
@@ -371,7 +371,7 @@ class TaoBaoIpHelper implements IIpHelper
 
 }
 
-class PcOnlineIpHelper implements IIpHelper
+class PcOnlineIpLocationLocationHelper implements IIpLocationHelper
 {
 
     public function detect($ipAddress)
@@ -401,7 +401,7 @@ class PcOnlineIpHelper implements IIpHelper
  *
  * @package yadjet\helpers
  */
-class CZ88IpHelper implements IIpHelper
+class CZ88IpLocationLocationHelper implements IIpLocationHelper
 {
 
     public function detect($ipAddress)
