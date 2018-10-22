@@ -3,6 +3,7 @@
 namespace yadjet\helpers;
 
 use InvalidArgumentException;
+use itbdw\Ip\IpLocation;
 
 /**
  * IP 检测
@@ -356,6 +357,33 @@ class PcOnlineIpHelper implements IIpHelper
                 $ip->setCityId(isset($response['cityCode']) ? $response['cityCode'] : null);
                 $ip->setCityName(isset($response['city']) ? $response['city'] : null);
             }
+        }
+
+        return $ip;
+    }
+
+}
+
+/**
+ * Class CZ88IpHelper
+ * 纯真 IP 库离线查询
+ *
+ * @package yadjet\helpers
+ */
+class CZ88IpHelper implements IIpHelper
+{
+
+    public function detect($ipAddress)
+    {
+        $ip = new IP();
+        $ip->setIp($ipAddress);
+        $response = IpLocation::getLocation($ipAddress);
+        if (!isset($response['error'])) {
+            $ip->setCountryName($response['country']);
+            $ip->setProvinceName($response['province']);
+            $ip->setCityName($response['city']);
+            $ip->setAreaName($response['area']);
+            $ip->setIspName($response['isp']);
         }
 
         return $ip;
