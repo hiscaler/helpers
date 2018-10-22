@@ -340,7 +340,7 @@ class IP
 
 }
 
-class TaobaoIpLocationLocationHelper implements IIpLocationHelper
+class TaobaoIpLocationHelper implements IIpLocationHelper
 {
 
     public function detect($ipAddress)
@@ -371,7 +371,7 @@ class TaobaoIpLocationLocationHelper implements IIpLocationHelper
 
 }
 
-class PcOnlineIpLocationLocationHelper implements IIpLocationHelper
+class PcOnlineIpLocationHelper implements IIpLocationHelper
 {
 
     public function detect($ipAddress)
@@ -401,7 +401,7 @@ class PcOnlineIpLocationLocationHelper implements IIpLocationHelper
  *
  * @package yadjet\helpers
  */
-class CZ88IpLocationLocationHelper implements IIpLocationHelper
+class CZ88IpLocationHelper implements IIpLocationHelper
 {
 
     public function detect($ipAddress)
