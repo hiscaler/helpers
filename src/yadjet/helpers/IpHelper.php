@@ -35,18 +35,37 @@ class IpHelper extends IpHelperAbstract
     /* @var $_ipObject IP */
     private $_ipObject;
 
-    public function __construct($class, $ip)
+    /**
+     * 设置解析类
+     *
+     * @param $class
+     * @return $this
+     */
+    public final function setEndpoint($class)
     {
         if (!is_string($class) || !class_exists($class)) {
             throw new InvalidArgumentException('无效的 $class 参数值 ' . $class);
         }
         $this->class = $class;
 
+        return $this;
+    }
+
+    /**
+     * 设置要查询的 ip 地址
+     *
+     * @param $ip
+     * @return $this
+     */
+    public final function setIp($ip)
+    {
         $ip = trim($ip);
         if (empty($ip)) {
-            throw new InvalidArgumentException('$ip 不能为空。');
+            throw new InvalidArgumentException('ip 不能为空。');
         }
         $this->ip = $ip;
+
+        return $this;
     }
 
     /**
@@ -122,6 +141,7 @@ class IP
     private $cityName;
     private $ispId;
     private $ispName;
+    private $success = false;
 
     /**
      * @return mixed
@@ -308,6 +328,16 @@ class IP
         $this->ispName = $ispName;
     }
 
+    public function setSuccess($success = true)
+    {
+        $this->success = $success ? true : false;
+    }
+
+    public function getSuccess()
+    {
+        return $this->success;
+    }
+
 }
 
 class TaoBaoIpHelper implements IIpHelper
@@ -322,6 +352,7 @@ class TaoBaoIpHelper implements IIpHelper
             $response = json_decode($response, true);
             if ($response && isset($response['code']) && $response['code'] == 0) {
                 $body = $response['data'];
+                $ip->setSuccess(true);
                 $ip->setCountryId(isset($body['country_id']) ? $body['country_id'] : null);
                 $ip->setCountryName(isset($body['country']) ? $body['country'] : null);
                 $ip->setAreaId(isset($body['area_id']) ? $body['area_id'] : null);
@@ -379,6 +410,7 @@ class CZ88IpHelper implements IIpHelper
         $ip->setIp($ipAddress);
         $response = IpLocation::getLocation($ipAddress);
         if (!isset($response['error'])) {
+            $ip->setSuccess(true);
             $ip->setCountryName($response['country']);
             $ip->setProvinceName($response['province']);
             $ip->setCityName($response['city']);
