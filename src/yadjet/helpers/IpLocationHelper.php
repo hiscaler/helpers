@@ -379,11 +379,16 @@ class PcOnlineIpLocationHelper implements IIpLocationHelper
     {
         $ip = new IP();
         $ip->setIp($ipAddress);
-        $response = file_get_contents("http://whois.pconline.com.cn/ipJson.jsp?ip=$ipAddress");
+        $response = @file_get_contents("http://whois.pconline.com.cn/ipJson.jsp?ip=$ipAddress");
+
         if ($response !== false) {
+            if (!StringHelper::isUtf8($response)) {
+                $response = iconv("gb2312", "utf-8//IGNORE", $response);
+            }
             $response = str_replace(['if(window.IPCallBack) {IPCallBack(', ');}'], '', $response);
             $response = json_decode($response, true);
             if ($response && empty($response['err'])) {
+                $ip->setSuccess(true);
                 $ip->setProvinceId(isset($response['proCode']) ? $response['proCode'] : null);
                 $ip->setProvinceName(isset($response['pro']) ? $response['pro'] : null);
                 $ip->setCityId(isset($response['cityCode']) ? $response['cityCode'] : null);

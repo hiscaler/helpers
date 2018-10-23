@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 class IpLocationHelperTest extends TestCase
 {
 
-    public function testTaoBaoIpHelper()
+    public function testTaobaoIpLocationHelper()
     {
         $ipHelper = new IpLocationHelper();
         $ipHelper->setEndpoint(TaobaoIpLocationHelper::class)->setIp('85.159.145.165');
@@ -28,13 +28,22 @@ class IpLocationHelperTest extends TestCase
         }
     }
 
-    public function testCZ88IpHelper()
+    public function testCZ88IpLocationHelper()
     {
         $ipHelper = (new IpLocationHelper())->setIp('140.205.172.5')->setEndpoint(CZ88IpLocationHelper::class);
         $ip = $ipHelper->detect();
         $this->assertEquals($ip->getSuccess(), true);
         $this->assertEquals($ip->getCountryName(), '中国');
         $this->assertEquals($ip->getProvinceName(), '浙江');
+    }
+
+    public function testPcOnlineIpLocationHelper()
+    {
+        $ipHelper = (new IpLocationHelper())->setIp('59.42.52.174')->setEndpoint(PcOnlineIpLocationHelper::class);
+        $ip = $ipHelper->detect();
+        $this->assertEquals($ip->getSuccess(), true);
+        $this->assertEquals($ip->getProvinceName(), '广东省');
+        $this->assertEquals($ip->getCityName(), '广州市');
     }
 
     public function testFailed()
