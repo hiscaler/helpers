@@ -24,7 +24,7 @@ class IpLocationHelperTest extends TestCase
             $this->assertEquals($ip->getCountryId(), 'IT');
         } else {
             $ip = $ipHelper->setEndpoint(CZ88IpLocationHelper::class)->detect();
-            $this->assertEquals($ip->getCountryId(), 'IT');
+            $this->assertEquals($ip->getCountryName(), '意大利');
         }
     }
 

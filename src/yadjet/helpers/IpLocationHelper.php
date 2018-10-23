@@ -47,6 +47,7 @@ class IpLocationHelper extends IpLocationHelperAbstract
             throw new InvalidArgumentException('无效的 $class 参数值 ' . $class);
         }
         $this->class = $class;
+        $this->_ipObject = null;
 
         return $this;
     }
@@ -350,7 +351,7 @@ class TaobaoIpLocationHelper implements IIpLocationHelper
         $response = @file_get_contents("http://ip.taobao.com/service/getIpInfo.php?ip=$ipAddress");
         if ($response !== false) {
             $response = json_decode($response, true);
-            if ($response && isset($response['code']) && $response['code'] == 0) {
+            if ($response && isset($response['code']) && $response['code'] == 0 && isset($response['data']['country_id']) && $response['data']['country_id']) {
                 $body = $response['data'];
                 $ip->setSuccess(true);
                 $ip->setCountryId(isset($body['country_id']) ? $body['country_id'] : null);
@@ -408,7 +409,7 @@ class CZ88IpLocationHelper implements IIpLocationHelper
     {
         $ip = new IP();
         $ip->setIp($ipAddress);
-        $response = IpLocation::getLocation($ipAddress);
+        $response = IpLocation::getLocation($ipAddress, __DIR__ . '/qqwry.dat');
         if (!isset($response['error'])) {
             $ip->setSuccess(true);
             $ip->setCountryName($response['country']);
