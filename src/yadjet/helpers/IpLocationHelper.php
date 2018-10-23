@@ -145,11 +145,14 @@ class IP
     private $countryId;
     private $countryName;
     private $areaId;
-    private $areaName;
+    private $areaName; // 华中、华南等区域
     private $provinceId;
-    private $provinceName;
+    private $provinceName; // 省
     private $cityId;
-    private $cityName;
+    private $cityName; // 城市
+    private $regionId;
+    private $regionName; // 地区
+    private $address; // 详细地址
     private $ispId;
     private $ispName;
     private $success = false;
@@ -299,6 +302,57 @@ class IP
     }
 
     /**
+     * @param mixed $regionId
+     */
+    public function setRegionId($regionId)
+    {
+        $this->regionId = $regionId;
+    }
+
+    /**
+     * @param null $default
+     * @return mixed
+     */
+    public function getRegionId($default = null)
+    {
+        return $this->regionId ?: $default;
+    }
+
+    /**
+     * @param mixed $regionName
+     */
+    public function setRegionName($regionName)
+    {
+        $this->regionName = $regionName;
+    }
+
+    /**
+     * @param null $default
+     * @return mixed
+     */
+    public function getRegionName($default = null)
+    {
+        return $this->regionName ?: $default;
+    }
+
+    /**
+     * @param mixed $address
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+    }
+
+    /**
+     * @param null $default
+     * @return mixed
+     */
+    public function getAddress($default = null)
+    {
+        return $this->address ?: $default;
+    }
+
+    /**
      * @param mixed $cityName
      */
     public function setCityName($cityName)
@@ -403,6 +457,9 @@ class PcOnlineIpLocationHelper implements IIpLocationHelper
                 $ip->setProvinceName(isset($response['pro']) ? $response['pro'] : null);
                 $ip->setCityId(isset($response['cityCode']) ? $response['cityCode'] : null);
                 $ip->setCityName(isset($response['city']) ? $response['city'] : null);
+                $ip->setRegionId(isset($response['regionCode']) ? $response['regionCode'] : null);
+                $ip->setRegionName(isset($response['region']) ? $response['region'] : null);
+                $ip->setAddress(isset($response['addr']) ? $response['addr'] : null);
             }
         }
 
