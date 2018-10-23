@@ -15,8 +15,7 @@ use itbdw\Ip\IpLocation;
 abstract class IpLocationHelperAbstract
 {
 
-    /* @var $class IIpLocationHelper */
-    public $class;
+    public $classes = [];
 
     public $ip;
 
@@ -43,10 +42,16 @@ class IpLocationHelper extends IpLocationHelperAbstract
      */
     public final function setEndpoint($class)
     {
-        if (!is_string($class) || !class_exists($class)) {
-            throw new InvalidArgumentException('无效的 $class 参数值 ' . $class);
+        if (!is_array($class)) {
+            $class = (array) $class;
         }
-        $this->class = $class;
+        $this->classes = $class;
+        foreach ($this->classes as $cls) {
+            if (!class_exists($cls)) {
+                throw new InvalidArgumentException('无效的 $class 参数值 ' . $cls);
+            }
+        }
+
         $this->_ipObject = null;
 
         return $this;
@@ -97,7 +102,12 @@ class IpLocationHelper extends IpLocationHelperAbstract
     public function detect()
     {
         if (!$this->_ipObject) {
-            $this->_ipObject = (new $this->class)->detect($this->ip);
+            foreach ($this->classes as $class) {
+                $this->_ipObject = (new $class)->detect($this->ip);
+                if ($this->_ipObject->getSuccess()) {
+                    break;
+                }
+            }
         }
 
         return $this->_ipObject;
