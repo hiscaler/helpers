@@ -447,7 +447,7 @@ class PcOnlineIpLocationHelper implements IIpLocationHelper
 
         if ($response !== false) {
             if (!StringHelper::isUtf8($response)) {
-                $response = iconv("gb2312", "utf-8//IGNORE", $response);
+                $response = iconv("GB2312", "UTF-8//IGNORE", $response);
             }
             $response = str_replace(['if(window.IPCallBack) {IPCallBack(', ');}'], '', $response);
             $response = json_decode($response, true);
