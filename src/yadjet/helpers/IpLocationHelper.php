@@ -416,18 +416,27 @@ class TaobaoIpLocationHelper implements IIpLocationHelper
         if ($response !== false) {
             $response = json_decode($response, true);
             if ($response && isset($response['code']) && $response['code'] == 0 && isset($response['data']['country_id']) && $response['data']['country_id']) {
+                $fixValue = function ($value) {
+                    if (strtolower($value) == 'xx') {
+                        return null;
+                    } else {
+                        return $value;
+                    }
+                };
                 $body = $response['data'];
                 $ip->setSuccess(true);
-                $ip->setCountryId(isset($body['country_id']) ? $body['country_id'] : null);
-                $ip->setCountryName(isset($body['country']) ? $body['country'] : null);
-                $ip->setAreaId(isset($body['area_id']) ? $body['area_id'] : null);
-                $ip->setAreaName(isset($body['area']) ? $body['area'] : null);
-                $ip->setProvinceId(isset($body['region_id']) ? $body['region_id'] : null);
-                $ip->setProvinceName(isset($body['region']) ? $body['region'] : null);
-                $ip->setCityId(isset($body['city_id']) ? $body['city_id'] : null);
-                $ip->setCityName(isset($body['city']) ? $body['city'] : null);
-                $ip->setIspId(isset($body['isp_id']) ? $body['isp_id'] : null);
-                $ip->setIspName(isset($body['isp']) ? $body['isp'] : null);
+                $ip->setCountryId(isset($body['country_id']) ? $fixValue($body['country_id']) : null);
+                $ip->setCountryName(isset($body['country']) ? $fixValue($body['country']) : null);
+                $ip->setAreaId(isset($body['area_id']) ? $fixValue($body['area_id']) : null);
+                $ip->setAreaName(isset($body['area']) ? $fixValue($body['area']) : null);
+                $ip->setProvinceId(isset($body['region_id']) ? $fixValue($body['region_id']) : null);
+                $ip->setProvinceName(isset($body['region']) ? $fixValue($body['region']) : null);
+                $ip->setCityId(isset($body['city_id']) ? $fixValue($body['city_id']) : null);
+                $ip->setCityName(isset($body['city']) ? $fixValue($body['city']) : null);
+                $ip->setRegionId(isset($body['county_id']) ? $fixValue($body['county_id']) : null);
+                $ip->setRegionName(isset($body['county']) ? $fixValue($body['county']) : null);
+                $ip->setIspId(isset($body['isp_id']) ? $fixValue($body['isp_id']) : null);
+                $ip->setIspName(isset($body['isp']) ? $fixValue($body['isp']) : null);
             }
         }
 
