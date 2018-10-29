@@ -30,7 +30,8 @@ class IpLocationHelperTest extends TestCase
 
     public function testCZ88IpLocationHelper()
     {
-        $ipHelper = (new IpLocationHelper())->setIp('140.205.172.5')->setEndpoint(CZ88IpLocationHelper::class);
+        $ipHelper = new IpLocationHelper();
+        $ipHelper->setIp('140.205.172.5')->setEndpoint(get_class(new CZ88IpLocationHelper()));
         $ip = $ipHelper->detect();
         $this->assertEquals($ip->getSuccess(), true);
         $this->assertEquals($ip->getCountryName(), '中国');
@@ -39,7 +40,8 @@ class IpLocationHelperTest extends TestCase
 
     public function testPcOnlineIpLocationHelper()
     {
-        $ipHelper = (new IpLocationHelper())->setIp('59.42.52.174')->setEndpoint(PcOnlineIpLocationHelper::class);
+        $ipHelper = new IpLocationHelper();
+        $ipHelper->setIp('59.42.52.174')->setEndpoint(get_class(new PcOnlineIpLocationHelper()));
         $ip = $ipHelper->detect();
         $this->assertEquals($ip->getSuccess(), true);
         $this->assertEquals($ip->getProvinceName(), '广东省');
@@ -48,18 +50,20 @@ class IpLocationHelperTest extends TestCase
 
     public function testMisc()
     {
-        $ip = (new IpLocationHelper())->setIp('59.42.52.174')->setEndpoint([
-            CZ88IpLocationHelper::class,
-            TaobaoIpLocationHelper::class,
-            PcOnlineIpLocationHelper::class,
-        ])->detect();
+        $ipHelper = new IpLocationHelper();
+        $ip = $ipHelper->setIp('59.42.52.174')->setEndpoint(array(
+            get_class(new CZ88IpLocationHelper()),
+            get_class(new TaobaoIpLocationHelper()),
+            get_class(new PcOnlineIpLocationHelper()),
+        ))->detect();
         $this->assertEquals($ip->getSuccess(), true);
         $this->assertEquals(mb_substr($ip->getProvinceName(), 0, 2), '广东');
     }
 
     public function testFailed()
     {
-        $ipHelper = (new IpLocationHelper())->setIp('1')->setEndpoint(CZ88IpLocationHelper::class);
+        $ipHelper = new IpLocationHelper();
+        $ipHelper->setIp('1')->setEndpoint(get_class(new CZ88IpLocationHelper()));
         $ip = $ipHelper->detect();
         $this->assertEquals($ip->getSuccess(), false);
     }

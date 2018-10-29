@@ -15,7 +15,7 @@ use itbdw\Ip\IpLocation;
 abstract class IpLocationHelperAbstract
 {
 
-    public $classes = [];
+    public $classes = array();
 
     public $ip;
 
