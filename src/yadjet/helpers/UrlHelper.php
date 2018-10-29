@@ -109,9 +109,9 @@ class UrlHelper
      * @param array $default
      * @return array
      */
-    public static function queries($url, $default = [])
+    public static function queries($url, $default = array())
     {
-        $res = [];
+        $res = array();
         $query = self::query($url);
         if ($query) {
             foreach (explode('&', $query) as $item) {

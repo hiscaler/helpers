@@ -36,7 +36,7 @@ class ImageHelper
             }
         }
 
-        return $images ? $images : ($index ? null : []);
+        return $images ? $images : ($index ? null : array());
     }
 
     /**
