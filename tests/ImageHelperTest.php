@@ -23,6 +23,8 @@ class ImageHelperTest extends TestCase
         $this->assertEquals(ImageHelper::getExtension('//www.example.com/images/image/124/12460449.jpg?t=1537200428#a'), 'jpg');
         $this->assertEquals(ImageHelper::getExtension('12460449.jpg'), 'jpg');
         $this->assertEquals(ImageHelper::getExtension('12460449.jpg?t=1537200428#a'), 'jpg');
+        $this->assertEquals(ImageHelper::getExtension('https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1020953036,4179630328&fm=173&s=C7802BE60863AE846F31447903001052&w=640&h=380&img.a'), 'jpg');
+        $this->assertEquals(ImageHelper::getExtension('https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1020953036,4179630328&fm=173&s=C7802BE60863AE846F31447903001052&w=640&h=380&img.png'), 'jpg');
     }
 
     public function testFullPath()

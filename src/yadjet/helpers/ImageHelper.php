@@ -92,7 +92,98 @@ class ImageHelper
             }
         }
 
-        return pathinfo($image, PATHINFO_EXTENSION) ?: $defaultExtension;
+        if (!function_exists('exif_imagetype')) {
+            function exif_imagetype($filename)
+            {
+                if ((list(, , $type) = getimagesize($filename)) !== false) {
+                    return $type;
+                }
+
+                return false;
+            }
+        }
+        $type = @exif_imagetype($image);
+        if ($type !== false) {
+            switch ($type) {
+                case IMAGETYPE_GIF:
+                    $ext = 'gif';
+                    break;
+
+                case IMAGETYPE_JPEG:
+                    $ext = 'jpg';
+                    break;
+
+                case IMAGETYPE_PNG:
+                    $ext = 'png';
+                    break;
+
+                case IMAGETYPE_SWF:
+                    $ext = 'swf';
+                    break;
+
+                case IMAGETYPE_PSD :
+                    $ext = 'psd';
+                    break;
+
+                case IMAGETYPE_BMP :
+                    $ext = 'bmp';
+                    break;
+
+                case IMAGETYPE_TIFF_II :
+                    $ext = 'tiff';
+                    break;
+
+                case IMAGETYPE_TIFF_MM :
+                    $ext = 'tiff';
+                    break;
+
+                case IMAGETYPE_JPC  :
+                    $ext = 'jpc';
+                    break;
+
+                case IMAGETYPE_JP2  :
+                    $ext = 'jp2';
+                    break;
+
+                case IMAGETYPE_JPX  :
+                    $ext = 'jpf';
+                    break;
+
+                case IMAGETYPE_JB2  :
+                    $ext = 'jb2';
+                    break;
+
+                case IMAGETYPE_SWC  :
+                    $ext = 'swc';
+                    break;
+
+                case IMAGETYPE_IFF  :
+                    $ext = 'aiff';
+                    break;
+
+                case IMAGETYPE_WBMP  :
+                    $ext = 'wbmp';
+                    break;
+
+                case IMAGETYPE_XBM  :
+                    $ext = 'xbm';
+                    break;
+
+                default:
+                    $ext = null;
+                    break;
+            }
+        }
+
+        if (empty($ext)) {
+            $ext = pathinfo($image, PATHINFO_EXTENSION);
+            if (empty($ext)) {
+                $res = getimagesizefromstring($image);
+                $ext = image_type_to_extension($res[2]);
+            }
+        }
+
+        return $ext ?: $defaultExtension;
     }
 
     /**
