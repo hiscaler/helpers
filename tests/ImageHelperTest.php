@@ -18,6 +18,7 @@ class ImageHelperTest extends TestCase
     public function testGetExtension()
     {
         $this->assertEquals(ImageHelper::getExtension('http://www.example.com/images/image/124/12460449.jpg?t=1537200428#a'), 'jpg');
+        $this->assertEquals(ImageHelper::getExtension('http://www.example.com/images/image/124/12460449.jpg?t=1537200428#a', true), '.jpg');
         $this->assertEquals(ImageHelper::getExtension('http://www.example.com/images/image/124/12460449.jpg'), 'jpg');
         $this->assertEquals(ImageHelper::getExtension('https://www.example.com/images/image/124/12460449.jpg?t=1537200428#a'), 'jpg');
         $this->assertEquals(ImageHelper::getExtension('//www.example.com/images/image/124/12460449.jpg?t=1537200428#a'), 'jpg');

@@ -76,11 +76,13 @@ class ImageHelper
      * 获取图片文件扩展名
      *
      * @param $image
+     * @param bool $full
      * @param string $defaultExtension
      * @return string
      */
-    public static function getExtension($image, $defaultExtension = 'jpg')
+    public static function getExtension($image, $full = false, $defaultExtension = 'jpg')
     {
+        $ext = null;
         // http://www.example.com/images/image/124/12460449.jpg?t=1537200428#a 此类情况需要处理
         if (strpos($image, '?') !== false) {
             $url = parse_url($image);
@@ -92,17 +94,19 @@ class ImageHelper
             }
         }
 
-        if (!function_exists('exif_imagetype')) {
-            function exif_imagetype($filename)
-            {
-                if ((list(, , $type) = getimagesize($filename)) !== false) {
+        $fnGetImageType = function ($image) {
+            if (function_exists('exif_imagetype')) {
+                return exif_imagetype($image);
+            } else {
+                if ((list(, , $type) = getimagesize($image)) !== false) {
                     return $type;
                 }
 
                 return false;
             }
-        }
-        $type = @exif_imagetype($image);
+        };
+
+        $type = @$fnGetImageType($image);
         if ($type !== false) {
             switch ($type) {
                 case IMAGETYPE_GIF:
@@ -183,7 +187,7 @@ class ImageHelper
             }
         }
 
-        return $ext ?: $defaultExtension;
+        return $ext ? ($full ? ".$ext" : $ext) : $defaultExtension;
     }
 
     /**
