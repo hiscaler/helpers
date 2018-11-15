@@ -161,6 +161,55 @@ class UrlHelper
     }
 
     /**
+     * 添加 Query 参数
+     *
+     * @param $url
+     * @param $key
+     * @param $value
+     * @param bool $ignore
+     * @return mixed|string
+     */
+    public static function addQueryParam($url, $key, $value, $ignore = true)
+    {
+        $key = trim($key);
+        if ($key === '' || $key === null) {
+            return $url;
+        }
+
+        $query = self::query($url);
+
+        $append = true;
+        if ($query) {
+            if ((stripos($query, "?$key=") !== false || stripos($query, "&$key=") !== false) && $ignore) {
+                return $url;
+            } else {
+                foreach (explode('&', $query) as $i => $item) {
+                    $items = explode('=', $item);
+                    if (strtolower($items[0]) == strtolower($key)) {
+                        foreach (array("$item&", $item) as $s) {
+                            if (stripos($url, $s) !== false) {
+                                $url = str_replace($s, $items[0] . '=' . $value, $url);
+                                $append = false;
+                                break 2;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($append) {
+            if (stripos($url, '&') === false) {
+                $url .= "?$key=$value";
+            } else {
+                $url .= "&$key=$value";
+            }
+        }
+
+        return $url;
+    }
+
+    /**
      * 获取用户名
      *
      * @param $url

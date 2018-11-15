@@ -64,4 +64,12 @@ class UrlHelperTest extends TestCase
         $this->assertSame(UrlHelper::queries('http://www.example.com/a.html?a=1&b=2&c', ['c' => 'cc']), ['a' => '1', 'b' => '2', 'c' => 'cc']);
     }
 
+    public function testAddQueryParam()
+    {
+        $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com', 'b', 'bb'), 'http://www.example.com?b=bb');
+        $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/a.html?a=1&b=2', 'b', 'bb'), 'http://www.example.com/a.html?a=1&b=2');
+        $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/a.html?a=1&b=2', 'b', 'bb', false), 'http://www.example.com/a.html?a=1&b=bb');
+        $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/a.html?a=1&bb=2', 'b', 'bb', false), 'http://www.example.com/a.html?a=1&bb=2&b=bb');
+    }
+
 }
