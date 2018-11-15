@@ -245,4 +245,33 @@ class UrlHelper
         return self::_parse($url, PHP_URL_FRAGMENT, $default);
     }
 
+    /**
+     * 是否绝对路径
+     *
+     * @param $url
+     * @return bool
+     */
+    public static function isAbsolute($url)
+    {
+        if (stripos($url, '//') === 0 ||
+            self::scheme($url) ||
+            self::host($url)
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 是否相对路径
+     *
+     * @param $url
+     * @return bool
+     */
+    public static function isRelative($url)
+    {
+        return !self::isAbsolute($url);
+    }
+
 }

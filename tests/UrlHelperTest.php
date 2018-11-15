@@ -72,4 +72,20 @@ class UrlHelperTest extends TestCase
         $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/a.html?a=1&bb=2', 'b', 'bb', false), 'http://www.example.com/a.html?a=1&bb=2&b=bb');
     }
 
+    public function testIsAbsolute()
+    {
+        $this->assertEquals(UrlHelper::isAbsolute('http://www.example.com'), true);
+        $this->assertEquals(UrlHelper::isAbsolute('http://www.example.com?id=1'), true);
+        $this->assertEquals(UrlHelper::isAbsolute('//www.example.com?id=1'), true);
+        $this->assertEquals(UrlHelper::isAbsolute('/list?id=1'), false);
+    }
+
+    public function testIsRelative()
+    {
+        $this->assertEquals(UrlHelper::isRelative('http://www.example.com'), false);
+        $this->assertEquals(UrlHelper::isRelative('http://www.example.com?id=1'), false);
+        $this->assertEquals(UrlHelper::isRelative('//www.example.com?id=1'), false);
+        $this->assertEquals(UrlHelper::isRelative('/list?id=1'), true);
+    }
+
 }
