@@ -48,10 +48,19 @@ class ImageHelperTest extends TestCase
 < Img
 </div>
 EOT;
-        $this->assertSame(ImageHelper::parseImages($html), [
+        $this->assertSame(ImageHelper::parseImages($html), array(
             'a.jpg',
             'http://www.example.com/a.jpg',
-            'http://www.example.com/a.jpg?t=123456',
-        ]);
+            'http://www.example.com/a.jpg?t=123456'
+        ));
+    }
+
+    public function testGenerateThumbnailFilename()
+    {
+        $this->assertEquals(ImageHelper::generateThumbnailFilename('/images/image/124/12460449.jpg'), '/images/image/124/12460449_thumb.jpg');
+        $this->assertEquals(ImageHelper::generateThumbnailFilename('/images/image/124/12460449.jpg', "_t"), '/images/image/124/12460449_t.jpg');
+        $this->assertEquals(ImageHelper::generateThumbnailFilename('/images/image/124/12460449.jpg', "0"), '/images/image/124/124604490.jpg');
+        $this->assertEquals(ImageHelper::generateThumbnailFilename('d:/images/image/124/12460449.jpg', "0"), 'd:/images/image/124/124604490.jpg');
+        $this->assertEquals(ImageHelper::generateThumbnailFilename('d:/images/image/124/12460449.j'), 'd:/images/image/124/12460449_thumb.j');
     }
 }

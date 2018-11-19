@@ -191,6 +191,28 @@ class ImageHelper
     }
 
     /**
+     * 根据图片文件名称生成缩略图名称
+     *
+     * 注意：该方法并不会判断文件是否有效、存在，也不会实际生成缩略图，只是简单的返回可用的缩略图文件名，当
+     * 获取不到扩展名的情况下，会返回 false 表示失败。
+     *
+     * @param $filename
+     * @param string $suffix
+     * @return bool|string
+     */
+    public static function generateThumbnailFilename($filename, $suffix = '_thumb')
+    {
+        if ((string) $suffix === '' || $suffix === null) {
+            $suffix = '_thumb';
+        }
+        if ($extension = self::getExtension($filename, true)) {
+            return str_replace($extension, "{$suffix}{$extension}", $filename);
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 图片 Base64 编码
      *
      * @param $filename
