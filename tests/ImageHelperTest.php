@@ -31,7 +31,9 @@ class ImageHelperTest extends TestCase
 
     public function testFullPath()
     {
-        $this->assertEquals(ImageHelper::fullPath('/images/image/124/12460449.jpg', 'http://www.example.com'), 'http://www.example.com/images/image/124/12460449.jpg');
+        $this->assertEquals(ImageHelper::fullPath('/images/image/124/12460449.jpg', 'D:/'), 'D:/images/image/124/12460449.jpg');
+        $this->assertEquals(ImageHelper::fullPath('/images/image/124/12460449.jpg', "D:\\"), 'D:/images/image/124/12460449.jpg');
+        $this->assertEquals(ImageHelper::fullPath('/images/image/124/12460449.jpg', 'http://www.example.com/'), 'http://www.example.com/images/image/124/12460449.jpg');
         $this->assertEquals(ImageHelper::fullPath('http://www.example.com/images/image/124/12460449.jpg', ''), 'http://www.example.com/images/image/124/12460449.jpg');
         $this->assertEquals(ImageHelper::fullPath('http://www.example.com/images/image/124/12460449.jpg', 'http://www.example.com'), 'http://www.example.com/images/image/124/12460449.jpg');
     }

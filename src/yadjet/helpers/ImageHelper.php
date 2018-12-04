@@ -50,23 +50,9 @@ class ImageHelper
     {
         if (strncasecmp($image, '//', 2) !== 0 && strncasecmp($image, 'http', 4) !== 0 && strncasecmp($image, 'https', 5) !== 0) {
             if ($url) {
-                $urlConf = parse_url($url);
-                if ($urlConf !== false) {
-                    if (isset($urlConf['schema'])) {
-                        $url .= $urlConf['schema'];
-                    } else {
-                        $url = 'http';
-                    }
-                    $url .= '://';
-                    if (isset($urlConf['host'])) {
-                        $url .= $urlConf['host'];
-                    }
-                    if (isset($urlConf['port']) && $urlConf['port'] != 80 && $urlConf['port'] != 443) {
-                        $url .= ":{$urlConf['port']}";
-                    }
-                }
+                $url = rtrim($url, '\/');
             }
-            $image = $url . '/' . ltrim($image, ' / ');
+            $image = "$url/" . ltrim($image, '\/');
         }
 
         return $image;
