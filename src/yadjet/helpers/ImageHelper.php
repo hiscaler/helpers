@@ -73,10 +73,10 @@ class ImageHelper
         if (strpos($image, '?') !== false) {
             $url = parse_url($image);
             if (isset($url['query']) || isset($url['fragment'])) {
-                $schema = isset($url['scheme']) ? $url['scheme'] . ':' : '';
+                $scheme = isset($url['scheme']) ? $url['scheme'] . ':' : '';
                 $host = isset($url['host']) ? $url['host'] . '//' : '';
 
-                $image = "{$schema}{$host}{$url['path']}";
+                $image = "{$scheme}{$host}{$url['path']}";
             }
         }
 
