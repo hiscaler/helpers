@@ -47,6 +47,7 @@ class UrlHelperTest extends TestCase
     public function testFindQueryValueByKey()
     {
         $this->assertEquals(UrlHelper::findQueryValueByKey('http://www.example.com/a.html?a=1&b=2', 'a'), '1');
+        $this->assertEquals(UrlHelper::findQueryValueByKey('http://www.example.com/a.html?a=1', 'a'), '1');
         $this->assertEquals(UrlHelper::findQueryValueByKey('http://www.example.com/a.html?a=1&b=2', 'A'), '1');
         $this->assertEquals(UrlHelper::findQueryValueByKey('http://www.example.com/a.html?A=1&b=2', 'a'), '1');
         $this->assertEquals(UrlHelper::findQueryValueByKey('http://www.example.com/a.html?a=1&b=2&c', 'aa'), null);

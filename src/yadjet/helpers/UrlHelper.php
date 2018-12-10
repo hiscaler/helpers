@@ -144,7 +144,6 @@ class UrlHelper
         $res = null;
         $query = self::query($url);
         if ($query &&
-            stripos($query, '&') !== false &&
             ($key = strtolower(trim($key))) &&
             stripos($query, $key) !== false
         ) {
