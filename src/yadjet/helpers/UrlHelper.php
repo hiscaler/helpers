@@ -180,7 +180,7 @@ class UrlHelper
         $append = true;
         $pairs = array();
         if ($query) {
-            if ((stripos($query, "?$key=") !== false || stripos($query, "&$key=") !== false) && $ignore) {
+            if (stripos($query, "&$key=") !== false && $ignore) {
                 $append = false;
             } else {
                 foreach (explode('&', $query) as $i => $item) {
