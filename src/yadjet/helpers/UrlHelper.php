@@ -183,7 +183,7 @@ class UrlHelper
             if (stripos($query, "&$key=") !== false && $ignore) {
                 $append = false;
             } else {
-                foreach (explode('&', $query) as $i => $item) {
+                foreach (explode('&', $query) as $item) {
                     if (stripos($item, '=') !== false) {
                         list($k, $v) = explode('=', $item);
                         if ($k === '') {
