@@ -225,6 +225,63 @@ class UrlHelper
     }
 
     /**
+     * 字符串解码
+     *
+     * @param $str
+     * @param int $times
+     * @return string
+     */
+    private static function _decode($str, $times = 1)
+    {
+        for ($i = 1; $i <= $times; $i++) {
+            $str = urldecode($str);
+        }
+
+        return $str;
+    }
+
+    /**
+     * Url 内容解码
+     *
+     * @param $url
+     * @param int $times
+     * @return mixed
+     */
+    public static function decode($url, $times = 1)
+    {
+        if ($times <= 0) {
+            return $url;
+        }
+
+        $query = self::query($url);
+        $pairs = array();
+        if ($query) {
+            foreach (explode('&', $query) as $item) {
+                if (stripos($item, '=') !== false) {
+                    list($k, $v) = explode('=', $item);
+                    if ($k === '') {
+                        // e.g. a=1&=2
+                        $v = self::_decode($item, $times);
+                    } else {
+                        // e.g. a=1&b=2 or a=1&b=
+                        $v = "$k=" . self::_decode($v, $times);
+                    }
+                } else {
+                    // e.g. a=1&2
+                    $v = self::_decode($item, $times);
+                }
+                $pairs[] = $v;
+            }
+        }
+
+        if ($pairs) {
+            $url = str_replace($query, implode('&', $pairs), $url);
+        }
+
+        return $url;
+    }
+
+    /**
      * 获取用户名
      *
      * @param $url

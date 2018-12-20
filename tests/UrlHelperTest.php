@@ -78,6 +78,17 @@ class UrlHelperTest extends TestCase
         $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/a.html?aa=CN&a=CN&=b&1&0=1', 'a', 'China', false), 'http://www.example.com/a.html?aa=CN&a=China&=b&1&0=1');
     }
 
+    public function testDecode()
+    {
+        $this->assertEquals(UrlHelper::decode('http://www.example.com'), "http://www.example.com");
+        $this->assertEquals(UrlHelper::decode('http://www.example.com?a=1&b=2&c&d='), "http://www.example.com?a=1&b=2&c&d=");
+        $this->assertEquals(UrlHelper::decode('http://www.example.coms?q=学习&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1'), "http://www.example.coms?q=学习&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1");
+        $this->assertEquals(UrlHelper::decode('http://www.example.coms?q=%E5%AD%A6%E4%B9%A0&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1'), "http://www.example.coms?q=学习&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1");
+        $this->assertEquals(UrlHelper::decode('http://www.example.coms?q=%E5%AD%A6%E4%B9%A0&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1', 2), "http://www.example.coms?q=学习&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1");
+        $this->assertEquals(UrlHelper::decode('http://www.example.coms?q=%25E5%25AD%25A6%25E4%25B9%25A0&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1', 2), "http://www.example.coms?q=学习&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1");
+        $this->assertNotEquals(UrlHelper::decode('http://www.example.coms?q=%25E5%25AD%25A6%25E4%25B9%25A0&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1', 1), "http://www.example.coms?q=学习&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1");
+    }
+
     public function testIsAbsolute()
     {
         $this->assertEquals(UrlHelper::isAbsolute('http://www.example.com'), true);
