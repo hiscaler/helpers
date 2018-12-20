@@ -71,6 +71,11 @@ class UrlHelperTest extends TestCase
         $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/a.html?a=1&b=2', 'b', 'bb'), 'http://www.example.com/a.html?a=1&b=2');
         $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/a.html?a=1&b=2', 'b', 'bb', false), 'http://www.example.com/a.html?a=1&b=bb');
         $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/a.html?a=1&bb=2', 'b', 'bb', false), 'http://www.example.com/a.html?a=1&bb=2&b=bb');
+        $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/a.html?a=%A4%A7&bb=2', 'a', 'v', false), 'http://www.example.com/a.html?a=v&bb=2');
+        $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/a.html?a=%A4%A7&bb=2&=b', 'a', 'v', false), 'http://www.example.com/a.html?a=v&bb=2&=b');
+        $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/a.html?a=中国&bb=2&=b', 'a', 'China', false), 'http://www.example.com/a.html?a=China&bb=2&=b');
+        $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/a.html?aa=CN&a=CN&=b', 'a', 'China', false), 'http://www.example.com/a.html?aa=CN&a=China&=b');
+        $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/a.html?aa=CN&a=CN&=b&1&0=1', 'a', 'China', false), 'http://www.example.com/a.html?aa=CN&a=China&=b&1&0=1');
     }
 
     public function testIsAbsolute()

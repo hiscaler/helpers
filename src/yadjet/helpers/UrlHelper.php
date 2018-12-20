@@ -178,21 +178,35 @@ class UrlHelper
         $query = self::query($url);
 
         $append = true;
+        $pairs = array();
         if ($query) {
             if ((stripos($query, "?$key=") !== false || stripos($query, "&$key=") !== false) && $ignore) {
                 $append = false;
             } else {
                 foreach (explode('&', $query) as $i => $item) {
-                    $items = explode('=', $item);
-                    if (strtolower($items[0]) == strtolower($key)) {
-                        foreach (array("$item&", $item) as $s) {
-                            if (stripos($url, $s) !== false) {
-                                $url = str_replace($s, $items[0] . '=' . $value, $url);
+                    if (stripos($item, '=') !== false) {
+                        list($k, $v) = explode('=', $item);
+                        if ($k === '') {
+                            // e.g. a=1&=2
+                            $v = $item;
+                        } else {
+                            // e.g. a=1&b=2 or a=1&b=
+                            if (strtolower($k) == strtolower($key)) {
+                                if ($ignore) {
+                                    return $url;
+                                } else {
+                                    !$ignore && $v = $value;
+                                }
+
                                 $append = false;
-                                break 2;
                             }
+                            $v = "$k=$v";
                         }
+                    } else {
+                        // e.g. a=1&2
+                        $v = $item;
                     }
+                    $pairs[] = $v;
                 }
             }
         }
@@ -203,6 +217,8 @@ class UrlHelper
             } else {
                 $url .= "&$key=$value";
             }
+        } elseif ($pairs) {
+            $url = str_replace($query, implode('&', $pairs), $url);
         }
 
         return $url;
