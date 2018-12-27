@@ -11,11 +11,45 @@ namespace yadjet\helpers;
 class Csv
 {
 
+    /**
+     * @var bool Debug 模式
+     */
     private $debug = false;
+
+    /**
+     * @var resource 文件句柄
+     */
     private $file;
+
+    /**
+     * @var string 需要处理的文件
+     */
     private $filename;
+
+    /**
+     * @var array 标题
+     */
+    private $title = array();
+
+    /**
+     * @var array 内容行
+     */
     private $rows = array();
+
+    /**
+     * @var array 内容行输出对应的键值
+     */
+    private $rowKeys = array();
+
+    /**
+     * @var bool 是否已经写入
+     */
     private $isWritten = false;
+
+    /**
+     * @var bool 输出时是否移除标题行
+     */
+    private $removeTitle = false;
 
     public function __construct($debug)
     {
@@ -41,6 +75,39 @@ class Csv
     }
 
     /**
+     * 设置标题
+     *
+     * @param array $title
+     * @return $this
+     */
+    public function setTitle(array $title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function setRowKeys(array $rowKeys)
+    {
+        $this->rowKeys = $rowKeys;
+
+        return $this;
+    }
+
+    /**
+     * 是否移除标题
+     *
+     * @param $remove
+     * @return Csv
+     */
+    public function setRemoveTitle($remove)
+    {
+        $this->removeTitle = $remove ? true : false;
+
+        return $this;
+    }
+
+    /**
      * 读取 CSV 内容并且转换为数组
      *
      * @return array|false|null
@@ -52,8 +119,26 @@ class Csv
         }
 
         $lines = array();
+        $i = 1;
         while (!feof($this->file) && ($line = fgetcsv($this->file, 4096)) !== false) {
-            $lines[] = $line;
+            if ($this->removeTitle && $i === 1) {
+                $i++;
+                continue;
+            }
+
+            if ($this->rowKeys) {
+                $t = array();
+                foreach ($line as $key => $value) {
+                    if (isset($this->rowKeys[$key])) {
+                        $t[$this->rowKeys[$key]] = $value;
+                    } else {
+                        $t[] = $value;
+                    }
+                }
+                $lines[] = $t;
+            } else {
+                $lines[] = $line;
+            }
         }
 
         $this->close();
@@ -88,13 +173,6 @@ class Csv
         return $row;
     }
 
-    public function AddTitle(array $title)
-    {
-        $title && $this->rows[] = $title;
-
-        return $this;
-    }
-
     private function addRow(array $row)
     {
         $row && $this->rows[] = $row;
@@ -113,6 +191,7 @@ class Csv
 
     public function write()
     {
+        $this->title && fputcsv($this->file, $this->title);
         foreach ($this->rows as $i => $row) {
             if ($this->debug) {
                 echo "Write $i row..." . PHP_EOL;

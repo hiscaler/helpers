@@ -42,7 +42,7 @@ class CsvHelperTest extends TestCase
         $this->assertEquals($this->filename, $filename);
     }
 
-    public function testRead()
+    public function testReadAll()
     {
         $filename = CsvHelper::write(array(
             array('a1', 'b1', 'c1'),
@@ -53,6 +53,17 @@ class CsvHelperTest extends TestCase
             array('A', 'B', 'C'),
             array('a1', 'b1', 'c1'),
             array('a2', 'b2', 'c2'),
+        ));
+        $lines = CsvHelper::readAll($filename, array("Title A", "Title B", "Title C"));
+        $this->assertSame($lines, array(
+            array('Title A' => 'A', 'Title B' => 'B', 'Title C' => 'C'),
+            array('Title A' => 'a1', 'Title B' => 'b1', 'Title C' => 'c1'),
+            array('Title A' => 'a2', 'Title B' => 'b2', 'Title C' => 'c2'),
+        ));
+        $lines = CsvHelper::readAll($filename, array("Title A", "Title B", "Title C"), true);
+        $this->assertSame($lines, array(
+            array('Title A' => 'a1', 'Title B' => 'b1', 'Title C' => 'c1'),
+            array('Title A' => 'a2', 'Title B' => 'b2', 'Title C' => 'c2'),
         ));
     }
 
