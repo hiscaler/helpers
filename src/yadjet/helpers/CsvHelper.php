@@ -10,6 +10,14 @@ namespace yadjet\helpers;
 class CsvHelper
 {
 
+    public static function readAll($filename, $debug = false)
+    {
+        $csv = new Csv($debug);
+
+        return $csv->open($filename)
+            ->readAll();
+    }
+
     /**
      * @param array $rows
      * @param array|null $title

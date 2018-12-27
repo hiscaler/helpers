@@ -22,16 +22,70 @@ class Csv
         $this->debug = $debug ? true : false;
     }
 
+    /**
+     * 打开需要处理的文件
+     *
+     * @param null $filename
+     * @return $this
+     */
     public function open($filename = null)
     {
         if ($filename == null) {
             $filename = tempnam(sys_get_temp_dir(), 'csv');
         }
         $this->filename = $filename;
-        $this->file = fopen($filename, 'w+');
+        $this->file = fopen($filename, file_exists($filename) ? 'rb' : 'wb');
         fputs($this->file, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
         return $this;
+    }
+
+    /**
+     * 读取 CSV 内容并且转换为数组
+     *
+     * @return array|false|null
+     */
+    public function readAll()
+    {
+        if (fgets($this->file, 4) !== "\xef\xbb\xbf") {
+            rewind($this->file);
+        }
+
+        $lines = array();
+        while (!feof($this->file) && ($line = fgetcsv($this->file, 4096)) !== false) {
+            $lines[] = $line;
+        }
+
+        $this->close();
+
+        return $lines;
+    }
+
+    /**
+     * 从 CSV 文件中读取一行
+     *
+     * @param $n
+     * @return array|false|null
+     */
+    public function readOne($n)
+    {
+        if (fgets($this->file, 4) !== "\xef\xbb\xbf") {
+            rewind($this->file);
+        }
+
+        $row = array();
+        $i = 1;
+        while (!feof($this->file) && ($line = fgetcsv($this->file, 4096)) !== false) {
+            if ($i == $n) {
+                $row = $line;
+                break;
+            }
+            $i++;
+        }
+
+        $this->close();
+
+        return $row;
     }
 
     public function AddTitle(array $title)
