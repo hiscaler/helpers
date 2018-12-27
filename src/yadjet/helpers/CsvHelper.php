@@ -34,12 +34,11 @@ class CsvHelper
      * @param array $rows
      * @param array|null $title
      * @param null $filename
-     * @param bool $debug
      * @return mixed
      */
-    public static function write(array $rows, array $title = null, $filename = null, $debug = false)
+    public static function write(array $rows, array $title = null, $filename = null)
     {
-        $csv = new Csv($debug);
+        $csv = new Csv();
 
         return $csv->open($filename)
             ->setTitle($title)
