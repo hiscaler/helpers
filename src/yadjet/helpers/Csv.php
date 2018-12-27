@@ -230,8 +230,6 @@ class Csv
         if (is_resource($this->file)) {
             fclose($this->file);
         }
-
-        return $this;
     }
 
 }
