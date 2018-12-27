@@ -12,11 +12,6 @@ class Csv
 {
 
     /**
-     * @var bool Debug 模式
-     */
-    private $debug = false;
-
-    /**
      * @var resource 文件句柄
      */
     private $file;
@@ -50,11 +45,6 @@ class Csv
      * @var bool 输出时是否移除标题行
      */
     private $removeTitle = false;
-
-    public function __construct($debug)
-    {
-        $this->debug = $debug ? true : false;
-    }
 
     /**
      * 打开需要处理的文件
@@ -189,19 +179,28 @@ class Csv
         return $this;
     }
 
-    public function write()
+    private function writeFile($close = true)
     {
         $this->title && fputcsv($this->file, $this->title);
         foreach ($this->rows as $i => $row) {
-            if ($this->debug) {
-                echo "Write $i row..." . PHP_EOL;
-            }
-
-            fputcsv($this->file, $row);
+            fputcsv($this->file, array_map(function ($v) {
+                if (is_string($v)) {
+                    return $v;
+                } elseif (is_array($v)) {
+                    return json_encode($v, JSON_UNESCAPED_UNICODE);
+                } else {
+                    return (string) $v;
+                }
+            }, $row));
         }
         $this->isWritten = true;
 
-        $this->close();
+        $close && $this->close();
+    }
+
+    public function write()
+    {
+        $this->writeFile(true);
 
         return $this;
     }
@@ -219,9 +218,7 @@ class Csv
     public function download($filename = null)
     {
         if (!$this->isWritten) {
-            $this->write();
-        } else {
-            $this->close();
+            $this->writeFile(false);
         }
 
         if ($filename) {
@@ -233,7 +230,7 @@ class Csv
                 $filename = "{$filename}.csv";
             }
         } else {
-            $filename = basename($this->filename);
+            $filename = basename($this->filename) . '.csv';
         }
 
         header('Content-Description: File Transfer');
@@ -243,7 +240,9 @@ class Csv
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
         header('Content-Length: ' . filesize($this->filename));
-        readfile($this->filename);
+        ob_end_clean();
+        fpassthru($this->file);
+        $this->close();
         exit(0);
     }
 

@@ -16,12 +16,11 @@ class CsvHelper
      * @param $filename
      * @param array $rowKeys
      * @param bool $removeTitle
-     * @param bool $debug
      * @return array|false
      */
-    public static function readAll($filename, array $rowKeys = array(), $removeTitle = false, $debug = false)
+    public static function readAll($filename, array $rowKeys = array(), $removeTitle = false)
     {
-        $csv = new Csv($debug);
+        $csv = new Csv();
 
         return $csv->open($filename)
             ->setRowKeys($rowKeys)
@@ -30,6 +29,8 @@ class CsvHelper
     }
 
     /**
+     * 文件写入
+     *
      * @param array $rows
      * @param array|null $title
      * @param null $filename
@@ -47,14 +48,21 @@ class CsvHelper
             ->getFilename();
     }
 
-    public static function send(array $rows, array $title = null, $filename = null, $debug = false)
+    /**
+     * 文件下载
+     *
+     * @param array $rows
+     * @param array|null $title
+     * @param null $filename
+     */
+    public static function download(array $rows, array $title = null, $filename = null)
     {
-        $csv = new Csv($debug);
+        $csv = new Csv();
 
         $csv->open($filename)
             ->setTitle($title)
             ->addRows($rows)
-            ->send();
+            ->download();
     }
 
 }
