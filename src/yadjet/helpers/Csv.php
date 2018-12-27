@@ -65,7 +65,7 @@ class Csv
     public function open($filename = null)
     {
         if ($filename == null) {
-            $filename = tempnam(sys_get_temp_dir(), 'csv');
+            $filename = sys_get_temp_dir() . '/' . uniqid() . ".csv";
         }
         $this->filename = $filename;
         $this->file = fopen($filename, file_exists($filename) ? 'rb' : 'wb');
@@ -211,7 +211,12 @@ class Csv
         return $this->filename;
     }
 
-    public function send()
+    /**
+     * 文件下载
+     *
+     * @param string|null $filename
+     */
+    public function download($filename = null)
     {
         if (!$this->isWritten) {
             $this->write();
@@ -219,9 +224,26 @@ class Csv
             $this->close();
         }
 
-        $name = basename($this->filename, '.csv');
+        if ($filename) {
+            if (($index = strripos($filename, '.')) !== false) {
+                if (strtolower(substr($filename, $index)) != '.csv') {
+                    $filename = "{$filename}.csv";
+                }
+            } else {
+                $filename = "{$filename}.csv";
+            }
+        } else {
+            $filename = basename($this->filename);
+        }
+
+        header('Content-Description: File Transfer');
         header('Content-Type: text/csv; CHARSET=UTF-8');
-        header('Content-Disposition: attachment; filename=' . $name);
+        header('Content-Disposition: attachment; filename=' . $filename);
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($this->filename));
+        readfile($this->filename);
         exit(0);
     }
 
@@ -230,7 +252,8 @@ class Csv
         if (is_resource($this->file)) {
             fclose($this->file);
         }
+
+        return $this;
     }
 
 }
-
