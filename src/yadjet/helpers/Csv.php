@@ -14,7 +14,7 @@ class Csv
     /**
      * @var resource 文件句柄
      */
-    private $file;
+    private $fileHandle;
 
     /**
      * @var string 需要处理的文件
@@ -58,8 +58,8 @@ class Csv
             $filename = sys_get_temp_dir() . '/' . uniqid() . ".csv";
         }
         $this->filename = $filename;
-        $this->file = fopen($filename, file_exists($filename) ? 'rb' : 'wb');
-        fputs($this->file, chr(0xEF) . chr(0xBB) . chr(0xBF));
+        $this->fileHandle = fopen($filename, file_exists($filename) ? 'r+b' : 'w+b');
+        fputs($this->fileHandle, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
         return $this;
     }
@@ -77,6 +77,12 @@ class Csv
         return $this;
     }
 
+    /**
+     * 设置读取成数组后的键值
+     *
+     * @param array $rowKeys
+     * @return $this
+     */
     public function setRowKeys(array $rowKeys)
     {
         $this->rowKeys = $rowKeys;
@@ -104,13 +110,13 @@ class Csv
      */
     public function readAll()
     {
-        if (fgets($this->file, 4) !== "\xef\xbb\xbf") {
-            rewind($this->file);
+        if (fgets($this->fileHandle, 4) !== "\xef\xbb\xbf") {
+            rewind($this->fileHandle);
         }
 
         $lines = array();
         $i = 1;
-        while (!feof($this->file) && ($line = fgetcsv($this->file, 4096)) !== false) {
+        while (!feof($this->fileHandle) && ($line = fgetcsv($this->fileHandle, 4096)) !== false) {
             if ($this->removeTitle && $i === 1) {
                 $i++;
                 continue;
@@ -144,13 +150,13 @@ class Csv
      */
     public function readOne($n)
     {
-        if (fgets($this->file, 4) !== "\xef\xbb\xbf") {
-            rewind($this->file);
+        if (fgets($this->fileHandle, 4) !== "\xef\xbb\xbf") {
+            rewind($this->fileHandle);
         }
 
         $row = array();
         $i = 1;
-        while (!feof($this->file) && ($line = fgetcsv($this->file, 4096)) !== false) {
+        while (!feof($this->fileHandle) && ($line = fgetcsv($this->fileHandle, 4096)) !== false) {
             if ($i == $n) {
                 $row = $line;
                 break;
@@ -181,9 +187,9 @@ class Csv
 
     private function writeFile($close = true)
     {
-        $this->title && fputcsv($this->file, $this->title);
+        $this->title && fputcsv($this->fileHandle, $this->title);
         foreach ($this->rows as $i => $row) {
-            fputcsv($this->file, array_map(function ($v) {
+            fputcsv($this->fileHandle, array_map(function ($v) {
                 if (is_string($v)) {
                     return $v;
                 } elseif (is_array($v)) {
@@ -230,26 +236,33 @@ class Csv
                 $filename = "{$filename}.csv";
             }
         } else {
-            $filename = basename($this->filename) . '.csv';
+            $filename = basename($this->filename);
         }
 
         header('Content-Description: File Transfer');
-        header('Content-Type: text/csv; CHARSET=UTF-8');
+        header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename=' . $filename);
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Pragma: public');
+        header('Accept-Ranges: bytes');
+        header('Expires: 0');
         header('Content-Length: ' . filesize($this->filename));
-        ob_end_clean();
-        fpassthru($this->file);
+        set_time_limit(0);
+
+        $chunkSize = 8 * 1024 * 1024;
+        fseek($this->fileHandle, 0);
+        while (!feof($this->fileHandle)) {
+            echo fread($this->fileHandle, $chunkSize);
+            flush();
+        }
         $this->close();
         exit(0);
     }
 
     public function close()
     {
-        if (is_resource($this->file)) {
-            fclose($this->file);
+        if (is_resource($this->fileHandle)) {
+            fclose($this->fileHandle);
         }
 
         return $this;

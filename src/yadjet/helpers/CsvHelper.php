@@ -58,10 +58,10 @@ class CsvHelper
     {
         $csv = new Csv();
 
-        $csv->open($filename)
+        $csv->open()
             ->setTitle($title)
             ->addRows($rows)
-            ->download();
+            ->download($filename);
     }
 
 }
