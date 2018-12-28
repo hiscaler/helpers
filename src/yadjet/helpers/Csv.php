@@ -256,6 +256,7 @@ class Csv
             flush();
         }
         $this->close();
+        @unlink($this->filename);
         exit(0);
     }
 
