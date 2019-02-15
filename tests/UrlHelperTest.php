@@ -76,6 +76,7 @@ class UrlHelperTest extends TestCase
         $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/a.html?a=中国&bb=2&=b', 'a', 'China', false), 'http://www.example.com/a.html?a=China&bb=2&=b');
         $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/a.html?aa=CN&a=CN&=b', 'a', 'China', false), 'http://www.example.com/a.html?aa=CN&a=China&=b');
         $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/a.html?aa=CN&a=CN&=b&1&0=1', 'a', 'China', false), 'http://www.example.com/a.html?aa=CN&a=China&=b&1&0=1');
+        $this->assertEquals(UrlHelper::addQueryParam('http://www.example.com/register?type=register', 'openid', '1111'), 'http://www.example.com/register?type=register&openid=1111');
     }
 
     public function testDecode()

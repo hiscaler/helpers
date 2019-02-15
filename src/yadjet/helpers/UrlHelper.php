@@ -212,7 +212,7 @@ class UrlHelper
         }
 
         if ($append) {
-            if (stripos($url, '&') === false) {
+            if (stripos($url, '?') === false) {
                 $url .= "?$key=$value";
             } else {
                 $url .= "&$key=$value";
