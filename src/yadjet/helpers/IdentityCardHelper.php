@@ -134,12 +134,13 @@ class IdentityCardHelper
      *
      * @param $identityCardNumber
      * @return int|null
+     * @throws Exception
      */
     public static function getAge($identityCardNumber)
     {
         $age = null;
         if (self::isValid($identityCardNumber)) {
-            $age = (new DateTime(self::getBirthday($identityCardNumber)))->diff(new DateTime())->y;
+            $age = (new DateTime(self::getBirthday($identityCardNumber, 'Y-m-d')))->diff(new DateTime())->y;
         }
 
         return $age;
