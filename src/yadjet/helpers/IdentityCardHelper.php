@@ -112,6 +112,7 @@ class IdentityCardHelper
      * @param $identityCardNumber
      * @param null $format 日期格式（Y-m-d, Ymd 之类）
      * @return int|null|string
+     * @throws Exception
      */
     public static function getBirthday($identityCardNumber, $format = null)
     {
