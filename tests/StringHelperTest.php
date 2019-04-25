@@ -20,4 +20,19 @@ class StringHelperTest extends TestCase
         $this->assertEquals(StringHelper::isEmpty(''), true);
     }
 
+    public function testRemoveEmoji()
+    {
+        $this->assertEquals(StringHelper::removeEmoji("👶hi"), "hi");
+        $this->assertEquals(StringHelper::removeEmoji("👰b"), "b");
+        $this->assertEquals(StringHelper::removeEmoji("a👰"), "a");
+        $this->assertEquals(StringHelper::removeEmoji("a👰b"), "ab");
+        $this->assertEquals(StringHelper::removeEmoji("👉🤟"), "");
+        $this->assertEquals(StringHelper::removeEmoji("1👉2🤟👉👰3🤟👉👶你好🤟"), "123你好");
+        $this->assertEquals(StringHelper::removeEmoji("1👉2🤟👉👰3🤟👉👶你  　　好🤟"), "123你好");
+        $this->assertEquals(StringHelper::removeEmoji(" "), "");
+        $this->assertEquals(StringHelper::removeEmoji(" ", false), " ");
+        $this->assertEquals(StringHelper::removeEmoji("　", false), "　");
+        $this->assertEquals(StringHelper::removeEmoji("　", true), "");
+    }
+
 }
