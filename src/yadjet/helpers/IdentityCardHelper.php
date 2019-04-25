@@ -112,6 +112,7 @@ class IdentityCardHelper
      * @param $identityCardNumber
      * @param null $format 日期格式（Y-m-d, Ymd 之类）
      * @return int|null|string
+     * @throws Exception
      */
     public static function getBirthday($identityCardNumber, $format = null)
     {
@@ -134,12 +135,13 @@ class IdentityCardHelper
      *
      * @param $identityCardNumber
      * @return int|null
+     * @throws Exception
      */
     public static function getAge($identityCardNumber)
     {
         $age = null;
         if (self::isValid($identityCardNumber)) {
-            $age = (new DateTime(self::getBirthday($identityCardNumber)))->diff(new DateTime())->y;
+            $age = (new DateTime(self::getBirthday($identityCardNumber, 'Y-m-d')))->diff(new DateTime())->y;
         }
 
         return $age;
