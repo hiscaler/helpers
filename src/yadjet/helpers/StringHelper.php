@@ -264,11 +264,11 @@ class StringHelper
      * Generates specified number of random bytes.
      * Note that output may not be ASCII.
      *
-     * @see generateRandomString() if you need a string.
-     *
      * @param int $length the number of bytes to generate
      * @return string the generated random bytes
      * @throws Exception on failure.
+     * @see generateRandomString() if you need a string.
+     *
      */
     public static function generateRandomKey($length = 32, $useLibreSSL = null, $randomFile = null)
     {
