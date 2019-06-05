@@ -173,7 +173,9 @@ class ImageHelper
             }
         }
 
-        return $ext ? ($full ? ".$ext" : $ext) : $defaultExtension;
+        $ext = $ext ?: $defaultExtension;
+
+        return $full ? ".$ext" : $ext;
     }
 
     /**
