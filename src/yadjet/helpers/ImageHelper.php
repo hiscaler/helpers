@@ -111,51 +111,51 @@ class ImageHelper
                     $ext = 'swf';
                     break;
 
-                case IMAGETYPE_PSD :
+                case IMAGETYPE_PSD:
                     $ext = 'psd';
                     break;
 
-                case IMAGETYPE_BMP :
+                case IMAGETYPE_BMP:
                     $ext = 'bmp';
                     break;
 
-                case IMAGETYPE_TIFF_II :
+                case IMAGETYPE_TIFF_II:
                     $ext = 'tiff';
                     break;
 
-                case IMAGETYPE_TIFF_MM :
+                case IMAGETYPE_TIFF_MM:
                     $ext = 'tiff';
                     break;
 
-                case IMAGETYPE_JPC  :
+                case IMAGETYPE_JPC:
                     $ext = 'jpc';
                     break;
 
-                case IMAGETYPE_JP2  :
+                case IMAGETYPE_JP2:
                     $ext = 'jp2';
                     break;
 
-                case IMAGETYPE_JPX  :
+                case IMAGETYPE_JPX:
                     $ext = 'jpf';
                     break;
 
-                case IMAGETYPE_JB2  :
+                case IMAGETYPE_JB2:
                     $ext = 'jb2';
                     break;
 
-                case IMAGETYPE_SWC  :
+                case IMAGETYPE_SWC:
                     $ext = 'swc';
                     break;
 
-                case IMAGETYPE_IFF  :
+                case IMAGETYPE_IFF:
                     $ext = 'aiff';
                     break;
 
-                case IMAGETYPE_WBMP  :
+                case IMAGETYPE_WBMP:
                     $ext = 'wbmp';
                     break;
 
-                case IMAGETYPE_XBM  :
+                case IMAGETYPE_XBM:
                     $ext = 'xbm';
                     break;
 
