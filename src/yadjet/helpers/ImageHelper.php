@@ -3,8 +3,7 @@
 namespace yadjet\helpers;
 
 /**
- * Class ImageHelper
- *s
+ * 图片处理助手类
  *
  * @package yadjet\helpers
  * @author hiscaler <hiscaler@gmail.com>

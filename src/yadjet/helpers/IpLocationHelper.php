@@ -6,8 +6,7 @@ use InvalidArgumentException;
 use itbdw\Ip\IpLocation;
 
 /**
- * IP 检测
- * Class IpLocationHelperAbstract
+ * IP 检测处理助手类
  *
  * @package yadjet\helpers
  * @author hiscaler <hiscaler@gmail.com>

@@ -7,7 +7,7 @@ use Exception;
 use InvalidArgumentException;
 
 /**
- * 时间处理助手
+ * 时间处理助手类
  *
  * @package yadjet\helpers
  * @author hiscaler <hiscaler@gmail.com>

@@ -3,7 +3,7 @@
 namespace yadjet\helpers;
 
 /**
- * 断言助手
+ * 断言处理助手类
  *
  * @package yadjet\helpers
  * @author hiscaler <hiscaler@gmail.com>

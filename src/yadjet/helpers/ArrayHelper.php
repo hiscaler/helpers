@@ -3,8 +3,9 @@
 namespace yadjet\helpers;
 
 /**
- * Array Helper
+ * 数组处理助手类
  *
+ * @package yadjet\helpers
  * @author hiscaler <hiscaler@gmail.com>
  */
 class ArrayHelper

@@ -6,8 +6,9 @@ use DateTime;
 use Exception;
 
 /**
- * 身份证辅助函数
+ * 身份证处理助手类
  *
+ * @package yadjet\helpers
  * @author hiscaler <hiscaler@gmail.com>
  */
 class IdentityCardHelper

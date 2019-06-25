@@ -5,8 +5,9 @@ namespace yadjet\helpers;
 use Exception;
 
 /**
- * String Helper
+ * 字符串处理助手类
  *
+ * @package yadjet\helpers
  * @author hiscaler <hiscaler@gmail.com>
  */
 class StringHelper

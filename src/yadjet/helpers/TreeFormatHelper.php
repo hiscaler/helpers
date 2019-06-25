@@ -3,8 +3,9 @@
 namespace yadjet\helpers;
 
 /**
- * Tree data to single array
+ * 树形数据处理助手类
  *
+ * @package yadjet\helpers
  * @author hiscalar <hiscaler@gmail.com>
  */
 class TreeFormatHelper

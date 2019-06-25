@@ -3,8 +3,9 @@
 namespace yadjet\helpers;
 
 /**
- * Util Helper
+ * 实用函数助手类
  *
+ * @package yadjet\helpers
  * @author hiscaler <hiscaler@gmail.com>
  */
 class UtilHelper
@@ -71,12 +72,12 @@ class UtilHelper
      * If $data is not an string, then returned value will always be false.
      * Serialized data is always a string.
      *
-     * @since 2.0.5
-     * @link https://core.trac.wordpress.org/browser/tags/4.3.1/src/wp-includes/functions.php WordPress
-     *
      * @param string $data Value to check to see if was serialized.
      * @param bool $strict Optional. Whether to be strict about the end of the string. Default true.
      * @return bool False if not serialized and true if it was.
+     * @link https://core.trac.wordpress.org/browser/tags/4.3.1/src/wp-includes/functions.php WordPress
+     *
+     * @since 2.0.5
      */
     public static function isSerialized($data, $strict = true)
     {
@@ -145,11 +146,11 @@ class UtilHelper
     /**
      * Check whether serialized data is of string type.
      *
+     * @param string $data Serialized data.
+     * @return bool False if not a serialized string, true if it is.
      * @since 2.0.5
      * @link https://core.trac.wordpress.org/browser/tags/4.3.1/src/wp-includes/functions.php WordPress
      *
-     * @param string $data Serialized data.
-     * @return bool False if not a serialized string, true if it is.
      */
     public static function isSerializedString($data)
     {
