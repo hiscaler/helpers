@@ -31,4 +31,18 @@ class IsHelperTest extends TestCase
         $this->assertEquals(IsHelper::image($this->base64Image), true);
     }
 
+    public function testXml()
+    {
+        $this->assertEquals(IsHelper::xml('<xml><return_code><![CDATA[FAIL]]></return_code>
+<return_msg><![CDATA[No Bill Exist]]></return_msg>
+<error_code><![CDATA[20002]]></error_code>
+</xml>
+'), true);
+        $this->assertEquals(IsHelper::xml('<xml><return_code><![CDATA[FAIL]]></return_code>
+<return_msg><![CDATA[No Bill Exist></return_msg>
+<error_code><![CDATA[20002]]></error_code>
+</xml>
+'), false);
+    }
+
 }

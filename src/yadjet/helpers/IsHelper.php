@@ -67,4 +67,24 @@ class IsHelper
         return $is;
     }
 
+    /**
+     * 判断是否为 XMl
+     *
+     * @param $s
+     * @return bool
+     */
+    public static function xml($s)
+    {
+        $xmlParser = xml_parser_create();
+        if (!xml_parse($xmlParser, $s, true)) {
+            xml_parser_free($xmlParser);
+
+            return false;
+        } else {
+            xml_parser_free($xmlParser);
+
+            return (json_decode(json_encode(simplexml_load_string($s)), true)) !== false;
+        }
+    }
+
 }
