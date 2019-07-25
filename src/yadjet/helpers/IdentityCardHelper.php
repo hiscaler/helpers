@@ -76,7 +76,7 @@ class IdentityCardHelper
         if (strlen($idCardNumber) != 15) {
             return false;
         } else {
-            // 如果身份证顺序码是996 997 998 999，这些是为百岁以上老人的特殊编码
+            // 如果身份证顺序码是 996 997 998 999，这些是为百岁以上老人的特殊编码
             if (array_search(substr($idCardNumber, 12, 3), array('996', '997', '998', '999')) !== false) {
                 $idCardNumber = substr($idCardNumber, 0, 6) . '18' . substr($idCardNumber, 6, 9);
             } else {
@@ -142,7 +142,8 @@ class IdentityCardHelper
     {
         $age = null;
         if (self::isValid($identityCardNumber)) {
-            $age = (new DateTime(self::getBirthday($identityCardNumber, 'Y-m-d')))->diff(new DateTime())->y;
+            $date = new DateTime(self::getBirthday($identityCardNumber, 'Y-m-d'));
+            $age = $date->diff(new DateTime())->y;
         }
 
         return $age;
