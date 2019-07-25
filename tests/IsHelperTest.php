@@ -45,4 +45,10 @@ class IsHelperTest extends TestCase
 '), false);
     }
 
+    public function testTimestamp()
+    {
+        $this->assertEquals(IsHelper::timestamp(111111), false);
+        $this->assertEquals(IsHelper::timestamp(1564019290), true);
+    }
+
 }
