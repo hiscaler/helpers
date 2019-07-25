@@ -105,4 +105,15 @@ class IsHelper
         return false;
     }
 
+    /**
+     * 验证是否为有效的 Unix 时间戳
+     *
+     * @param $timestamp
+     * @return bool
+     */
+    public static function timestamp($timestamp)
+    {
+        return (ctype_digit($timestamp) && strlen($timestamp) == 10 && strtotime(date('Y-m-d H:i:s', $timestamp)) === (int) $timestamp);
+    }
+
 }
