@@ -489,7 +489,7 @@ class CZ88IpLocationHelper implements IIpLocationHelper
     {
         $ip = new IP();
         $ip->setIp($ipAddress);
-        $response = IpLocation::getLocation($ipAddress, __DIR__ . '/qqwry.dat');
+        $response = IpLocation::getLocation($ipAddress);
         if (!isset($response['error'])) {
             $ip->setSuccess(true);
             $ip->setCountryName($response['country']);
