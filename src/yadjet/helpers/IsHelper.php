@@ -2,6 +2,8 @@
 
 namespace yadjet\helpers;
 
+use DateTime;
+
 /**
  * 断言处理助手类
  *
@@ -88,6 +90,17 @@ class IsHelper
     }
 
     /**
+     * 判断是否为 JSON 格式字符串
+     *
+     * @param $s
+     * @return bool
+     */
+    public static function json($s)
+    {
+        return !empty($s) && is_string($s) && is_array(json_decode($s, true)) && json_last_error() == 0;
+    }
+
+    /**
      * 判断当前是否在 CLI 模式下
      *
      * @return bool
@@ -114,6 +127,21 @@ class IsHelper
     public static function timestamp($timestamp)
     {
         return (ctype_digit($timestamp) && strlen($timestamp) == 10 && strtotime(date('Y-m-d H:i:s', $timestamp)) === (int) $timestamp);
+    }
+
+    /**
+     * 判断是否为有效的时间
+     *
+     * @param $value
+     * @return bool
+     */
+    public static function datetime($value)
+    {
+        if ($value instanceof DateTime) {
+            return true;
+        }
+
+        return !(strtotime($value) === false);
     }
 
 }

@@ -45,10 +45,24 @@ class IsHelperTest extends TestCase
 '), false);
     }
 
+    public function testJson()
+    {
+        $this->assertEquals(IsHelper::json(111111), false);
+        $this->assertEquals(IsHelper::json('{background-color:yellow;color:#000;padding:10px;width:650px;}'), false);
+        $this->assertEquals(IsHelper::json('{"background-color":"yellow","color":"#000","padding":"10px","width":"650px"}'), true);
+    }
+
     public function testTimestamp()
     {
         $this->assertEquals(IsHelper::timestamp(111111), false);
         $this->assertEquals(IsHelper::timestamp(1564019290), true);
+    }
+
+    public function testDatetime()
+    {
+        $this->assertEquals(IsHelper::datetime('2010-10-11'), true);
+        $this->assertEquals(IsHelper::datetime('2010-10-33'), false);
+        $this->assertEquals(IsHelper::datetime('1234567890'), false);
     }
 
 }
