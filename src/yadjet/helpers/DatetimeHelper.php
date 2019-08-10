@@ -354,10 +354,10 @@ class DatetimeHelper
     /**
      * 计算两个日期之间的相差天数
      *
-     * @deprecated
      * @param integer $begin 开始日期
      * @param integer $end 结束日期
      * @return integer
+     * @deprecated
      */
     public static function getDifferentDays($begin, $end)
     {
@@ -580,11 +580,11 @@ class DatetimeHelper
     /**
      * 减少月份处理，返回正确的年月值
      *
-     * @see DatetimeHelperTest::testDecreaseMonths()
      * @param $date
      * @param int $months
      * @param string $format
      * @return string
+     * @see DatetimeHelperTest::testDecreaseMonths()
      */
     public static function decreaseMonths($date, $months = 1, $format = "Y-m-d")
     {
@@ -611,11 +611,11 @@ class DatetimeHelper
      * increaseMonths(20180101, 2) 返回 20180301
      * increaseMonths(20180101, 2) 返回 20180301
      *
-     * @see DatetimeHelperTest::testIncreaseMonths()
      * @param $date
      * @param int $months
      * @param string $format
      * @return string
+     * @see DatetimeHelperTest::testIncreaseMonths()
      */
     public static function increaseMonths($date, $months = 1, $format = "Y-m-d")
     {
@@ -647,7 +647,7 @@ class DatetimeHelper
     public static function diff($beginDate, $endDate, $returnFormat = 'days')
     {
         $returnFormat = strtolower($returnFormat);
-        if (!in_array($returnFormat, ['y', 'm', 'd', 'h', 'i', 's', 'f', 'days'])) {
+        if (!in_array($returnFormat, array('y', 'm', 'd', 'h', 'i', 's', 'f', 'days'))) {
             throw new InvalidArgumentException("Invalid return format[y,m,d].");
         }
         $beginN = strlen($beginDate);
@@ -677,11 +677,12 @@ class DatetimeHelper
      * @param integer $endDate 结束日期
      * @param string $format
      * @return array
+     * @throws Exception
      */
     public static function range($beginDate, $endDate, $format = 'ym')
     {
         $format = strtolower($format);
-        if (!in_array($format, ['y', 'ym', 'ymd'])) {
+        if (!in_array($format, array('y', 'ym', 'ymd'))) {
             throw new InvalidArgumentException('Invalid format param value.');
         }
         if ($beginDate == $endDate) {
