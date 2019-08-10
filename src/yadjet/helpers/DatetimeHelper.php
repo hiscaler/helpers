@@ -527,6 +527,42 @@ class DatetimeHelper
     }
 
     /**
+     * 获取指定年份第几周的开始和结束时间戳
+     *
+     * @param $year
+     * @param $week
+     * @return array
+     */
+    public static function yearWeekRange($year, $week)
+    {
+        $yearStart = mktime(0, 0, 0, 1, 1, $year);
+        $yearEnd = mktime(23, 59, 59, 12, 31, $year);
+
+        // 判断第一天是否为第一周的开始
+        if (intval(date('W', $yearStart)) === 1) {
+            $start = $yearStart; // 把第一天做为第一周的开始
+        } else {
+            $week++;
+            $start = strtotime('+1 monday', $yearStart); // 把第一个周一作为开始
+        }
+
+        // 第几周的开始时间
+        if ($week === 1) {
+            $weekday['start'] = $start;
+        } else {
+            $weekday['start'] = strtotime('+' . ($week - 1) . ' monday', $start);
+        }
+
+        // 第几周的结束时间
+        $weekday['end'] = strtotime('+1 sunday', $weekday['start']) + 86399;
+        if (date('Y', $weekday['end']) != $year) {
+            $weekday['end'] = $yearEnd;
+        }
+
+        return array($weekday['start'], $weekday['end']);
+    }
+
+    /**
      * 返回月日期范围时间戳
      *
      * @param null $date

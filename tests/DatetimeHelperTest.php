@@ -65,4 +65,11 @@ class DatetimeHelperTest extends TestCase
         $this->assertEquals(DatetimeHelper::isTimestamp(1537926598), true);
         $this->assertEquals(DatetimeHelper::isTimestamp('abc'), false);
     }
+
+    public function testYearWeekRange()
+    {
+        $this->assertEquals(DatetimeHelper::yearWeekRange(2019, 1), array(1546272000, 1546790399));
+        $this->assertEquals(DatetimeHelper::yearWeekRange(2019, 2), array(1546790400, 1547395199));
+        $this->assertEquals(DatetimeHelper::yearWeekRange(2019, 3), array(1547395200, 1547999999));
+    }
 }
