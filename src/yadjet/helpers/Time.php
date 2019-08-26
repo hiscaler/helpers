@@ -37,7 +37,7 @@ class Time
      *
      * @param DateTimeInterface $d
      * @return bool|DateTimeImmutable|DateTimeInterface
-     * @throws \Exception
+     * @throws Exception
      */
     private static function _toDateTimeImmutable(DateTimeInterface $d)
     {
