@@ -527,39 +527,30 @@ class DatetimeHelper
     }
 
     /**
-     * 获取指定年份第几周的开始和结束时间戳
+     * 获取指定年份第几周的开始和结束时间戳（周日作为第一天）
      *
      * @param $year
      * @param $week
      * @return array
+     * @throws Exception
      */
     public static function yearWeekRange($year, $week)
     {
-        $yearStart = mktime(0, 0, 0, 1, 1, $year);
-        $yearEnd = mktime(23, 59, 59, 12, 31, $year);
-
-        // 判断第一天是否为第一周的开始
-        if (intval(date('W', $yearStart)) === 1) {
-            $start = $yearStart; // 把第一天做为第一周的开始
-        } else {
-            $week++;
-            $start = strtotime('+1 monday', $yearStart); // 把第一个周一作为开始
+        $d1 = new \DateTimeImmutable("$year-01-01");
+        $w = $d1->format('w');
+        if ($d1->format("W") == 1 && $w) {
+            $d1 = $d1->modify("- $w days");
+        }
+        $d2 = $d1->modify("+6 days");
+        if ($week != 1) {
+            $d1 = $d1->modify("+" . (($week - 1) * 7) . " days");
+            $d2 = $d1->modify("+6 days");
+            if ($d2->format('Y') != $year) {
+                $d2->setDate($year, 12, 31);
+            }
         }
 
-        // 第几周的开始时间
-        if ($week === 1) {
-            $weekday['start'] = $start;
-        } else {
-            $weekday['start'] = strtotime('+' . ($week - 1) . ' monday', $start);
-        }
-
-        // 第几周的结束时间
-        $weekday['end'] = strtotime('+1 sunday', $weekday['start']) + 86399;
-        if (date('Y', $weekday['end']) != $year) {
-            $weekday['end'] = $yearEnd;
-        }
-
-        return array($weekday['start'], $weekday['end']);
+        return array($d1->getTimestamp(), $d2->setTime(23, 59, 59)->getTimestamp());
     }
 
     /**

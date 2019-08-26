@@ -69,9 +69,11 @@ class DatetimeHelperTest extends TestCase
     public function testYearWeekRange()
     {
         $items = array(
-            array(
-                'year' => 2019, 'week' => 1, 'expected' => '2019-01-01/2019-01-06',
-            ),
+            array('year' => 2019, 'week' => 1, 'expected' => '2018-12-30/2019-01-05'),
+            array('year' => 2019, 'week' => 2, 'expected' => '2019-01-06/2019-01-12'),
+            array('year' => 2019, 'week' => 3, 'expected' => '2019-01-13/2019-01-19'),
+            array('year' => 2019, 'week' => 4, 'expected' => '2019-01-20/2019-01-26'),
+            array('year' => 2019, 'week' => 5, 'expected' => '2019-01-27/2019-02-02'),
         );
         foreach ($items as $item) {
             list($bt, $et) = DatetimeHelper::yearWeekRange($item['year'], $item['week']);
@@ -86,20 +88,6 @@ class DatetimeHelperTest extends TestCase
                 var_export($actual, true)
             );
         }
-    }
-
-    public function testToll()
-    {
-        $this->assertEquals(300, DatetimeHelper::toll('2018-11-02 0:0:0', 300));
-        $this->assertEquals(299, DatetimeHelper::toll('2018-11-02 0:0:1', 300));
-        $this->assertEquals(240, DatetimeHelper::toll('2018-11-02 0:1:0', 300));
-        $this->assertEquals(239, DatetimeHelper::toll('2018-11-02 0:1:1', 300));
-        $this->assertEquals(1, DatetimeHelper::toll('2018-11-02 0:4:59', 300));
-        $this->assertEquals(300, DatetimeHelper::toll('2018-11-02 0:5:0', 300));
-        $this->assertEquals(241, DatetimeHelper::toll('2018-11-02 0:5:59', 300));
-        $this->assertEquals(1, DatetimeHelper::toll('2018-11-02 0:5:29', 330));
-        $this->assertEquals(10, DatetimeHelper::toll('2018-11-02 0:5:20', 330));
-        $this->assertEquals(10, DatetimeHelper::toll('2018-11-02 0:9:20', 600));
     }
 
 }
