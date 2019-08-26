@@ -19,50 +19,50 @@ class IsHelperTest extends TestCase
 
     public function testImage()
     {
-        $this->assertEquals(IsHelper::image('http://www.example.com/images/image/124/12460449.jpg?t=1537200428#a'), false);
-        $this->assertEquals(IsHelper::image($this->base64Image), true);
-        $this->assertEquals(IsHelper::image('/images/a.jpg'), false);
-        $this->assertEquals(IsHelper::image(__DIR__ . '/IsHelperTest.php'), false);
-        $this->assertEquals(IsHelper::image(__DIR__ . '/test.png'), true);
+        $this->assertEquals(false, IsHelper::image('http://www.example.com/images/image/124/12460449.jpg?t=1537200428#a'));
+        $this->assertEquals(true, IsHelper::image($this->base64Image));
+        $this->assertEquals(false, IsHelper::image('/images/a.jpg'));
+        $this->assertEquals(false, IsHelper::image(__DIR__ . '/IsHelperTest.php'));
+        $this->assertEquals(true, IsHelper::image(__DIR__ . '/test.png'));
     }
 
     public function testBase64Image()
     {
-        $this->assertEquals(IsHelper::image($this->base64Image), true);
+        $this->assertEquals(true, IsHelper::image($this->base64Image));
     }
 
     public function testXml()
     {
-        $this->assertEquals(IsHelper::xml('<xml><return_code><![CDATA[FAIL]]></return_code>
+        $this->assertEquals(true, IsHelper::xml('<xml><return_code><![CDATA[FAIL]]></return_code>
 <return_msg><![CDATA[No Bill Exist]]></return_msg>
 <error_code><![CDATA[20002]]></error_code>
 </xml>
-'), true);
-        $this->assertEquals(IsHelper::xml('<xml><return_code><![CDATA[FAIL]]></return_code>
+'));
+        $this->assertEquals(false, IsHelper::xml('<xml><return_code><![CDATA[FAIL]]></return_code>
 <return_msg><![CDATA[No Bill Exist></return_msg>
 <error_code><![CDATA[20002]]></error_code>
 </xml>
-'), false);
+'));
     }
 
     public function testJson()
     {
-        $this->assertEquals(IsHelper::json(111111), false);
-        $this->assertEquals(IsHelper::json('{background-color:yellow;color:#000;padding:10px;width:650px;}'), false);
-        $this->assertEquals(IsHelper::json('{"background-color":"yellow","color":"#000","padding":"10px","width":"650px"}'), true);
+        $this->assertEquals(false, IsHelper::json(111111));
+        $this->assertEquals(false, IsHelper::json('{background-color:yellow;color:#000;padding:10px;width:650px;}'));
+        $this->assertEquals(true, IsHelper::json('{"background-color":"yellow","color":"#000","padding":"10px","width":"650px"}'));
     }
 
     public function testTimestamp()
     {
-        $this->assertEquals(IsHelper::timestamp(111111), false);
-        $this->assertEquals(IsHelper::timestamp(1564019290), true);
+        $this->assertEquals(false, IsHelper::timestamp(111111));
+        $this->assertEquals(true, IsHelper::timestamp(1564019290));
     }
 
     public function testDatetime()
     {
-        $this->assertEquals(IsHelper::datetime('2010-10-11'), true);
-        $this->assertEquals(IsHelper::datetime('2010-10-33'), false);
-        $this->assertEquals(IsHelper::datetime('1234567890'), false);
+        $this->assertEquals(true, IsHelper::datetime('2010-10-11'));
+        $this->assertEquals(false, IsHelper::datetime('2010-10-33'));
+        $this->assertEquals(false, IsHelper::datetime('1234567890'));
     }
 
 }

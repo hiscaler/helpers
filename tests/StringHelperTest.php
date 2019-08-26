@@ -11,28 +11,28 @@ class StringHelperTest extends TestCase
 
     public function testIsEmpty()
     {
-        $this->assertEquals(StringHelper::isEmpty(' '), true);
-        $this->assertEquals(StringHelper::isEmpty('　　　　　'), true);
-        $this->assertEquals(StringHelper::isEmpty('　　　　　', ''), false);
-        $this->assertEquals(StringHelper::isEmpty(null), true);
-        $this->assertEquals(StringHelper::isEmpty(0), false);
-        $this->assertEquals(StringHelper::isEmpty('0', '\x30'), true);
-        $this->assertEquals(StringHelper::isEmpty(''), true);
+        $this->assertEquals(true, StringHelper::isEmpty(' '));
+        $this->assertEquals(true, StringHelper::isEmpty('　　　　　'), true);
+        $this->assertEquals(false, StringHelper::isEmpty('　　　　　', ''));
+        $this->assertEquals(true, StringHelper::isEmpty(null));
+        $this->assertEquals(false, StringHelper::isEmpty(0));
+        $this->assertEquals(true, StringHelper::isEmpty('0', '\x30'));
+        $this->assertEquals(true, StringHelper::isEmpty(''));
     }
 
     public function testRemoveEmoji()
     {
-        $this->assertEquals(StringHelper::removeEmoji("👶hi"), "hi");
-        $this->assertEquals(StringHelper::removeEmoji("👰b"), "b");
-        $this->assertEquals(StringHelper::removeEmoji("a👰"), "a");
-        $this->assertEquals(StringHelper::removeEmoji("a👰b"), "ab");
-        $this->assertEquals(StringHelper::removeEmoji("👉🤟"), "");
-        $this->assertEquals(StringHelper::removeEmoji("1👉2🤟👉👰3🤟👉👶你好🤟"), "123你好");
-        $this->assertEquals(StringHelper::removeEmoji("1👉2🤟👉👰3🤟👉👶你  　　好🤟"), "123你好");
-        $this->assertEquals(StringHelper::removeEmoji(" "), "");
-        $this->assertEquals(StringHelper::removeEmoji(" ", false), " ");
-        $this->assertEquals(StringHelper::removeEmoji("　", false), "　");
-        $this->assertEquals(StringHelper::removeEmoji("　", true), "");
+        $this->assertEquals('hi', StringHelper::removeEmoji("👶hi"));
+        $this->assertEquals("b", StringHelper::removeEmoji("👰b"));
+        $this->assertEquals("a", StringHelper::removeEmoji("a👰"));
+        $this->assertEquals("ab", StringHelper::removeEmoji("a👰b"));
+        $this->assertEquals("", StringHelper::removeEmoji("👉🤟"));
+        $this->assertEquals("123你好", StringHelper::removeEmoji("1👉2🤟👉👰3🤟👉👶你好🤟"));
+        $this->assertEquals("123你好", StringHelper::removeEmoji("1👉2🤟👉👰3🤟👉👶你  　　好🤟"));
+        $this->assertEquals("", StringHelper::removeEmoji(" "));
+        $this->assertEquals(" ", StringHelper::removeEmoji(" ", false));
+        $this->assertEquals("　", StringHelper::removeEmoji("　", false));
+        $this->assertEquals("", StringHelper::removeEmoji("　", true));
     }
 
 }

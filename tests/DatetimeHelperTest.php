@@ -17,53 +17,53 @@ class DatetimeHelperTest extends TestCase
 
     public function testIncreaseMonths()
     {
-        $this->assertEquals(DatetimeHelper::increaseMonths(201811, 1), 201812);
-        $this->assertEquals(DatetimeHelper::increaseMonths(201811, 2), 201901);
-        $this->assertEquals(DatetimeHelper::increaseMonths(201811, 11), 201910);
-        $this->assertEquals(DatetimeHelper::increaseMonths(201811, 10), 201909);
-        $this->assertEquals(DatetimeHelper::increaseMonths(20181101, 10), 20190901);
-        $this->assertEquals(DatetimeHelper::increaseMonths("2018-01-02 15:12:13", 10, "Y-m-d H:i:s"), "2018-11-02 15:12:13");
-        $this->assertEquals(DatetimeHelper::increaseMonths("2018-01-04", 20, "Y-m-d"), "2019-09-04");
+        $this->assertEquals(201812, DatetimeHelper::increaseMonths(201811, 1));
+        $this->assertEquals(201901, DatetimeHelper::increaseMonths(201811, 2));
+        $this->assertEquals(201910, DatetimeHelper::increaseMonths(201811, 11));
+        $this->assertEquals(201909, DatetimeHelper::increaseMonths(201811, 10));
+        $this->assertEquals(20190901, DatetimeHelper::increaseMonths(20181101, 10));
+        $this->assertEquals("2018-11-02 15:12:13", DatetimeHelper::increaseMonths("2018-01-02 15:12:13", 10, "Y-m-d H:i:s"));
+        $this->assertEquals("2019-09-04", DatetimeHelper::increaseMonths("2018-01-04", 20, "Y-m-d"));
     }
 
     public function testDecreaseMonths()
     {
-        $this->assertEquals(DatetimeHelper::decreaseMonths(201811, 1), 201810);
-        $this->assertEquals(DatetimeHelper::decreaseMonths(201811, 2), 201809);
-        $this->assertEquals(DatetimeHelper::decreaseMonths(201811, 11), 201712);
-        $this->assertEquals(DatetimeHelper::decreaseMonths(201811, 10), 201801);
-        $this->assertEquals(DatetimeHelper::decreaseMonths(20181101, 10), 20180101);
-        $this->assertEquals(DatetimeHelper::decreaseMonths("2018-01-02 15:12:13", 10, "Y-m-d H:i:s"), "2017-03-02 15:12:13");
-        $this->assertEquals(DatetimeHelper::decreaseMonths("2018-01-04", 20, "Y-m-d"), "2016-05-04");
+        $this->assertEquals(201810, DatetimeHelper::decreaseMonths(201811, 1));
+        $this->assertEquals(201809, DatetimeHelper::decreaseMonths(201811, 2));
+        $this->assertEquals(201712, DatetimeHelper::decreaseMonths(201811, 11));
+        $this->assertEquals(201801, DatetimeHelper::decreaseMonths(201811, 10));
+        $this->assertEquals(20180101, DatetimeHelper::decreaseMonths(20181101, 10));
+        $this->assertEquals("2017-03-02 15:12:13", DatetimeHelper::decreaseMonths("2018-01-02 15:12:13", 10, "Y-m-d H:i:s"));
+        $this->assertEquals("2016-05-04", DatetimeHelper::decreaseMonths("2018-01-04", 20, "Y-m-d"));
     }
 
     public function testDiff()
     {
-        $this->assertEquals(DatetimeHelper::diff(201801, 201802), 31);
-        $this->assertEquals(DatetimeHelper::diff(201801, 201802, 'y'), 0);
-        $this->assertEquals(DatetimeHelper::diff(201801, 201802, 'm'), 1);
-        $this->assertEquals(DatetimeHelper::diff(201801, 201912, 'm'), 10);
-        $this->assertEquals(DatetimeHelper::diff(201801, 201802, 'd'), 0);
+        $this->assertEquals(31, DatetimeHelper::diff(201801, 201802));
+        $this->assertEquals(0, DatetimeHelper::diff(201801, 201802, 'y'));
+        $this->assertEquals(1, DatetimeHelper::diff(201801, 201802, 'm'));
+        $this->assertEquals(10, DatetimeHelper::diff(201801, 201912, 'm'));
+        $this->assertEquals(0, DatetimeHelper::diff(201801, 201802, 'd'));
     }
 
     public function testRange()
     {
-        $this->assertNotSame(DatetimeHelper::range(201801, 201812), array(201801, 201802), 'Not Same Year month');
-        $this->assertSame(DatetimeHelper::range(201801, 201803), array(201801, 201802, 201803), 'Same Year month');
-        $this->assertSame(DatetimeHelper::range(201801, 201903), array(201801, 201802, 201803, 201804, 201805, 201806, 201807, 201808, 201809, 201810, 201811, 201812, 201901, 201902, 201903), 'Same Year month');
-        $this->assertSame(DatetimeHelper::range(201801, 201803, 'y'), array(2018), 'Same Year');
-        $this->assertSame(DatetimeHelper::range(201801, 201902, 'y'), array(2018, 2019), 'Same Year');
-        $this->assertSame(DatetimeHelper::range(20180102, 20180103, 'ymd'), array(20180102, 20180103), 'Same Year Month Day');
-        $this->assertSame(DatetimeHelper::range(20180926, 20181001, 'ymd'), array(20180926, 20180927, 20180928, 20180929, 20180930, 20181001), 'Same Year Month Day');
+        $this->assertNotSame(array(201801, 201802), DatetimeHelper::range(201801, 201812), 'Not Same Year month');
+        $this->assertSame(array(201801, 201802, 201803), DatetimeHelper::range(201801, 201803), 'Same Year month');
+        $this->assertSame(array(201801, 201802, 201803, 201804, 201805, 201806, 201807, 201808, 201809, 201810, 201811, 201812, 201901, 201902, 201903), DatetimeHelper::range(201801, 201903), 'Same Year month');
+        $this->assertSame(array(2018), DatetimeHelper::range(201801, 201803, 'y'), 'Same Year');
+        $this->assertSame(array(2018, 2019), DatetimeHelper::range(201801, 201902, 'y'), 'Same Year');
+        $this->assertSame(array(20180102, 20180103), DatetimeHelper::range(20180102, 20180103, 'ymd'), 'Same Year Month Day');
+        $this->assertSame(array(20180926, 20180927, 20180928, 20180929, 20180930, 20181001), DatetimeHelper::range(20180926, 20181001, 'ymd'), 'Same Year Month Day');
     }
 
     public function testIsTimestamp()
     {
-        $this->assertEquals(DatetimeHelper::isTimestamp(111), false);
-        $this->assertEquals(DatetimeHelper::isTimestamp(time()), true);
-        $this->assertEquals(DatetimeHelper::isTimestamp('1537926598'), true);
-        $this->assertEquals(DatetimeHelper::isTimestamp(1537926598), true);
-        $this->assertEquals(DatetimeHelper::isTimestamp('abc'), false);
+        $this->assertEquals(false, DatetimeHelper::isTimestamp(111));
+        $this->assertEquals(true, DatetimeHelper::isTimestamp(time()));
+        $this->assertEquals(true, DatetimeHelper::isTimestamp('1537926598'));
+        $this->assertEquals(true, DatetimeHelper::isTimestamp(1537926598));
+        $this->assertEquals(false, DatetimeHelper::isTimestamp('abc'));
     }
 
     public function testYearWeekRange()
@@ -87,4 +87,19 @@ class DatetimeHelperTest extends TestCase
             );
         }
     }
+
+    public function testToll()
+    {
+        $this->assertEquals(300, DatetimeHelper::toll('2018-11-02 0:0:0', 300));
+        $this->assertEquals(299, DatetimeHelper::toll('2018-11-02 0:0:1', 300));
+        $this->assertEquals(240, DatetimeHelper::toll('2018-11-02 0:1:0', 300));
+        $this->assertEquals(239, DatetimeHelper::toll('2018-11-02 0:1:1', 300));
+        $this->assertEquals(1, DatetimeHelper::toll('2018-11-02 0:4:59', 300));
+        $this->assertEquals(300, DatetimeHelper::toll('2018-11-02 0:5:0', 300));
+        $this->assertEquals(241, DatetimeHelper::toll('2018-11-02 0:5:59', 300));
+        $this->assertEquals(1, DatetimeHelper::toll('2018-11-02 0:5:29', 330));
+        $this->assertEquals(10, DatetimeHelper::toll('2018-11-02 0:5:20', 330));
+        $this->assertEquals(10, DatetimeHelper::toll('2018-11-02 0:9:20', 600));
+    }
+
 }

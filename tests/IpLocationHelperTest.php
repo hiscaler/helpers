@@ -21,10 +21,10 @@ class IpLocationHelperTest extends TestCase
         $ipHelper->setEndpoint(TaobaoIpLocationHelper::class)->setIp('85.159.145.165');
         $ip = $ipHelper->detect();
         if ($ip->getSuccess()) {
-            $this->assertEquals($ip->getCountryId(), 'IT');
+            $this->assertEquals('IT', $ip->getCountryId());
         } else {
             $ip = $ipHelper->setEndpoint(CZ88IpLocationHelper::class)->detect();
-            $this->assertEquals($ip->getCountryName(), '意大利');
+            $this->assertEquals('意大利', $ip->getCountryName());
         }
     }
 
@@ -33,9 +33,9 @@ class IpLocationHelperTest extends TestCase
         $ipHelper = new IpLocationHelper();
         $ipHelper->setIp('140.205.172.5')->setEndpoint(get_class(new CZ88IpLocationHelper()));
         $ip = $ipHelper->detect();
-        $this->assertEquals($ip->getSuccess(), true);
-        $this->assertEquals($ip->getCountryName(), '中国');
-        $this->assertEquals($ip->getProvinceName(), '浙江');
+        $this->assertEquals(true, $ip->getSuccess());
+        $this->assertEquals('中国', $ip->getCountryName());
+        $this->assertEquals('浙江', $ip->getProvinceName());
     }
 
     public function testPcOnlineIpLocationHelper()
@@ -43,9 +43,9 @@ class IpLocationHelperTest extends TestCase
         $ipHelper = new IpLocationHelper();
         $ipHelper->setIp('59.42.52.174')->setEndpoint(get_class(new PcOnlineIpLocationHelper()));
         $ip = $ipHelper->detect();
-        $this->assertEquals($ip->getSuccess(), true);
-        $this->assertEquals($ip->getProvinceName(), '广东省');
-        $this->assertEquals($ip->getCityName(), '广州市');
+        $this->assertEquals(true, $ip->getSuccess());
+        $this->assertEquals('广东省', $ip->getProvinceName());
+        $this->assertEquals('广州市', $ip->getCityName());
     }
 
     public function testMisc()
@@ -56,8 +56,8 @@ class IpLocationHelperTest extends TestCase
             get_class(new TaobaoIpLocationHelper()),
             get_class(new PcOnlineIpLocationHelper()),
         ))->detect();
-        $this->assertEquals($ip->getSuccess(), true);
-        $this->assertEquals(mb_substr($ip->getProvinceName(), 0, 2), '广东');
+        $this->assertEquals(true, $ip->getSuccess());
+        $this->assertEquals('广东', mb_substr($ip->getProvinceName(), 0, 2));
     }
 
     public function testFailed()
@@ -65,7 +65,7 @@ class IpLocationHelperTest extends TestCase
         $ipHelper = new IpLocationHelper();
         $ipHelper->setIp('1')->setEndpoint(get_class(new CZ88IpLocationHelper()));
         $ip = $ipHelper->detect();
-        $this->assertEquals($ip->getSuccess(), false);
+        $this->assertEquals(false, $ip->getSuccess());
     }
 
 }

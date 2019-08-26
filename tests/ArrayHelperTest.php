@@ -17,21 +17,21 @@ class ArrayHelperTest extends TestCase
 
     public function testRemoveEmpty()
     {
-        $a = ['', '　', ' ', 'a', '1', 0, '0'];
+        $a = array('', '　', ' ', 'a', '1', 0, '0');
         ArrayHelper::removeEmpty($a, true);
-        $this->assertEquals(count($a), 5);
+        $this->assertEquals(5, count($a));
 
-        $a = ['', '　', ' ', 'a', '1', 0, '0'];
+        $a = array('', '　', ' ', 'a', '1', 0, '0');
         ArrayHelper::removeEmpty($a, true, '\x30'); // \x30 is `0`
-        $this->assertEquals(count($a), 3);
+        $this->assertEquals(3, count($a));
 
-        $a = ['', '　', ' ', 'a', '1', 0, '0'];
+        $a = array('', '　', ' ', 'a', '1', 0, '0');
         ArrayHelper::removeEmpty($a, true, '\x30　'); // \x30 is `0`
-        $this->assertSame(array_values($a), ['a', '1']);
+        $this->assertSame(array('a', '1'), array_values($a));
 
-        $a = ['', '　', ' ', 'a', '1', 0, '0'];
+        $a = array('', '　', ' ', 'a', '1', 0, '0');
         ArrayHelper::removeEmpty($a, false, '\x30　'); // \x30 is `0`
-        $this->assertEquals(count($a), 6);
+        $this->assertEquals(6, count($a));
     }
 
     public function testGetColumn()
@@ -40,14 +40,14 @@ class ArrayHelperTest extends TestCase
             array('id' => 1, 'value' => '1-1'),
             array('id' => 2, 'value' => '2-1'),
         );
-        $this->assertSame(ArrayHelper::getColumn($rows, 'id'), [1, 2]);
-        $this->assertSame(ArrayHelper::getColumn($rows, 'value'), ['1-1', '2-1']);
+        $this->assertSame(array(1, 2), ArrayHelper::getColumn($rows, 'id'));
+        $this->assertSame(array('1-1', '2-1'), ArrayHelper::getColumn($rows, 'value'));
 
         $rows = array(
-            array('id' => 1, 'children' => ['id' => 11]),
-            array('id' => 2, 'children' => ['id' => 22]),
+            array('id' => 1, 'children' => array('id' => 11)),
+            array('id' => 2, 'children' => array('id' => 22)),
         );
-        $this->assertSame(ArrayHelper::getColumn($rows, 'children'), [['id' => 11], ['id' => 22]]);
+        $this->assertSame(array(array('id' => 11), array('id' => 22)), ArrayHelper::getColumn($rows, 'children'));
     }
 
 }
