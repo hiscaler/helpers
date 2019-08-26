@@ -101,6 +101,52 @@ class Time
     }
 
     /**
+     * 指定日期季度起始时间
+     *
+     * @param DateTimeInterface $d
+     * @return array|bool
+     * @throws Exception
+     */
+    public static function quarter(DateTimeInterface $d)
+    {
+        try {
+            $d0 = self::_toDateTimeImmutable($d);
+            switch ($d0->format("n")) {
+                case 1:
+                case 2:
+                case 3:
+                    $m = 1;
+                    break;
+
+                case 4:
+                case 5:
+                case 6:
+                    $m = 4;
+                    break;
+
+                case 7:
+                case 8:
+                case 9:
+                    $m = 7;
+                    break;
+
+                default:
+                    $m = 10;
+                    break;
+            }
+
+            $b = $d0->setDate($d0->format('Y'), $m, 1)
+                ->setTime(0, 0, 0);
+            $e = $b->modify("+3 month")->modify("-1 day")
+                ->setTime(23, 59, 59);
+
+            return self::_parse($b, $e, $d);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
      * 指定月份起始时间
      *
      * @param DateTimeInterface $d
