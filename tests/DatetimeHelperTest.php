@@ -48,13 +48,13 @@ class DatetimeHelperTest extends TestCase
 
     public function testRange()
     {
-        $this->assertNotSame(DatetimeHelper::range(201801, 201812), [201801, 201802], 'Not Same Year month');
-        $this->assertSame(DatetimeHelper::range(201801, 201803), [201801, 201802, 201803], 'Same Year month');
-        $this->assertSame(DatetimeHelper::range(201801, 201903), [201801, 201802, 201803, 201804, 201805, 201806, 201807, 201808, 201809, 201810, 201811, 201812, 201901, 201902, 201903], 'Same Year month');
-        $this->assertSame(DatetimeHelper::range(201801, 201803, 'y'), [2018], 'Same Year');
-        $this->assertSame(DatetimeHelper::range(201801, 201902, 'y'), [2018, 2019], 'Same Year');
-        $this->assertSame(DatetimeHelper::range(20180102, 20180103, 'ymd'), [20180102, 20180103], 'Same Year Month Day');
-        $this->assertSame(DatetimeHelper::range(20180926, 20181001, 'ymd'), [20180926, 20180927, 20180928, 20180929, 20180930, 20181001], 'Same Year Month Day');
+        $this->assertNotSame(DatetimeHelper::range(201801, 201812), array(201801, 201802), 'Not Same Year month');
+        $this->assertSame(DatetimeHelper::range(201801, 201803), array(201801, 201802, 201803), 'Same Year month');
+        $this->assertSame(DatetimeHelper::range(201801, 201903), array(201801, 201802, 201803, 201804, 201805, 201806, 201807, 201808, 201809, 201810, 201811, 201812, 201901, 201902, 201903), 'Same Year month');
+        $this->assertSame(DatetimeHelper::range(201801, 201803, 'y'), array(2018), 'Same Year');
+        $this->assertSame(DatetimeHelper::range(201801, 201902, 'y'), array(2018, 2019), 'Same Year');
+        $this->assertSame(DatetimeHelper::range(20180102, 20180103, 'ymd'), array(20180102, 20180103), 'Same Year Month Day');
+        $this->assertSame(DatetimeHelper::range(20180926, 20181001, 'ymd'), array(20180926, 20180927, 20180928, 20180929, 20180930, 20181001), 'Same Year Month Day');
     }
 
     public function testIsTimestamp()
@@ -68,8 +68,23 @@ class DatetimeHelperTest extends TestCase
 
     public function testYearWeekRange()
     {
-        $this->assertEquals(DatetimeHelper::yearWeekRange(2019, 1), array(1546272000, 1546790399));
-        $this->assertEquals(DatetimeHelper::yearWeekRange(2019, 2), array(1546790400, 1547395199));
-        $this->assertEquals(DatetimeHelper::yearWeekRange(2019, 3), array(1547395200, 1547999999));
+        $items = array(
+            array(
+                'year' => 2019, 'week' => 1, 'expected' => '2019-01-01/2019-01-06',
+            ),
+        );
+        foreach ($items as $item) {
+            list($bt, $et) = DatetimeHelper::yearWeekRange($item['year'], $item['week']);
+            $expected = explode('/', $item['expected']);
+            $datetime = new \DateTime();
+            $b = $datetime->setTimestamp($bt)->format("Y-m-d");
+            $e = $datetime->setTimestamp($et)->format("Y-m-d");
+            $actual = array($b, $e);
+            $this->assertEquals($expected, $actual, "{$item['year']} 年第 {$item['week']} 周 期待：" .
+                var_export($expected, true) .
+                ", 实际：" .
+                var_export($actual, true)
+            );
+        }
     }
 }
