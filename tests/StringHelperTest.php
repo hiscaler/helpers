@@ -35,4 +35,11 @@ class StringHelperTest extends TestCase
         $this->assertEquals("", StringHelper::removeEmoji("　", true));
     }
 
+    public function testTrim()
+    {
+        $this->assertEquals('', StringHelper::trim("   "));
+        $this->assertEquals('', StringHelper::trim("　　   　　　　　　　"));
+        $this->assertEquals("b", StringHelper::removeEmoji("　　b　　 "));
+    }
+
 }

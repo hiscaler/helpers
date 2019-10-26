@@ -440,6 +440,17 @@ class StringHelper
         return str_replace(' ', '', $string);
     }
 
+    /**
+     * 移除左右空格（包括中文和英文空格）
+     *
+     * @param $s
+     * @return string
+     */
+    public static function trim($s)
+    {
+        return trim($s, "　 \t\n\r\0\x0B");
+    }
+
     public static function truncateText($text, $length = 30, $truncate_string = '...', $truncate_lastspace = false)
     {
         if ($text == '') {
