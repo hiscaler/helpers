@@ -245,38 +245,60 @@ class UrlHelper
      * Url 内容解码
      *
      * @param $url
-     * @param int $times
      * @return mixed
      */
-    public static function decode($url, $times = 1)
+    public static function decode($url)
     {
-        if ($times <= 0) {
-            return $url;
-        }
-
-        $query = self::query($url);
-        $pairs = array();
-        if ($query) {
-            foreach (explode('&', $query) as $item) {
-                if (stripos($item, '=') !== false) {
-                    list($k, $v) = explode('=', $item);
-                    if ($k === '') {
-                        // e.g. a=1&=2
-                        $v = self::_decode($item, $times);
+        if (preg_match("/%[A-Z0-9%+-_]/i", $url)) {
+            $url = preg_replace('/%EF%BF%BD/', '', $url); // 移除错误的编码
+            $url = rawurldecode($url);
+            if (preg_match("/%[A-Z0-9%+-_]/i", $url)) {
+                $times = 1;
+            } else {
+                $times = 0;
+            }
+            // 判断是否多次编码
+            if (($index = strpos($url, "%25")) !== false) {
+                $index += 3;
+                $times++;
+                for ($i = 1, $n = strlen($url) - $index; $i <= $n; $i++) {
+                    if (substr($url, $index, 2) == '25') {
+                        $times++;
+                        $index += 2;
                     } else {
-                        // e.g. a=1&b=2 or a=1&b=
-                        $v = "$k=" . self::_decode($v, $times);
+                        break;
                     }
-                } else {
-                    // e.g. a=1&2
-                    $v = self::_decode($item, $times);
                 }
-                $pairs[] = $v;
+            }
+            $query = self::query($url);
+            $pairs = array();
+            if ($query) {
+                foreach (explode('&', $query) as $item) {
+                    if (stripos($item, '=') !== false) {
+                        list($k, $v) = explode('=', $item);
+                        if ($k === '') {
+                            // e.g. a=1&=2
+                            $v = self::_decode($item, $times);
+                        } else {
+                            // e.g. a=1&b=2 or a=1&b=
+                            $v = "$k=" . self::_decode($v, $times);
+                        }
+                    } else {
+                        // e.g. a=1&2
+                        $v = self::_decode($item, $times);
+                    }
+                    $pairs[] = $v;
+                }
+            }
+
+            if ($pairs) {
+                $url = str_replace($query, implode('&', $pairs), $url);
             }
         }
 
-        if ($pairs) {
-            $url = str_replace($query, implode('&', $pairs), $url);
+        if (preg_match('/[' . chr(0xa1) . '-' . chr(0xff) . ']+$/', $url)) {
+            // 判断是否包含中文，包含的话则需要转码
+            $url = iconv('GBK', 'UTF-8//IGNORE', $url);
         }
 
         return $url;

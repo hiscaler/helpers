@@ -81,13 +81,21 @@ class UrlHelperTest extends TestCase
 
     public function testDecode()
     {
+        // Normal
         $this->assertEquals("http://www.example.com", UrlHelper::decode('http://www.example.com'));
+        $this->assertEquals("http://www.example.com?q=%", UrlHelper::decode('http://www.example.com?q=%'));
+        $this->assertEquals("http://www.example.com?q=%a", UrlHelper::decode('http://www.example.com?q=%a'));
         $this->assertEquals("http://www.example.com?a=1&b=2&c&d=", UrlHelper::decode('http://www.example.com?a=1&b=2&c&d='));
         $this->assertEquals("http://www.example.coms?q=学习&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1", UrlHelper::decode('http://www.example.coms?q=学习&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1'));
+        // Javascript encodeURI
         $this->assertEquals("http://www.example.coms?q=学习&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1", UrlHelper::decode('http://www.example.coms?q=%E5%AD%A6%E4%B9%A0&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1'));
         $this->assertEquals("http://www.example.coms?q=学习&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1", UrlHelper::decode('http://www.example.coms?q=%E5%AD%A6%E4%B9%A0&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1', 2));
-        $this->assertEquals("http://www.example.coms?q=学习&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1", UrlHelper::decode('http://www.example.coms?q=%25E5%25AD%25A6%25E4%25B9%25A0&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1', 2));
-        $this->assertNotEquals("http://www.example.coms?q=学习&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1", UrlHelper::decode('http://www.example.coms?q=%25E5%25AD%25A6%25E4%25B9%25A0&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1', 1));
+        // 编码一次
+        $this->assertEquals("http://www.example.coms?q=学习&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1", UrlHelper::decode('http://www.example.coms?q=%25E5%25AD%25A6%25E4%25B9%25A0&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1'));
+        // 编码两次
+        $this->assertEquals("http://www.example.coms?q=学习&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1", UrlHelper::decode('http://www.example.coms?q=%2525E5%2525AD%2525A6%2525E4%2525B9%2525A0&uc_param_str=dnntnwvepffrgibijbprsvdsme&from=wh20010&uc_sm=1'));
+        $this->assertEquals("http://www.example.com/bj/?span=gz-ya10bjbhbjtjc&unit=y-a-zmb-yjbl6.23&key=没戮么", UrlHelper::decode('http://www.example.com/bj/?span=%EF%BF%BD%EF%BF%BDgz-y%EF%BF%BD%EF%BF%BDa10bjbhbjtjc&unit=y-a-zmb-yjbl6.23&key=%C3%BB%EF%BF%BD%EF%BF%BD%EF%BF%BD%C2%BE%EF%BF%BD%EF%BF%BD%EF%BF%BD%C3%B4%EF%BF%BD%EF%BF%BD'));
+        $this->assertEquals("http://www.example.com/yjbt/?plan=【gz-l】yjbd&unit=zqyjbd&key=经期时间长", UrlHelper::decode('http://www.example.com/yjbt/?plan=%A1%BEgz-l%A1%BFyjbd&unit=zqyjbd&key=%BE%AD%C6%DA%CA%B1%BC%E4%B3%A4'));
     }
 
     public function testIsAbsolute()
