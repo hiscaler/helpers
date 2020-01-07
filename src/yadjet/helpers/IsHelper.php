@@ -144,4 +144,14 @@ class IsHelper
         return !(strtotime($value) === false);
     }
 
+    /**
+     * 判断是否为 windows 系统
+     *
+     * @return bool
+     */
+    public static function windows()
+    {
+        return DIRECTORY_SEPARATOR === '\\';
+    }
+
 }
