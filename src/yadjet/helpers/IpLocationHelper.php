@@ -467,7 +467,14 @@ class PcOnlineIpLocationHelper implements IIpLocationHelper
                 $ip->setCityName(isset($response['city']) ? $response['city'] : null);
                 $ip->setRegionId(isset($response['regionCode']) ? $response['regionCode'] : null);
                 $ip->setRegionName(isset($response['region']) ? $response['region'] : null);
-                $ip->setAddress(isset($response['addr']) ? $response['addr'] : null);
+                $address = isset($response['addr']) ? $response['addr'] : null;
+                if ($address) {
+                    $ip->setAddress($address);
+                    if (stripos($address, ' ') !== false) {
+                        $s = explode(' ', $address);
+                        $ip->setIspName(end($s));
+                    }
+                }
             }
         }
 
