@@ -427,4 +427,29 @@ class ArrayHelper
         return $ret;
     }
 
+    /**
+     * 判断是否为一维数组
+     *
+     * @param $array
+     * @return bool
+     */
+    public static function isOneDimension($array)
+    {
+        if (!is_array($array)) {
+            return false;
+        }
+
+        if (empty($array)) {
+            return true;
+        }
+
+        foreach ($array as $key => $value) {
+            if (!is_int($key) || is_array($value)) {
+                return false;
+            }
+        }
+
+        return array_keys($array) === range(0, count($array) - 1);
+    }
+
 }

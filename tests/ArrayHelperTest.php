@@ -50,4 +50,12 @@ class ArrayHelperTest extends TestCase
         $this->assertSame(array(array('id' => 11), array('id' => 22)), ArrayHelper::getColumn($rows, 'children'));
     }
 
+    public function testIsOneDimension()
+    {
+        $this->assertTrue(ArrayHelper::isOneDimension(array(1, 2)));
+        $this->assertTrue(ArrayHelper::isOneDimension(array(1, 2, 0, 2, false, 'abc')));
+        $this->assertFalse(ArrayHelper::isOneDimension(array(1, array())));
+        $this->assertFalse(ArrayHelper::isOneDimension(array(1, array(1, 2))));
+    }
+
 }
